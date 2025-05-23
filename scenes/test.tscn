@@ -1,3 +1,51 @@
-[gd_scene format=3 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=7 format=3 uid="uid://eohey75c4ul6"]
 
-[node name="Node2D" type="Node2D"]
+[ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scripts/player.gd" id="1_bl13t"]
+[ext_resource type="Texture2D" uid="uid://cqvp5111avtdl" path="res://assets/sprites/32x32 Palis.png" id="2_iyx0m"]
+[ext_resource type="Texture2D" uid="uid://bx8e63mqx6yb2" path="res://assets/sprites/16x32 salt patch.png" id="3_iyx0m"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iyx0m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
+height = 32.0
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lpvoh"]
+
+[node name="Test Level" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+texture_filter = 1
+script = ExtResource("1_bl13t")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+sprite_frames = SubResource("SpriteFrames_74lek")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CapsuleShape2D_j5jx5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(-1, 19)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("WorldBoundaryShape2D_lpvoh")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+texture_repeat = 2
+position = Vector2(0, 7)
+texture = ExtResource("3_iyx0m")
+region_enabled = true
+region_rect = Rect2(0, 0, 508.53, 16)
+region_filter_clip_enabled = true
