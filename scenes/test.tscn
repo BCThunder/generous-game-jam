@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=7 format=4 uid="uid://eohey75c4ul6"]
 
-[ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scripts/player.gd" id="1_bl13t"]
-[ext_resource type="Texture2D" uid="uid://cqvp5111avtdl" path="res://assets/sprites/32x32 Palis.png" id="2_iyx0m"]
-[ext_resource type="Texture2D" uid="uid://bx8e63mqx6yb2" path="res://assets/sprites/16x32 salt patch.png" id="3_iyx0m"]
+[ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scripts/player_controller.gd" id="1_bl13t"]
+[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/32x32 Palis.png" id="2_iyx0m"]
+[ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_j5jx5"]
+[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="5_j5jx5"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
 animations = [{
@@ -18,34 +19,47 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
 height = 32.0
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_lpvoh"]
-
 [node name="Test Level" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Player" type="CharacterBody2D" parent="."]
 texture_filter = 1
 script = ExtResource("1_bl13t")
+max_jump_vel = 300
+min_jump_vel = 100
+base_friction = 1.0
+ground_tilemap_layer_path = NodePath("../Terrain")
+jump_debug = true
+inputEvent_debug = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
 sprite_frames = SubResource("SpriteFrames_74lek")
+script = ExtResource("3_j5jx5")
+min_scale = 0.8
+max_scale = 1.2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CapsuleShape2D_j5jx5")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody2D"]
+[node name="RayCast2D" type="RayCast2D" parent="Player"]
+target_position = Vector2(0, 20)
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+[node name="Abilities" type="Node" parent="Player"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(-1, 19)
+[node name="Launch" type="Node" parent="Player/Abilities"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("WorldBoundaryShape2D_lpvoh")
+[node name="Dash" type="Node" parent="Player/Abilities"]
 
-[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
-texture_repeat = 2
-position = Vector2(0, 7)
-texture = ExtResource("3_iyx0m")
-region_enabled = true
-region_rect = Rect2(0, 0, 508.53, 16)
-region_filter_clip_enabled = true
+[node name="Slam" type="Node" parent="Player/Abilities"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
+
+[node name="Terrain" type="TileMapLayer" parent="."]
+texture_filter = 1
+texture_repeat = 1
+tile_map_data = PackedByteArray("AAD//wAABgABAAAAAAD//wEABgAGAAQAAAD+/wEABgAHAAQAAAD+/wAABgAAAAAAAAD6/wQABgAAAAAAAAD6/wUABgAAAAEAAAD7/wQABgABAAAAAAD7/wUABgABAAEAAAD+/wIABgACAAAAAAD+/wMABgACAAEAAAD//wIABgADAAAAAAD//wMABgADAAEAAADz/wEABgAGAAQAAAD0/wEABgAHAAQAAAD1/wEABgAGAAQAAAD2/wEABgAHAAQAAAD3/wEABgAGAAQAAAD4/wEABgAHAAQAAAD5/wEABgAGAAQAAAD6/wEABgAHAAQAAAD7/wEABgAGAAQAAAD8/wEABgAHAAQAAAD9/wEABgAGAAQAAAAAAAEABgAHAAQAAAABAAEABgAGAAQAAAACAAEABgAHAAQAAAADAAEABgAGAAQAAAAEAAEABgAHAAQAAAAFAAEABgAGAAQAAAAGAAEABgAHAAQAAAAHAAEABgAGAAQAAAAIAAEABgAHAAQAAAAJAAEABgAGAAQAAAAKAAEABgAHAAQAAAALAAEABgAGAAQAAAAMAAEABgAHAAQAAAA=")
+tile_set = ExtResource("5_j5jx5")
+rendering_quadrant_size = 1
