@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=4 uid="uid://dlmiy0dni511f"]
+
+[ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="1_5s2oh"]
+[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player.tscn" id="2_3d0ib"]
+[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="3_3l00l"]
+[ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="3_itmmw"]
+[ext_resource type="PackedScene" uid="uid://bx6c87yf5ae6e" path="res://scenes/kill_zone.tscn" id="5_h5sx5"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_h5sx5"]
+
+[node name="TestCheckpoint" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("2_3d0ib")]
+position = Vector2(-66, -22)
+
+[node name="Terrain" type="TileMapLayer" parent="."]
+texture_filter = 1
+texture_repeat = 1
+tile_map_data = PackedByteArray("AAD//wAABgABAAAAAAD//wEABgAGAAQAAAD+/wEABgAHAAQAAAD+/wAABgAAAAAAAAD6/wQABgAAAAAAAAD6/wUABgAAAAEAAAD7/wQABgABAAAAAAD7/wUABgABAAEAAAD+/wIABgACAAAAAAD+/wMABgACAAEAAAD//wIABgADAAAAAAD//wMABgADAAEAAADz/wEABgAGAAQAAAD0/wEABgAHAAQAAAD1/wEABgAGAAQAAAD2/wEABgAHAAQAAAD3/wEABgAGAAQAAAD4/wEABgAHAAQAAAD5/wEABgAGAAQAAAD6/wEABgAHAAQAAAD7/wEABgAGAAQAAAD8/wEABgAHAAQAAAD9/wEABgAGAAQAAAAAAAEABgAHAAQAAAABAAEABgAGAAQAAAACAAEABgAHAAQAAAADAAEABgAGAAQAAAAEAAEABgAHAAQAAAAFAAEABgAGAAQAAAAGAAEABgAHAAQAAAAHAAEABgAGAAQAAAAIAAEABgAHAAQAAAAJAAEABgAGAAQAAAAKAAEABgAHAAQAAAALAAEABgAGAAQAAAAMAAEABgAHAAQAAAA=")
+tile_set = ExtResource("3_3l00l")
+rendering_quadrant_size = 1
+
+[node name="DeathZone" parent="." instance=ExtResource("5_h5sx5")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathZone"]
+position = Vector2(0, 65)
+shape = SubResource("WorldBoundaryShape2D_h5sx5")
+
+[node name="CheckpointManager" type="Node" parent="."]
+script = ExtResource("1_5s2oh")
+
+[node name="Checkpoint" parent="CheckpointManager" instance=ExtResource("3_itmmw")]
+position = Vector2(168, 0)
+
+[node name="CollisionShape2D" parent="CheckpointManager/Checkpoint" index="0"]
+position = Vector2(0, -6.5)
+
+[node name="RespawnPoint" parent="CheckpointManager/Checkpoint" index="1"]
+position = Vector2(0, 14)
+
+[editable path="DeathZone"]
+[editable path="CheckpointManager/Checkpoint"]
