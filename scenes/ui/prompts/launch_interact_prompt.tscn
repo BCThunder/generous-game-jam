@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://bb55aht76y2ap"]
+
+[ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="1_s68nr"]
+[ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="2_gqcl4"]
+[ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="3_76e5s"]
+[ext_resource type="Texture2D" uid="uid://nyarogf4illo" path="res://assets/kenny input sprites/E.tres" id="4_joj8x"]
+
+[sub_resource type="Resource" id="Resource_34kor"]
+script = ExtResource("2_gqcl4")
+node_path = NodePath("HSplitContainer/Prompt Icon")
+action_name = "context_interact"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_n2jn2"]
+script = ExtResource("3_76e5s")
+node_path = NodePath("HSplitContainer/Prompt Text")
+label_text = "Press"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="Resource" id="Resource_jaqq5"]
+script = ExtResource("3_76e5s")
+node_path = NodePath("HSplitContainer/Prompt Text2")
+label_text = "to Launch"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[node name="Launch Interact Prompt" type="Node2D"]
+physics_interpolation_mode = 1
+z_index = 10
+texture_filter = 1
+script = ExtResource("1_s68nr")
+icon_entries = Array[ExtResource("2_gqcl4")]([SubResource("Resource_34kor")])
+text_entries = Array[ExtResource("3_76e5s")]([SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")])
+
+[node name="HSplitContainer" type="HBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -71.5
+offset_top = -11.5
+offset_right = 71.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Prompt Text" type="Label" parent="HSplitContainer"]
+texture_filter = 1
+layout_mode = 2
+text = "Press"
+
+[node name="Prompt Icon" type="TextureRect" parent="HSplitContainer"]
+layout_mode = 2
+texture = ExtResource("4_joj8x")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Prompt Text2" type="Label" parent="HSplitContainer"]
+layout_mode = 2
+text = "to Launch"

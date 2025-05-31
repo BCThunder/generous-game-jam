@@ -1,15 +1,111 @@
-[gd_scene load_steps=3 format=4 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=11 format=4 uid="uid://eohey75c4ul6"]
 
-[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player.tscn" id="1_bl13t"]
+[ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_bl13t"]
+[ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_at5dv"]
+[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/32x32 Palis.png" id="2_iyx0m"]
+[ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_j5jx5"]
 [ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="5_j5jx5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iyx0m")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
+size = Vector2(91, 30)
+
+[sub_resource type="Gradient" id="Gradient_lpvoh"]
+offsets = PackedFloat32Array(0.263617)
+colors = PackedColorArray(0, 0.545098, 0.6, 0.478431)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_at5dv"]
+gradient = SubResource("Gradient_lpvoh")
+width = 94
+height = 29
 
 [node name="Test Level" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_bl13t")]
+[node name="Player" type="CharacterBody2D" parent="."]
+texture_filter = 1
+position = Vector2(131, -2)
+collision_layer = 129
+collision_mask = 129
+script = ExtResource("1_bl13t")
+air_accel_multiplier = 5.0
+air_friction = 3.0
+max_jump_velocity = 300.0
+min_jump_velocity = 120.0
+down_hold_gravity_multiplier = 3.0
+ground_tilemap_layer_path = NodePath("../Terrain")
+launch_ability_scene = ExtResource("2_at5dv")
+debug_jumps = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+sprite_frames = SubResource("SpriteFrames_74lek")
+script = ExtResource("3_j5jx5")
+squash_apex = Vector2(0.9, 1.1)
+squash_land = Vector2(1.2, 0.8)
+velocity_threshold = 150.0
+apex_threshold = 100.0
+max_skew = 0.2
+lerp_factor = 0.1
+flip_velocity_threshold = 130.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_j5jx5")
+
+[node name="RayCast2D" type="RayCast2D" parent="Player"]
+target_position = Vector2(0, 20)
+
+[node name="LaunchAbility" parent="Player" instance=ExtResource("2_at5dv")]
+launch_power = 723.0
+launch_aim_distance = 71.075
+use_physics_launch = true
+
+[node name="Dash" type="Node2D" parent="Player"]
+
+[node name="Slam" type="Node2D" parent="Player"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+offset = Vector2(0, -64.34)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 25.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_vertical_offset = -1.0
+drag_left_margin = 0.05
+drag_top_margin = 0.05
+drag_right_margin = 0.05
+drag_bottom_margin = 0.05
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
+
 
 [node name="Terrain" type="TileMapLayer" parent="."]
 texture_filter = 1
 texture_repeat = 1
-tile_map_data = PackedByteArray("AAD//wAABgABAAAAAAD//wEABgAGAAQAAAD+/wEABgAHAAQAAAD+/wAABgAAAAAAAAD6/wQABgAAAAAAAAD6/wUABgAAAAEAAAD7/wQABgABAAAAAAD7/wUABgABAAEAAAD+/wIABgACAAAAAAD+/wMABgACAAEAAAD//wIABgADAAAAAAD//wMABgADAAEAAADz/wEABgAGAAQAAAD0/wEABgAHAAQAAAD1/wEABgAGAAQAAAD2/wEABgAHAAQAAAD3/wEABgAGAAQAAAD4/wEABgAHAAQAAAD5/wEABgAGAAQAAAD6/wEABgAHAAQAAAD7/wEABgAGAAQAAAD8/wEABgAHAAQAAAD9/wEABgAGAAQAAAAAAAEABgAHAAQAAAABAAEABgAGAAQAAAACAAEABgAHAAQAAAADAAEABgAGAAQAAAAEAAEABgAHAAQAAAAFAAEABgAGAAQAAAAGAAEABgAHAAQAAAAHAAEABgAGAAQAAAAIAAEABgAHAAQAAAAJAAEABgAGAAQAAAAKAAEABgAHAAQAAAALAAEABgAGAAQAAAAMAAEABgAHAAQAAAA=")
+tile_map_data = PackedByteArray("AAD//wEABgAGAAQAAAD+/wEABgAHAAQAAADz/wEABgAGAAQAAAD0/wEABgAHAAQAAAD1/wEABgAGAAQAAAD2/wEABgAHAAQAAAD3/wEABgAGAAQAAAD4/wEABgAHAAQAAAD5/wEABgAGAAQAAAD6/wEABgAHAAQAAAD7/wEABgAGAAQAAAD8/wEABgAHAAQAAAD9/wEABgAGAAQAAAAAAAEABgAHAAQAAAABAAEABgAGAAQAAAACAAEABgAHAAQAAAADAAEABgAGAAQAAAAEAAEABgAHAAQAAAAFAAEABgAGAAQAAAAGAAEABgAHAAQAAAAHAAEABgAGAAQAAAAIAAEABgAHAAQAAAAJAAEABgAGAAQAAAAKAAEABgAHAAQAAAALAAEABgAGAAQAAAAMAAEABgAHAAQAAAD6//7/BgAKAAQAAAD5//7/BgAKAAQAAAD4//7/BgAKAAQAAAD3//7/BgAKAAQAAAD2//7/BgAKAAQAAAD1//7/BgAKAAQAAAD5//v/BgAKAAQAAAD5//r/BgAKAAQAAAD5//n/BgAKAAQAAAD5//j/BgAKAAQAAAD5//f/BgAKAAQAAAALAPf/BgAKAAQAAAALAPj/BgAKAAQAAAALAPn/BgAKAAQAAAALAPr/BgAKAAQAAAALAPv/BgAKAAQAAAALAPz/BgAKAAQAAAALAP3/BgAKAAQAAAALAP7/BgAKAAQAAAD///n/BgAKAAQAAAAAAPn/BgAKAAQAAAABAPn/BgAKAAQAAAACAPn/BgAKAAQAAAADAPn/BgAKAAQAAAAEAPn/BgAKAAQAAAAFAPn/BgAKAAQAAAAGAPn/BgAKAAQAAAAHAPn/BgAKAAQAAADy//X/BgAKAAQAAADy//b/BgAKAAQAAADy//f/BgAKAAQAAADy//j/BgAKAAQAAADy//n/BgAKAAQAAADy//r/BgAKAAQAAADy//v/BgAKAAQAAADy//z/BgAKAAQAAADu/wAABgAKAAQAAADv/wAABgAKAAQAAADw/wAABgAKAAQAAAD0//r/BgAKAAQAAAD1//r/BgAKAAQAAAD2//r/BgAKAAQAAAD1//f/BgAKAAQAAAD2//f/BgAKAAQAAAD///b/BgAKAAQAAAD+//b/BgAKAAQAAAD9//b/BgAKAAQAAAD8//b/BgAKAAQAAAAFAPb/BgAKAAQAAAAGAPb/BgAKAAQAAAAHAPb/BgAKAAQAAAAIAPb/BgAKAAQAAAAEAPz/BgAKAAQAAAAFAPz/BgAKAAQAAAAGAPz/BgAKAAQAAAANAAEABgAKAAQAAAAOAAEABgALAAQAAAAPAAEABgAKAAQAAAAQAAEABgALAAQAAAARAAEABgAKAAQAAAASAAEABgALAAQAAAATAAEABgAKAAQAAAAUAAEABgALAAQAAAAVAAEABgAKAAQAAAAWAAEABgALAAQAAAAXAAEABgAKAAQAAAAYAAEABgALAAQAAAAZAAEABgAGAAQAAAAaAAEABgAHAAQAAAAYAAAABgAGAAQAAAAZAAAABgAHAAQAAAAWAAAABgAGAAQAAAAXAAAABgAHAAQAAAAUAAAABgAGAAQAAAAVAAAABgAHAAQAAAAWAP//BgAGAAQAAAAXAP//BgAHAAQAAAAYAP//BgAGAAQAAAAZAP//BgAHAAQAAAAaAP//BgAGAAQAAAAbAP//BgAHAAQAAAAaAP7/BgAHAAQAAAAbAP7/BgAHAAQAAAAZAP7/BgAGAAQAAAAcAP7/BgAGAAQAAAAdAP7/BgAHAAQAAAAcAP3/BgAGAAQAAAAdAP3/BgAHAAQAAAAMAP3/BgAKAAQAAAANAP3/BgALAAQAAAAQAPr/BgAKAAQAAAARAPr/BgALAAQAAAAMAPf/BgAKAAQAAAANAPf/BgALAAQAAAA=")
 tile_set = ExtResource("5_j5jx5")
 rendering_quadrant_size = 1
+
+[node name="Area2D" type="Area2D" parent="." groups=["LaunchZones"]]
+position = Vector2(280, 22)
+collision_layer = 128
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_j5jx5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+texture = SubResource("GradientTexture2D_at5dv")
