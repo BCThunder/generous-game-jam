@@ -1,292 +1,288 @@
+# Handles player movement states, abilities, and environment interactions.
+
 extends CharacterBody2D
+class_name PlayerController
 
+# Movement Tuning
 @export_category("Movement")
-## Player run speed (units per second)
-@export var run_speed := 300
-## Max upward jump velocity
-@export var max_jump_vel := 600
-## Min jump velocity (for variable height jumps)
-@export var min_jump_vel := 300
-## Gravity scale when jumping
-@export var jump_grav_scale := 0.6
-## Gravity scale when falling
-@export var fall_grav_scale := 1.5
-## Base friction coefficient (higher = more friction)
-@export var base_friction := 8.0
+@export var run_speed: float = 300.0
+@export var air_accel_multiplier: float = 0.5
+@export var air_friction: float = 1.0
 
-@export_category("Slippery Tile Tuning")
-## Acceleration multiplier for ice/slippery tiles (higher = easier to reverse)
-@export var slippery_accel_mult := 6.0
-## Friction for ice/slippery tiles (higher = stops sooner)
-@export var slippery_friction := 0.5
+# Gravity Tuning
+@export_category("Gravity")
+@export var double_jump_enabled: bool = true
+@export var max_jump_velocity: float = 600.0
+@export var min_jump_velocity: float = 300.0
+@export var jump_gravity_scale: float = 0.6
+@export var fall_gravity_scale: float = 1.5
+@export var down_hold_gravity_multiplier: float = 1.2
 
-@export_category("Tilemap & Environment")
-## NodePath to the TileMapLayer node used for ground surface friction
+# Ground & Slippery Tiles
+@export_category("Ground & Slippery")
+@export var ground_friction: float = 8.0
+@export var slippery_acceleration_multiplier: float = 6.0
+@export var slippery_friction: float = 0.5
+
+
+# Environment
+@export_category("Environment")
 @export var ground_tilemap_layer_path: NodePath
 
+# Abilities
 @export_category("Launch Ability")
-## Curve used to determine launch speed based on pullback
-@export var launch_speed_curve: Curve
-## Multiplier applied to launch velocity
-@export var launch_power = 1.0
-## Maximum distance for launch aiming
-@export var launch_aim_distance = 200.0
-## Scene used for the aiming cursor during launch
-@export var aim_cursor_scene: PackedScene
+@export var launch_ability_scene: PackedScene
+@export var launch_ability_enabled: bool = true
 
+@export_category("Slam Ability")
+@export var slam_abiility_scene: PackedScene
+@export var slam_abiility_enabled: bool = true
+
+# Debug Flags
 @export_category("Debug")
-@export var jump_debug: bool = false
-@export var inputEvent_debug: bool = false
+@export var debug_movement: bool = false
+@export var debug_input_events: bool = false
+@export var debug_jumps: bool = false
 
-# Context flags & unlocks
-var can_double_jump = false
-var has_dashed = false
-var in_slam_zone = false
-var in_launch_zone = false # new flag for launch context
+# Context Flags
+var is_jump_held: bool = false
+var can_double_jump: bool = false
+var in_slam_zone: bool = false
+var in_launch_zone: bool = false
 
-# Launch aiming state
-var aim_direction = Vector2.RIGHT
-var aim_cursor: Node2D = null
+# Ability Reference
+var launch_ability: Node2D = null
 
-# Internal state
-var is_jump_held = false
-
-# Cached references
+# Cached References
 var ground_tilemap_layer: TileMapLayer
 
-enum LaunchState {IDLE, AIMING, LAUNCHING}
-var launch_state = LaunchState.IDLE
 
-func _ready():
-	# Cache tilemap layer
+# --- State Machine Base ---
+class PlayerState:
+	var player: PlayerController
+
+	func _init(p_player: PlayerController) -> void:
+		player = p_player
+
+	func enter() -> void:
+		pass
+
+	func exit() -> void:
+		pass
+
+	func input(_event: InputEvent) -> void:
+		pass
+
+	func physics(_delta: float) -> void:
+		pass
+
+
+# --- Ground State ---
+class GroundState extends PlayerState:
+	func enter() -> void:
+		# Reset jump flags on landing
+		player.can_double_jump = false
+		player.is_jump_held = false
+
+		if player.debug_movement:
+			print("Entered GroundState")
+
+	func input(event: InputEvent) -> void:
+		if event.is_action_pressed("jump"):
+			if player.debug_jumps:
+				print("Jump pressed (Ground)")
+			player._try_jump()
+
+	func physics(delta: float) -> void:
+		player._apply_gravity(delta)
+		player._handle_ground_moves(delta)
+		player.move_and_slide()
+
+		if not player.is_on_floor():
+			player._change_state(AirState)
+
+
+# --- Air State ---
+class AirState extends PlayerState:
+	func enter() -> void:
+		if player.debug_movement:
+			print("Entered AirState")
+
+	func input(event: InputEvent) -> void:
+		# Handle double jump on second press
+		if event.is_action_pressed("jump") and player.can_double_jump:
+			if player.debug_jumps:
+				print("Jump pressed (Air) - Double Jump")
+			player._try_jump()
+
+		# Release jump for variable height
+		if event.is_action_released("jump"):
+			player.is_jump_held = false
+			if player.velocity.y < -player.min_jump_velocity:
+				player.velocity.y = - player.min_jump_velocity
+
+	func physics(delta: float) -> void:
+		player._apply_gravity(delta)
+		player._handle_air_moves(delta)
+		player.move_and_slide()
+
+		if player.is_on_floor():
+			player._change_state(GroundState)
+
+
+# --- PlayerController Lifecycle ---
+var current_state: PlayerState = null
+
+func _ready() -> void:
 	ground_tilemap_layer = get_node(ground_tilemap_layer_path)
 	if not ground_tilemap_layer:
-		printerr("PlayerController: Ground TileMapLayer not found at path: ", ground_tilemap_layer_path)
-	set_process_input(true)
+		push_error("TileMapLayer not found at %s" % ground_tilemap_layer_path)
 
-	# Connect slam zones
+	_init_launch_ability()
+
+	current_state = GroundState.new(self)
+	current_state.enter()
+
+	set_process_input(true)
+	set_physics_process(true)
+
+	_connect_zone_signals()
+
+func _input(event: InputEvent) -> void:
+	if launch_ability and launch_ability.get("active"):
+		launch_ability.call("input", event)
+		return
+
+	if in_launch_zone and launch_ability and event.is_action_pressed("context_interact"):
+		launch_ability.call("start")
+		return
+
+	current_state.input(event)
+
+func _physics_process(delta: float) -> void:
+	if launch_ability and launch_ability.get("active"):
+		launch_ability.call("physics", delta)
+	else:
+		current_state.physics(delta)
+
+
+# --- State Transition ---
+func _change_state(new_state_class) -> void:
+	current_state.exit()
+	current_state = new_state_class.new(self)
+	current_state.enter()
+
+
+# --- Gravity & Movement Helpers ---
+func _apply_gravity(delta: float) -> void:
+	var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+	var grav_scale: float
+
+	# Determine gravity grav_scale
+	if velocity.y < 0 and is_jump_held:
+		grav_scale = jump_gravity_scale
+	else:
+		grav_scale = fall_gravity_scale
+
+	if Input.is_action_pressed("move_down"):
+		grav_scale *= down_hold_gravity_multiplier
+
+	velocity.y += gravity * grav_scale * delta
+
+func _handle_ground_moves(delta: float) -> void:
+	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var is_slippery: bool = _is_on_slippery()
+
+	if is_slippery:
+		var accel: float = run_speed * slippery_acceleration_multiplier
+		if direction != 0:
+			velocity.x += direction * accel * delta
+		else:
+			velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
+	else:
+		if direction != 0:
+			velocity.x = direction * run_speed
+		else:
+			velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
+
+	velocity.x = clamp(velocity.x, -run_speed, run_speed)
+
+func _handle_air_moves(delta: float) -> void:
+	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+
+	if direction != 0:
+		velocity.x += direction * run_speed * air_accel_multiplier * delta
+	else:
+		velocity.x = lerp(velocity.x, 0.0, air_friction * delta)
+
+	velocity.x = clamp(velocity.x, -run_speed, run_speed)
+
+func _is_on_slippery() -> bool:
+	if not is_on_floor():
+		return false
+
+	var half_height: float = _get_collision_half_height()
+	var foot_position: Vector2 = global_position + Vector2(0, half_height + 1)
+	var tile_size: Vector2 = ground_tilemap_layer.tile_set.tile_size
+	var coords: Vector2i = Vector2i(int(foot_position.x / tile_size.x), int(foot_position.y / tile_size.y))
+	var cell_data = ground_tilemap_layer.get_cell_tile_data(coords)
+
+	return cell_data and cell_data.get_custom_data("slippery")
+
+func _get_collision_half_height() -> float:
+	var shape = $CollisionShape2D.shape
+	if shape is CapsuleShape2D:
+		return shape.height * 0.5 + shape.radius
+	if shape is RectangleShape2D:
+		return shape.extents.y
+	if shape is CircleShape2D:
+		return shape.radius
+	return 0.0
+
+
+# --- Launch Ability & Zones ---
+func _init_launch_ability() -> void:
+	for child in get_children():
+		if child is Node2D and child.has_method("start"):
+			launch_ability = child
+			return
+
+	if launch_ability_scene:
+		launch_ability = launch_ability_scene.instantiate()
+		add_child(launch_ability)
+	elif debug_input_events:
+		push_error("No LaunchAbility configured; launch disabled.")
+
+func _connect_zone_signals() -> void:
 	for zone in get_tree().get_nodes_in_group("SlamZones"):
 		zone.connect("body_entered", Callable(self, "_on_slam_zone_entered"))
 		zone.connect("body_exited", Callable(self, "_on_slam_zone_exited"))
-	# Connect launch zones
-	for lz in get_tree().get_nodes_in_group("LaunchZones"):
-		lz.connect("body_entered", Callable(self, "_on_launch_zone_entered"))
-		lz.connect("body_exited", Callable(self, "_on_launch_zone_exited"))
+	for zone in get_tree().get_nodes_in_group("LaunchZones"):
+		zone.connect("body_entered", Callable(self, "_on_launch_zone_entered"))
+		zone.connect("body_exited", Callable(self, "_on_launch_zone_exited"))
 
-func _input(event: InputEvent) -> void:
-	# UI focus check
-	var focus_owner = get_viewport().gui_get_focus_owner()
-	if inputEvent_debug:
-		print("Focus owner: ", focus_owner)
-	if focus_owner != null and focus_owner is Control:
-		print("Input event ignored due to UI focus")
-		return
-
-	# If currently aiming, handle aim input
-	if launch_state == LaunchState.AIMING:
-		print("Handling launch aim input")
-		_handle_launch_aim_input(event)
-		return
-
-	# Normal gameplay inputs
-	if event is InputEvent and not event.is_echo():
-		if inputEvent_debug:
-			print("Handling action input: ", event.as_text())
-		if event.is_action_pressed("jump"):
-			if jump_debug:
-				print("Jump pressed")
-			_try_jump()
-		# elif event.is_action_pressed("dash"):
-		# 	_try_dash()
-		# elif event.is_action_pressed("context_interact") and in_slam_zone:
-		# 	_do_slam()
-		elif event.is_action_pressed("context_interact") and in_launch_zone:
-			_start_launch_aim()
-
-		if event.is_action_released("jump"):
-			is_jump_held = false
-			if velocity.y < -min_jump_vel:
-				velocity.y = - min_jump_vel
-
-func _physics_process(delta: float) -> void:
-	var was_on_floor = is_on_floor()
-	if launch_state == LaunchState.AIMING:
-		_update_launch_aim()
-		# disable physics movement while aiming
-		return
-	else:
-		_apply_gravity(delta)
-		_handle_moves(delta)
-		move_and_slide()
-		if not was_on_floor and is_on_floor():
-			has_dashed = false
-
-func _update_launch_aim() -> void:
-	if aim_cursor:
-		var mouse_pos = get_global_mouse_position()
-		var dir = (mouse_pos - global_position).normalized()
-		aim_direction = dir
-		aim_cursor.global_position = global_position + dir * launch_aim_distance
-		aim_cursor.rotation = dir.angle() + deg_to_rad(90)
-
-# — Launch Aiming & Execution ———————————————————————————————————
-func _start_launch_aim() -> void:
-	launch_state = LaunchState.AIMING
-	velocity = Vector2.ZERO
-	# spawn cursor
-	aim_cursor = aim_cursor_scene.instantiate()
-	add_child(aim_cursor)
-	aim_cursor.global_position = global_position
-
-func _handle_launch_aim_input(event: InputEvent) -> void:
-	# Only handle launch/cancel input, not aiming
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		_execute_launch()
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		_cancel_launch_aim()
-
-func _execute_launch() -> void:
-	var pullback = (aim_cursor.global_position - global_position).length()
-	var t = min(pullback / launch_aim_distance, 1.0)
-	var speed = launch_speed_curve.sample_baked(t)
-	velocity = aim_direction * launch_power * speed
-	# cleanup
-	aim_cursor.queue_free()
-	aim_cursor = null
-	launch_state = LaunchState.IDLE
-
-func _cancel_launch_aim() -> void:
-	if aim_cursor:
-		aim_cursor.queue_free()
-		aim_cursor = null
-	launch_state = LaunchState.IDLE
-
-# — Movement & Gravity ————————————————————————————————————————
-func _apply_gravity(delta: float) -> void:
-	var gravity_value = ProjectSettings.get_setting("physics/2d/default_gravity")
-	var scale: float
-	if velocity.y < 0 and is_jump_held:
-		scale = jump_grav_scale
-	else:
-		scale = fall_grav_scale
-	velocity.y += gravity_value * scale * delta
-
-func _handle_moves(delta: float) -> void:
-	# Horizontal input
-	var left_strength = Input.get_action_strength("move_left")
-	var right_strength = Input.get_action_strength("move_right")
-	var dir = right_strength - left_strength
-
-	var just_pressed_left = Input.is_action_just_pressed("move_left")
-	var just_pressed_right = Input.is_action_just_pressed("move_right")
-
-	# Slippery logic only for tiles marked slippery
-	var is_slippery = false
-	if is_on_floor():
-		var half_height = _get_collision_half_height()
-		var foot_offset = Vector2(0, half_height + 1.0)
-		var world_pos = global_position + foot_offset
-		var tile_size = ground_tilemap_layer.tile_set.tile_size
-		var map_coords = Vector2i(
-			int(world_pos.x / tile_size.x),
-			int(world_pos.y / tile_size.y)
-		)
-		var tile_data: TileData = ground_tilemap_layer.get_cell_tile_data(map_coords)
-		if tile_data and tile_data.get_custom_data("slippery") == true:
-			is_slippery = true
-
-	if is_slippery:
-		# --- Classic ice: Momentum preserved, input adds acceleration ---
-		var accel = run_speed * slippery_accel_mult
-		var friction = slippery_friction
-
-		if dir != 0:
-			velocity.x += dir * accel * delta
-		else:
-			# Only apply light friction when no input (to keep sliding for a while)
-			velocity.x = lerp(velocity.x, 0.0, friction * delta)
-
-		# Clamp top speed so it doesn't build up forever
-		velocity.x = clamp(velocity.x, -run_speed, run_speed)
-	else:
-		# --- Normal: Immediate control, instant stop ---
-		if dir != 0:
-			if just_pressed_left or just_pressed_right:
-				velocity.x = dir * run_speed * 0.4
-			else:
-				velocity.x = dir * run_speed
-		else:
-			if is_on_floor():
-				velocity.x = 0.0
-
-# — Tile Friction Utility —————————————————————————————————————
-func _get_tile_friction() -> float:
-	if not ground_tilemap_layer:
-		return 1.0
-	var tilemap = ground_tilemap_layer.get_parent() # Assuming TileMapLayer is a child of TileMap
-	if not tilemap or not tilemap.has_method("local_to_map"):
-		return 1.0
-	var half_h = _get_collision_half_height()
-	var foot_pos = global_position + Vector2(0, half_h + 1)
-	var cell = tilemap.local_to_map(foot_pos)
-	var layer_idx = ground_tilemap_layer.layer
-	var tile_data = tilemap.get_cell_tile_data(layer_idx, cell)
-	if tile_data:
-		var f = tile_data.get_custom_data("friction")
-		if f is float:
-			return f
-		elif f != null:
-			var conv = float(f)
-			if not is_nan(conv):
-				return conv
-	return 1.0
-
-func _get_collision_half_height() -> float:
-	var s = $CollisionShape2D.shape
-	if s is CapsuleShape2D:
-		return s.height * 0.5 + s.radius
-	elif s is RectangleShape2D:
-		return s.extents.y
-	elif s is CircleShape2D:
-		return s.radius
-	return 0.0
-
-# — Abilities —————————————————————————————————————————————————
 func _try_jump() -> void:
-	print("Attempting jump")
 	if is_on_floor():
-		velocity.y = - max_jump_vel
+		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = true
-	elif can_double_jump:
-		_try_double_jump()
-
-func _try_double_jump() -> void:
-	if can_double_jump and not is_on_floor():
-		velocity.y = - max_jump_vel
+	elif double_jump_enabled and can_double_jump:
+		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = false
 
-func _try_dash() -> void:
-	if not has_dashed:
-		has_dashed = true
-		var sign_dir = 1
-		if velocity.x != 0:
-			sign_dir = sign(velocity.x)
-		velocity.x = sign_dir * run_speed * 2
-
-func _do_slam() -> void:
-	velocity = Vector2(0, run_speed * 3)
-
-# — Zone Callbacks ——————————————————————————————————————
-func _on_slam_zone_entered(_body: Node2D) -> void:
+func _on_slam_zone_entered(_body: Node) -> void:
 	in_slam_zone = true
 
-func _on_slam_zone_exited(_body: Node2D) -> void:
+func _on_slam_zone_exited(_body: Node) -> void:
 	in_slam_zone = false
 
-func _on_launch_zone_entered(_body: Node2D) -> void:
+func _on_launch_zone_entered(_body: Node) -> void:
+	print_debug("Entered launch zone")
 	in_launch_zone = true
+	launch_ability._show_prompt()
 
-func _on_launch_zone_exited(_body: Node2D) -> void:
+func _on_launch_zone_exited(_body: Node) -> void:
+	print_debug("Exited launch zone")
 	in_launch_zone = false
+	launch_ability._hide_prompt()
