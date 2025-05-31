@@ -91,6 +91,7 @@ drag_bottom_margin = 0.05
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
 
+
 [node name="Terrain" type="TileMapLayer" parent="."]
 texture_filter = 1
 texture_repeat = 1

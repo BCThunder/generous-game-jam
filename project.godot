@@ -28,6 +28,8 @@ window/stretch/mode="viewport"
 [global_group]
 
 LaunchZones="Zones to enable launch ability"
+Player=""
+
 
 [input]
 
