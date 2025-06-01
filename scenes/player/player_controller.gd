@@ -10,13 +10,16 @@ class_name PlayerController
 @export var air_friction: float = 1.0
 
 # Gravity Tuning
-@export_category("Gravity")
+@export_category("Gravity and Jumping")
 @export var double_jump_enabled: bool = true
 @export var max_jump_velocity: float = 600.0
 @export var min_jump_velocity: float = 300.0
 @export var jump_gravity_scale: float = 0.6
 @export var fall_gravity_scale: float = 1.5
 @export var down_hold_gravity_multiplier: float = 1.2
+@export var coyote_time_duration: float = 0.2 # seconds of grace time
+var coyote_timer: float = 0.0 # internal timer
+
 
 # Ground & Slippery Tiles
 @export_category("Ground & Slippery")
@@ -83,6 +86,7 @@ class GroundState extends PlayerState:
 		# Reset jump flags on landing
 		player.can_double_jump = false
 		player.is_jump_held = false
+		player.coyote_timer = player.coyote_time_duration
 
 		if player.debug_movement:
 			print("Entered GroundState")
@@ -107,6 +111,7 @@ class AirState extends PlayerState:
 	func enter() -> void:
 		if player.debug_movement:
 			print("Entered AirState")
+		player.can_double_jump = player.double_jump_enabled
 
 	func input(event: InputEvent) -> void:
 		# Handle double jump on second press
@@ -122,6 +127,9 @@ class AirState extends PlayerState:
 				player.velocity.y = - player.min_jump_velocity
 
 	func physics(delta: float) -> void:
+		if player.coyote_timer > 0.0:
+			player.coyote_timer -= delta
+
 		player._apply_gravity(delta)
 		player._handle_air_moves(delta)
 		player.move_and_slide()
@@ -191,17 +199,29 @@ func _apply_gravity(delta: float) -> void:
 
 func _handle_ground_moves(delta: float) -> void:
 	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var just_pressed: bool = Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_left")
 	var is_slippery: bool = _is_on_slippery()
 
 	if is_slippery:
 		var accel: float = run_speed * slippery_acceleration_multiplier
 		if direction != 0:
-			velocity.x += direction * accel * delta
+			if just_pressed:
+				# Instant acceleration on first press
+				velocity.x = direction * run_speed * 0.2
+			else:
+				# Smooth acceleration otherwise
+				velocity.x += direction * accel * delta
 		else:
 			velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
 	else:
 		if direction != 0:
-			velocity.x = direction * run_speed
+			if just_pressed:
+				print_debug("Just pressed move key")
+				# Instant acceleration on first press
+				velocity.x = direction * run_speed * 0.2
+			else:
+				# Smooth acceleration otherwise
+				velocity.x = direction * run_speed
 		else:
 			velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
 
@@ -262,10 +282,11 @@ func _connect_zone_signals() -> void:
 		zone.connect("body_exited", Callable(self, "_on_launch_zone_exited"))
 
 func _try_jump() -> void:
-	if is_on_floor():
+	if is_on_floor() or coyote_timer > 0.0:
 		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = true
+		coyote_timer = 0.0
 	elif double_jump_enabled and can_double_jump:
 		velocity.y = - max_jump_velocity
 		is_jump_held = true

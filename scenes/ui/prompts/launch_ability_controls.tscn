@@ -35,13 +35,8 @@ physics_interpolation_mode = 1
 z_index = 10
 texture_filter = 1
 script = ExtResource("1_rl1p6")
-icon_entries = Array[ExtResource("2_7c67d")]([SubResource("Resource_rc2mg"), SubResource("Resource_5l4wp")])
-text_entries = Array[ExtResource("3_2d3td")]([SubResource("Resource_owrub"), SubResource("Resource_wt6x8")])
-follow_parent = null
-follow_target_path = null
-vertical_offset = null
-bob_amplitude = null
-bob_speed = null
+icon_entries = [SubResource("Resource_rc2mg"), SubResource("Resource_5l4wp")]
+text_entries = [SubResource("Resource_owrub"), SubResource("Resource_wt6x8")]
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
 anchors_preset = 8

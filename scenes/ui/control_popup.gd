@@ -1,4 +1,3 @@
-@tool
 extends Node2D
 
 # Exported Arrays (untyped) so Godot won't enforce GDScript-only elements

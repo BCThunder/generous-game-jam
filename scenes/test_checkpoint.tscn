@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=4 uid="uid://dlmiy0dni511f"]
+[gd_scene load_steps=9 format=4 uid="uid://bqvtpndi1mh5o"]
 
 [ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="1_5s2oh"]
-[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player.tscn" id="2_3d0ib"]
+[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player/player.tscn" id="2_3d0ib"]
 [ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="3_3l00l"]
 [ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="3_itmmw"]
 [ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="3_w73uy"]
@@ -14,6 +14,7 @@
 
 [node name="Player" parent="." instance=ExtResource("2_3d0ib")]
 position = Vector2(-66, -22)
+air_accel_multiplier = 3.0
 
 [node name="Terrain" type="TileMapLayer" parent="."]
 texture_filter = 1
