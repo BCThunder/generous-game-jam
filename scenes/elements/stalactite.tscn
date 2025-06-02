@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://3mg1bxd5jluy"]
+
+[ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/level asset sprites copy.png" id="1_xgiyg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a67fs"]
+atlas = ExtResource("1_xgiyg")
+region = Rect2(20, 128, 16, 16)
+filter_clip = true
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_x8va4"]
+points = PackedVector2Array(4, 1, -4, 1, -1, 16)
+
+[sub_resource type="Curve" id="Curve_xgiyg"]
+_limits = [-360.0, 360.0, 0.0, 1.0]
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a67fs"]
+curve = SubResource("Curve_xgiyg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x8va4"]
+lifetime_randomness = 1.0
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+angle_curve = SubResource("CurveTexture_a67fs")
+direction = Vector3(0, -1, 0)
+spread = 180.0
+flatness = 1.0
+initial_velocity_min = 102.66
+initial_velocity_max = 108.52
+gravity = Vector3(0, 98, 0)
+turbulence_enabled = true
+collision_mode = 2
+
+[node name="Stalactite" type="RigidBody2D"]
+disable_mode = 1
+collision_layer = 129
+collision_mask = 129
+contact_monitor = true
+max_contacts_reported = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_a67fs")
+offset = Vector2(0, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("ConvexPolygonShape2D_x8va4")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(-1, 15)
+emitting = false
+amount = 10
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.95
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_x8va4")
+
+[connection signal="body_entered" from="." to="Sprite2D" method="is_visible" unbinds=1]
+[connection signal="body_entered" from="." to="GPUParticles2D" method="is_emitting" unbinds=1]

@@ -5,23 +5,28 @@ class_name PlayerController
 
 # Movement Tuning
 @export_category("Movement")
-@export var run_speed: float = 300.0
-@export var air_accel_multiplier: float = 0.5
-@export var air_friction: float = 1.0
+@export var run_speed: float = 200.0
+@export var air_accel_multiplier: float = 5.0
+@export var air_friction: float = 3.0
+@export var tap_speed: float = 30.0
+@export var tap_boost_duration: float = 0.05 # Duration in seconds for tap speed boost
 
 # Gravity Tuning
-@export_category("Gravity")
+@export_category("Gravity and Jumping")
 @export var double_jump_enabled: bool = true
-@export var max_jump_velocity: float = 600.0
-@export var min_jump_velocity: float = 300.0
+@export var max_jump_velocity: float = 300.0
+@export var min_jump_velocity: float = 120.0
 @export var jump_gravity_scale: float = 0.6
-@export var fall_gravity_scale: float = 1.5
-@export var down_hold_gravity_multiplier: float = 1.2
+@export var fall_gravity_scale: float = 1.0
+@export var down_hold_gravity_multiplier: float = 3.0
+@export var coyote_time_duration: float = 0.2 # seconds of grace time
+
 
 # Ground & Slippery Tiles
 @export_category("Ground & Slippery")
 @export var ground_friction: float = 8.0
 @export var slippery_acceleration_multiplier: float = 6.0
+@export var tap_slippery_acceleration_multiplier: float = 2.0
 @export var slippery_friction: float = 0.5
 
 
@@ -56,6 +61,10 @@ var launch_ability: Node2D = null
 # Cached References
 var ground_tilemap_layer: TileMapLayer
 
+# Timers for duration-based effects
+var tap_boost_timer: Timer
+var coyote_timer_node: Timer
+
 
 # --- State Machine Base ---
 class PlayerState:
@@ -83,6 +92,7 @@ class GroundState extends PlayerState:
 		# Reset jump flags on landing
 		player.can_double_jump = false
 		player.is_jump_held = false
+		player.coyote_timer_node.start(player.coyote_time_duration)
 
 		if player.debug_movement:
 			print("Entered GroundState")
@@ -107,6 +117,10 @@ class AirState extends PlayerState:
 	func enter() -> void:
 		if player.debug_movement:
 			print("Entered AirState")
+		player.can_double_jump = player.double_jump_enabled
+		# Start coyote time if not already running
+		if player.coyote_timer_node.is_stopped():
+			player.coyote_timer_node.start(player.coyote_time_duration)
 
 	func input(event: InputEvent) -> void:
 		# Handle double jump on second press
@@ -114,6 +128,12 @@ class AirState extends PlayerState:
 			if player.debug_jumps:
 				print("Jump pressed (Air) - Double Jump")
 			player._try_jump()
+
+		# Handle Slam ability
+		if player.slam_abiility_enabled and event.is_action_pressed("slam_ability"):
+			if player.debug_movement:
+				print("Slam pressed (Air)")
+			player._change_state(SlamState)
 
 		# Release jump for variable height
 		if event.is_action_released("jump"):
@@ -130,6 +150,36 @@ class AirState extends PlayerState:
 			player._change_state(GroundState)
 
 
+class SlamState extends PlayerState:
+	func enter() -> void:
+		if player.debug_movement:
+			print("Entered SlamState")
+		# Reset jump flags
+		player.is_jump_held = false
+		player.can_double_jump = false
+
+
+	func physics(delta: float) -> void:
+		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+		var grav_scale: float = 30.0
+
+
+		player.velocity.y += gravity * grav_scale * delta
+		player.velocity.x = 0.0 # Stop horizontal movement during slam
+
+		var collision = player.move_and_slide()
+		if collision:
+			# Check if we hit the ground
+			if player.is_on_floor():
+				# Small delay to allow landing effects
+				await player.get_tree().create_timer(1.0).timeout
+				player._change_state(GroundState)
+			else:
+				# If not on ground, stay in slam state
+				player.velocity.x = 0.0 # Stop horizontal movement during slam
+				player.velocity.y = max(player.velocity.y, 0) # Prevent upward movement
+
+
 # --- PlayerController Lifecycle ---
 var current_state: PlayerState = null
 
@@ -139,6 +189,18 @@ func _ready() -> void:
 		push_error("TileMapLayer not found at %s" % ground_tilemap_layer_path)
 
 	_init_launch_ability()
+
+	# Add and configure tap boost timer
+	tap_boost_timer = Timer.new()
+	tap_boost_timer.one_shot = true
+	tap_boost_timer.wait_time = tap_boost_duration
+	add_child(tap_boost_timer)
+
+	# Add and configure coyote time timer
+	coyote_timer_node = Timer.new()
+	coyote_timer_node.one_shot = true
+	coyote_timer_node.wait_time = coyote_time_duration
+	add_child(coyote_timer_node)
 
 	current_state = GroundState.new(self)
 	current_state.enter()
@@ -191,17 +253,28 @@ func _apply_gravity(delta: float) -> void:
 
 func _handle_ground_moves(delta: float) -> void:
 	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var just_pressed: bool = Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_left")
 	var is_slippery: bool = _is_on_slippery()
+
+	# Tap boost logic
+	if just_pressed and direction != 0:
+		tap_boost_timer.start(tap_boost_duration)
 
 	if is_slippery:
 		var accel: float = run_speed * slippery_acceleration_multiplier
 		if direction != 0:
-			velocity.x += direction * accel * delta
+			if not tap_boost_timer.is_stopped():
+				velocity.x += direction * tap_speed * delta * tap_slippery_acceleration_multiplier
+			else:
+				velocity.x += direction * accel * delta
 		else:
 			velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
 	else:
 		if direction != 0:
-			velocity.x = direction * run_speed
+			if not tap_boost_timer.is_stopped():
+				velocity.x = direction * tap_speed
+			else:
+				velocity.x = direction * run_speed
 		else:
 			velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
 
@@ -262,10 +335,11 @@ func _connect_zone_signals() -> void:
 		zone.connect("body_exited", Callable(self, "_on_launch_zone_exited"))
 
 func _try_jump() -> void:
-	if is_on_floor():
+	if is_on_floor() or not coyote_timer_node.is_stopped():
 		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = true
+		coyote_timer_node.stop()
 	elif double_jump_enabled and can_double_jump:
 		velocity.y = - max_jump_velocity
 		is_jump_held = true

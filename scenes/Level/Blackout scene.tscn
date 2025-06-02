@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://btdp7paicpsrd"]
 
-[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="1_okrmv"]
+[ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/level asset sprites copy.png" id="2_pqhl5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kjymn"]
@@ -88,6 +88,7 @@ tile_set = SubResource("TileSet_jxpnh")
 texture_filter = 1
 tile_map_data = PackedByteArray("AAAPAN4BBgAHAAoAABAOAN8BBgAHAAoAABAMAOABBgAHAAoAABAJAOEBBgAHAAoAABARANsBBgAHAAoAABAgAOEBBgAHAAoAABAjAOABBgAHAAoAABAkAN8BBgAHAAoAABAqAN4BBgAHAAoAABAqAOcBBgAHAAoAABAjAPMBBgAHAAoAABAlAPIBBgAHAAoAABDN//QBBgAHAAoAAADM//EBBgAHAAoAAAAlAHIBBgAHAAoAAAAgAHQBBgAHAAoAAAAAAI8BBgAHAAoAAAAKAIUBBgAHAAoAAAAuANIABgAHAAoAABAsAH8ABgAHAAoAAADg/4cABgAHAAoAABAOAFUABgAHAAoAAAAVAFoABgAHAAoAAAAUAFkABgAHAAoAAAASAFgABgAHAAoAAAD6/0EABgAHAAoAAAD5/0AABgAHAAoAAADl/y4ABgAHAAoAABDe/ycABgAHAAoAABDv/yEABgAHAAoAABAEAH0BBgAHAAoAABA=")
 tile_set = ExtResource("1_okrmv")
+
 
 [node name="main toppers" type="TileMapLayer" parent="."]
 texture_filter = 1

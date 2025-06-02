@@ -1,23 +1,28 @@
-[gd_scene load_steps=11 format=4 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=13 format=4 uid="uid://eohey75c4ul6"]
 
-[ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_bl13t"]
-[ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_at5dv"]
-[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/32x32 Palis.png" id="2_iyx0m"]
-[ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_j5jx5"]
-[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="5_j5jx5"]
+[ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_bl13t"]
+[ext_resource type="Script" uid="uid://boduutxcc71db" path="res://scenes/ceiling_drop.gd" id="3_74lek"]
+[ext_resource type="PackedScene" uid="uid://3mg1bxd5jluy" path="res://scenes/elements/stalactite.tscn" id="4_j5jx5"]
+[ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="5_j5jx5"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_iyx0m")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[sub_resource type="Gradient" id="Gradient_74lek"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.0445579, 0.0445578, 0.0445578, 1)
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j5jx5"]
+gradient = SubResource("Gradient_74lek")
+width = 1920
+height = 5000
+fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_bl13t"]
+offsets = PackedFloat32Array(0, 0.620915, 0.647059)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iyx0m"]
+gradient = SubResource("Gradient_bl13t")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
 size = Vector2(91, 30)
@@ -31,73 +36,65 @@ gradient = SubResource("Gradient_lpvoh")
 width = 94
 height = 29
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lpvoh"]
+size = Vector2(11, 103)
+
 [node name="Test Level" type="Node2D"]
 
-[node name="Player" type="CharacterBody2D" parent="."]
-texture_filter = 1
-position = Vector2(131, -2)
-collision_layer = 129
-collision_mask = 129
-script = ExtResource("1_bl13t")
-air_accel_multiplier = 5.0
-air_friction = 3.0
-max_jump_velocity = 300.0
-min_jump_velocity = 120.0
-down_hold_gravity_multiplier = 3.0
-ground_tilemap_layer_path = NodePath("../Terrain")
-launch_ability_scene = ExtResource("2_at5dv")
-debug_jumps = true
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
-sprite_frames = SubResource("SpriteFrames_74lek")
-script = ExtResource("3_j5jx5")
-squash_apex = Vector2(0.9, 1.1)
-squash_land = Vector2(1.2, 0.8)
-velocity_threshold = 150.0
-apex_threshold = 100.0
-max_skew = 0.2
-lerp_factor = 0.1
-flip_velocity_threshold = 130.0
+[node name="CanvasModulate" type="CanvasModulate" parent="CanvasLayer"]
+color = Color(0.341584, 0.341584, 0.341584, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("CapsuleShape2D_j5jx5")
-
-[node name="RayCast2D" type="RayCast2D" parent="Player"]
-target_position = Vector2(0, 20)
-
-[node name="LaunchAbility" parent="Player" instance=ExtResource("2_at5dv")]
-launch_power = 723.0
-launch_aim_distance = 71.075
-use_physics_launch = true
-
-[node name="Dash" type="Node2D" parent="Player"]
-
-[node name="Slam" type="Node2D" parent="Player"]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-offset = Vector2(0, -64.34)
-process_callback = 0
-position_smoothing_enabled = true
-position_smoothing_speed = 25.0
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
-drag_vertical_offset = -1.0
-drag_left_margin = 0.05
-drag_top_margin = 0.05
-drag_right_margin = 0.05
-drag_bottom_margin = 0.05
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Player"]
-
-
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Terrain" type="TileMapLayer" parent="CanvasLayer"]
+top_level = true
+light_mask = 2
+z_index = 12
 texture_filter = 1
 texture_repeat = 1
 tile_map_data = PackedByteArray("AAD//wEABgAGAAQAAAD+/wEABgAHAAQAAADz/wEABgAGAAQAAAD0/wEABgAHAAQAAAD1/wEABgAGAAQAAAD2/wEABgAHAAQAAAD3/wEABgAGAAQAAAD4/wEABgAHAAQAAAD5/wEABgAGAAQAAAD6/wEABgAHAAQAAAD7/wEABgAGAAQAAAD8/wEABgAHAAQAAAD9/wEABgAGAAQAAAAAAAEABgAHAAQAAAABAAEABgAGAAQAAAACAAEABgAHAAQAAAADAAEABgAGAAQAAAAEAAEABgAHAAQAAAAFAAEABgAGAAQAAAAGAAEABgAHAAQAAAAHAAEABgAGAAQAAAAIAAEABgAHAAQAAAAJAAEABgAGAAQAAAAKAAEABgAHAAQAAAALAAEABgAGAAQAAAAMAAEABgAHAAQAAAD6//7/BgAKAAQAAAD5//7/BgAKAAQAAAD4//7/BgAKAAQAAAD3//7/BgAKAAQAAAD2//7/BgAKAAQAAAD1//7/BgAKAAQAAAD5//v/BgAKAAQAAAD5//r/BgAKAAQAAAD5//n/BgAKAAQAAAD5//j/BgAKAAQAAAD5//f/BgAKAAQAAAALAPf/BgAKAAQAAAALAPj/BgAKAAQAAAALAPn/BgAKAAQAAAALAPr/BgAKAAQAAAALAPv/BgAKAAQAAAALAPz/BgAKAAQAAAALAP3/BgAKAAQAAAALAP7/BgAKAAQAAAD///n/BgAKAAQAAAAAAPn/BgAKAAQAAAABAPn/BgAKAAQAAAACAPn/BgAKAAQAAAADAPn/BgAKAAQAAAAEAPn/BgAKAAQAAAAFAPn/BgAKAAQAAAAGAPn/BgAKAAQAAAAHAPn/BgAKAAQAAADy//X/BgAKAAQAAADy//b/BgAKAAQAAADy//f/BgAKAAQAAADy//j/BgAKAAQAAADy//n/BgAKAAQAAADy//r/BgAKAAQAAADy//v/BgAKAAQAAADy//z/BgAKAAQAAADu/wAABgAKAAQAAADv/wAABgAKAAQAAADw/wAABgAKAAQAAAD0//r/BgAKAAQAAAD1//r/BgAKAAQAAAD2//r/BgAKAAQAAAD1//f/BgAKAAQAAAD2//f/BgAKAAQAAAD///b/BgAKAAQAAAD+//b/BgAKAAQAAAD9//b/BgAKAAQAAAD8//b/BgAKAAQAAAAFAPb/BgAKAAQAAAAGAPb/BgAKAAQAAAAHAPb/BgAKAAQAAAAIAPb/BgAKAAQAAAAEAPz/BgAKAAQAAAAFAPz/BgAKAAQAAAAGAPz/BgAKAAQAAAANAAEABgAKAAQAAAAOAAEABgALAAQAAAAPAAEABgAKAAQAAAAQAAEABgALAAQAAAARAAEABgAKAAQAAAASAAEABgALAAQAAAATAAEABgAKAAQAAAAUAAEABgALAAQAAAAVAAEABgAKAAQAAAAWAAEABgALAAQAAAAXAAEABgAKAAQAAAAYAAEABgALAAQAAAAZAAEABgAGAAQAAAAaAAEABgAHAAQAAAAYAAAABgAGAAQAAAAZAAAABgAHAAQAAAAWAAAABgAGAAQAAAAXAAAABgAHAAQAAAAUAAAABgAGAAQAAAAVAAAABgAHAAQAAAAWAP//BgAGAAQAAAAXAP//BgAHAAQAAAAYAP//BgAGAAQAAAAZAP//BgAHAAQAAAAaAP//BgAGAAQAAAAbAP//BgAHAAQAAAAaAP7/BgAHAAQAAAAbAP7/BgAHAAQAAAAZAP7/BgAGAAQAAAAcAP7/BgAGAAQAAAAdAP7/BgAHAAQAAAAcAP3/BgAGAAQAAAAdAP3/BgAHAAQAAAAMAP3/BgAKAAQAAAANAP3/BgALAAQAAAAQAPr/BgAKAAQAAAARAPr/BgALAAQAAAAMAPf/BgAKAAQAAAANAPf/BgALAAQAAAA=")
 tile_set = ExtResource("5_j5jx5")
-rendering_quadrant_size = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(6, 16)
+scale = Vector2(12.8895, 12.6035)
+texture = SubResource("GradientTexture2D_j5jx5")
+
+[node name="Player" parent="." instance=ExtResource("1_bl13t")]
+position = Vector2(-40, 0)
+scale = Vector2(1, 0.987265)
+ground_friction = 16.0
+ground_tilemap_layer_path = NodePath("../CanvasLayer/Terrain")
+
+[node name="PointLight2D" type="PointLight2D" parent="Player"]
+scale = Vector2(1.96423, 1.87376)
+color = Color(0.468669, 0.825755, 1, 1)
+energy = 14.88
+blend_mode = 2
+range_layer_min = -10
+range_layer_max = 10
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_filter = 1
+texture = SubResource("GradientTexture2D_iyx0m")
+texture_scale = 7.09
+
+[node name="AnimatedSprite2D" parent="Player" index="1"]
+light_mask = 0
+position = Vector2(0, -2.41494e-07)
+squash_land = Vector2(1.5, 0.8)
+flip_tap_count_required = 6
+debug_flips = true
+
+[node name="LaunchAbility" parent="Player" index="4"]
+position = Vector2(1, -2.41494e-07)
+use_physics_launch = true
+
+[node name="Camera2D" parent="Player" index="8"]
+limit_smoothed = true
+position_smoothing_speed = 15.0
 
 [node name="Area2D" type="Area2D" parent="." groups=["LaunchZones"]]
 position = Vector2(280, 22)
@@ -109,3 +106,26 @@ shape = SubResource("RectangleShape2D_j5jx5")
 
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 texture = SubResource("GradientTexture2D_at5dv")
+
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("trigger_area")]
+process_mode = 1
+position = Vector2(-8, -96)
+script = ExtResource("3_74lek")
+drop_object_scene = ExtResource("4_j5jx5")
+trigger_area = NodePath("Area2D")
+use_raycast = false
+
+[node name="Area2D" type="Area2D" parent="Node2D"]
+position = Vector2(0, 104)
+collision_layer = 128
+collision_mask = 128
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
+position = Vector2(0.5, -49.5)
+shape = SubResource("RectangleShape2D_lpvoh")
+
+[connection signal="body_entered" from="Node2D/Stalactite" to="Node2D/Stalactite/Sprite2D" method="is_visible" unbinds=1]
+[connection signal="body_entered" from="Node2D/Stalactite" to="Node2D/Stalactite/GPUParticles2D" method="is_emitting" unbinds=1]
+
+[editable path="Player"]

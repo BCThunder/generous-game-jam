@@ -25,11 +25,11 @@ metadata/_custom_type_script = "uid://cdqflkyugtfaj"
 
 [node name="Launch Interact Prompt" type="Node2D"]
 physics_interpolation_mode = 1
-z_index = 10
+light_mask = 0
 texture_filter = 1
 script = ExtResource("1_s68nr")
-icon_entries = Array[ExtResource("2_gqcl4")]([SubResource("Resource_34kor")])
-text_entries = Array[ExtResource("3_76e5s")]([SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")])
+icon_entries = [SubResource("Resource_34kor")]
+text_entries = [SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")]
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
 anchors_preset = 8
