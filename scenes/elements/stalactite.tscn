@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3 uid="uid://3mg1bxd5jluy"]
 
-[ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/level asset sprites copy.png" id="1_xgiyg"]
+[ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="1_xgiyg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a67fs"]
 atlas = ExtResource("1_xgiyg")
-region = Rect2(20, 128, 16, 16)
+region = Rect2(20, 160, 16, 16)
 filter_clip = true
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_x8va4"]

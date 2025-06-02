@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=11 format=4 uid="uid://eohey75c4ul6"]
 
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_bl13t"]
 [ext_resource type="Script" uid="uid://boduutxcc71db" path="res://scenes/ceiling_drop.gd" id="3_74lek"]
@@ -14,15 +14,6 @@ gradient = SubResource("Gradient_74lek")
 width = 1920
 height = 5000
 fill_from = Vector2(1, 1)
-
-[sub_resource type="Gradient" id="Gradient_bl13t"]
-offsets = PackedFloat32Array(0, 0.620915, 0.647059)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_iyx0m"]
-gradient = SubResource("Gradient_bl13t")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
 size = Vector2(91, 30)
@@ -68,31 +59,18 @@ scale = Vector2(1, 0.987265)
 ground_friction = 16.0
 ground_tilemap_layer_path = NodePath("../CanvasLayer/Terrain")
 
-[node name="PointLight2D" type="PointLight2D" parent="Player"]
-scale = Vector2(1.96423, 1.87376)
-color = Color(0.468669, 0.825755, 1, 1)
-energy = 14.88
-blend_mode = 2
-range_layer_min = -10
-range_layer_max = 10
-range_item_cull_mask = 3
-shadow_enabled = true
-shadow_filter = 1
-texture = SubResource("GradientTexture2D_iyx0m")
-texture_scale = 7.09
-
-[node name="AnimatedSprite2D" parent="Player" index="1"]
+[node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 0
 position = Vector2(0, -2.41494e-07)
 squash_land = Vector2(1.5, 0.8)
 flip_tap_count_required = 6
 debug_flips = true
 
-[node name="LaunchAbility" parent="Player" index="4"]
+[node name="LaunchAbility" parent="Player" index="3"]
 position = Vector2(1, -2.41494e-07)
 use_physics_launch = true
 
-[node name="Camera2D" parent="Player" index="8"]
+[node name="Camera2D" parent="Player" index="7"]
 limit_smoothed = true
 position_smoothing_speed = 15.0
 

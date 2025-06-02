@@ -50,9 +50,13 @@ func start():
 	_show_controls()
 	active = true
 	player.velocity = Vector2.ZERO
-	aim_cursor = aim_cursor_scene.instantiate() as Node2D
-	player.add_child(aim_cursor)
-	aim_cursor.global_position = player.global_position
+	if not aim_cursor_scene:
+		push_error("Aim cursor scene is not set.")
+		return
+	else:
+		aim_cursor = aim_cursor_scene.instantiate() as Node2D
+		player.add_child(aim_cursor)
+		aim_cursor.global_position = player.global_position
 	guide_line.visible = true
 
 func input(event):
