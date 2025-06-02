@@ -32,7 +32,8 @@ func _ready():
 	if game_manager:
 		game_manager.player_respawn.connect(_reset)
 	else:
-		push_error("CeilingDrop: Could not find GameManager node in the scene tree.")
+		pass
+		#push_error("CeilingDrop: Could not find GameManager node in the scene tree.")
 	
 	if not use_raycast and trigger_area:
 		trigger_area.body_entered.connect(drop)
@@ -85,7 +86,7 @@ func _reset():
 		drop_object_instance.rotation = rotation
 		drop_object_instance.scale = scale
 
-		call_deferred("_toggle_physics_process", drop_object_instance, false)
+		#call_deferred("_toggle_physics_process", drop_object_instance, false)
 		call_deferred("_toggle_physics_process", self, true)
 
 

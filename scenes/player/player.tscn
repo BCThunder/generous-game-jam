@@ -1,7 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=9 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
-[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/32x32 Palis.png" id="2_dqkch"]
+[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/player/32x32 Palis.png" id="2_dqkch"]
 [ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_qlg0r"]
 [ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_qlg0r"]
 
@@ -18,6 +18,15 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
 radius = 7.0
+
+[sub_resource type="Gradient" id="Gradient_bl13t"]
+offsets = PackedFloat32Array(0, 0.620915, 0.647059)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lvxji"]
+gradient = SubResource("Gradient_bl13t")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
@@ -68,3 +77,14 @@ drag_right_margin = 0.05
 drag_bottom_margin = 0.05
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(1.96423, 1.87376)
+color = Color(0.468669, 0.825755, 1, 1)
+range_layer_min = -10
+range_layer_max = 10
+range_item_cull_mask = 3
+shadow_enabled = true
+shadow_filter = 1
+texture = SubResource("GradientTexture2D_lvxji")
+texture_scale = 8.19
