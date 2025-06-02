@@ -43,15 +43,15 @@ enum SnsState {
 
 @export_category("Flip Tuning")
 ## Velocity needed to resist input flip. Increase to require more momentum to resist flipping, decrease to allow easier flipping against momentum.
-@export var flip_velocity_threshold: float = 20.0
+@export var flip_velocity_threshold: float = 80.0
 ## Minimum velocity to consider for auto-flip. Increase to require more movement before auto-flipping, decrease to allow flipping at lower speeds.
-@export var min_velocity_for_flip: float = 5.0
+@export var min_velocity_for_flip: float = 50.0
 ## Cooldown time (seconds) between allowed flips. Increase to prevent rapid flipping, decrease for more responsive flipping.
-@export var flip_cooldown_time: float = 0.12
+@export var flip_cooldown_time: float = 0.5
 ## Time window (seconds) to count input taps for forced flip. Increase to allow more time for taps, decrease for a stricter tap window.
-@export var flip_tap_window: float = 0.25
+@export var flip_tap_window: float = 0.5
 ## Number of taps needed within the window to force a flip against momentum. Increase to require more taps, decrease for easier forced flipping.
-@export var flip_tap_count_required: int = 2
+@export var flip_tap_count_required: int = 3
 
 @export_category("Debug")
 ## Print squash & stretch state to the output. Enable for debugging state transitions.

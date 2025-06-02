@@ -5,21 +5,21 @@ class_name PlayerController
 
 # Movement Tuning
 @export_category("Movement")
-@export var run_speed: float = 300.0
-@export var air_accel_multiplier: float = 0.5
-@export var air_friction: float = 1.0
-@export var tap_speed: float = 10.0
-@export var tap_boost_duration: float = 0.15 # Duration in seconds for tap speed boost
+@export var run_speed: float = 200.0
+@export var air_accel_multiplier: float = 5.0
+@export var air_friction: float = 3.0
+@export var tap_speed: float = 30.0
+@export var tap_boost_duration: float = 0.05 # Duration in seconds for tap speed boost
 var tap_boost_time: float = 0.0 # Internal timer for tap boost
 
 # Gravity Tuning
 @export_category("Gravity and Jumping")
 @export var double_jump_enabled: bool = true
-@export var max_jump_velocity: float = 600.0
-@export var min_jump_velocity: float = 300.0
+@export var max_jump_velocity: float = 300.0
+@export var min_jump_velocity: float = 120.0
 @export var jump_gravity_scale: float = 0.6
-@export var fall_gravity_scale: float = 1.5
-@export var down_hold_gravity_multiplier: float = 1.2
+@export var fall_gravity_scale: float = 1.0
+@export var down_hold_gravity_multiplier: float = 3.0
 @export var coyote_time_duration: float = 0.2 # seconds of grace time
 var coyote_timer: float = 0.0 # internal timer
 
