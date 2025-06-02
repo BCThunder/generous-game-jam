@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=4 uid="uid://bqvtpndi1mh5o"]
 
 [ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="1_5s2oh"]
-[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player/player.tscn" id="2_3d0ib"]
-[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="3_3l00l"]
+[ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="2_3d0ib"]
+[ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/cave_tiles.tres" id="3_3l00l"]
 [ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="3_itmmw"]
 [ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="3_w73uy"]
 [ext_resource type="PackedScene" uid="uid://bx6c87yf5ae6e" path="res://scenes/kill_zone.tscn" id="5_h5sx5"]
 [ext_resource type="Script" uid="uid://kv4r5j3qlgsu" path="res://scripts/game_manager.gd" id="7_y64p5"]
+
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_h5sx5"]
 

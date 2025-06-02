@@ -48,7 +48,7 @@ enum SnsState {
 @export var min_velocity_for_flip: float = 50.0
 ## Cooldown time (seconds) between allowed flips. Increase to prevent rapid flipping, decrease for more responsive flipping.
 @export var flip_cooldown_time: float = 0.5
-## Time window (seconds) to count input taps for forced flip. Increase to allow more time for taps, decrease for a stricter tap window.
+## Time window (seconds) to count input taps for forced flip. Increase to allow more time for taps, decrease to a stricter tap window.
 @export var flip_tap_window: float = 0.5
 ## Number of taps needed within the window to force a flip against momentum. Increase to require more taps, decrease for easier forced flipping.
 @export var flip_tap_count_required: int = 3
@@ -58,6 +58,8 @@ enum SnsState {
 @export var debug_state := false
 ## Print vertical & horizontal velocity to the output. Enable for debugging velocity values.
 @export var debug_velocity := false
+##Print if flipping is happening. Enable to see flip state changes.
+@export var debug_flips := false
 
 @export_category("State Toggles")
 ## Enable or disable stretch up effect.
@@ -70,16 +72,42 @@ enum SnsState {
 @export var use_squash_land := true
 
 var state: SnsState = SnsState.IDLE
-var apex_timer = 0.0
-var land_timer = 0.0
 var last_v_vel = 0.0
 var was_on_floor = true
-var flip_cooldown: float = 0.0
+var flip_cooldown_timer: Timer
+var apex_timer_node: Timer
+var land_timer_node: Timer
+var flip_back_timer: Timer
 
 var left_tap_times: Array = []
 var right_tap_times: Array = []
 
-func _physics_process(delta: float) -> void:
+var last_flip_input_dir: int = 0 # -1 for left, 1 for right, 0 for none
+
+# Seconds to wait before allowing flip back to momentum
+var flip_back_grace_time: float = 0.5
+func _ready() -> void:
+	flip_cooldown_timer = Timer.new()
+	flip_cooldown_timer.one_shot = true
+	flip_cooldown_timer.wait_time = flip_cooldown_time
+	add_child(flip_cooldown_timer)
+
+	apex_timer_node = Timer.new()
+	apex_timer_node.one_shot = true
+	apex_timer_node.wait_time = apex_min_time
+	add_child(apex_timer_node)
+
+	land_timer_node = Timer.new()
+	land_timer_node.one_shot = true
+	land_timer_node.wait_time = land_min_time
+	add_child(land_timer_node)
+
+	flip_back_timer = Timer.new()
+	flip_back_timer.one_shot = true
+	flip_back_timer.wait_time = flip_back_grace_time
+	add_child(flip_back_timer)
+
+func _physics_process(_delta: float) -> void:
 	var parent = get_parent()
 	var v_vel = parent.velocity.y
 	var h_vel = parent.velocity.x
@@ -90,42 +118,42 @@ func _physics_process(delta: float) -> void:
 	if on_floor:
 		if not was_on_floor and abs(last_v_vel) > velocity_threshold and use_squash_land:
 			state = SnsState.SQUASH_LAND
-			land_timer = land_min_time
-		elif state == SnsState.SQUASH_LAND and land_timer > 0.0:
-			land_timer -= delta
+			land_timer_node.start(land_min_time)
+		elif state == SnsState.SQUASH_LAND and not land_timer_node.is_stopped():
+			pass # Stay in squash land state
 		else:
 			state = SnsState.IDLE
-		apex_timer = 0.0
+		apex_timer_node.stop()
 	elif abs(v_vel) <= apex_threshold and use_squash_apex:
 		if state != SnsState.SQUASH_APEX:
-			apex_timer = 0.0
+			apex_timer_node.start(apex_min_time)
 		state = SnsState.SQUASH_APEX
 		target_scale = squash_apex
-		apex_timer += delta
+		land_timer_node.stop()
 	elif v_vel < -velocity_threshold and use_stretch_up:
 		state = SnsState.STRETCH_UP
 		target_scale = stretch_up
-		apex_timer = 0.0
-		land_timer = 0.0
+		apex_timer_node.stop()
+		land_timer_node.stop()
 	elif v_vel > velocity_threshold and use_stretch_fall:
 		state = SnsState.STRETCH_FALL
 		target_scale = stretch_down
-		apex_timer = 0.0
-		land_timer = 0.0
+		apex_timer_node.stop()
+		land_timer_node.stop()
 
 	# Handle squash visuals for land and apex
-	if state == SnsState.SQUASH_APEX and apex_timer < apex_min_time and use_squash_apex:
+	if state == SnsState.SQUASH_APEX and not apex_timer_node.is_stopped() and use_squash_apex:
 		target_scale = squash_apex
-	elif state == SnsState.SQUASH_APEX and apex_timer >= apex_min_time:
+	elif state == SnsState.SQUASH_APEX and apex_timer_node.is_stopped():
 		if v_vel < -velocity_threshold and use_stretch_up:
 			state = SnsState.STRETCH_UP
 			target_scale = stretch_up
 		elif v_vel > velocity_threshold and use_stretch_fall:
 			state = SnsState.STRETCH_FALL
 			target_scale = stretch_down
-	elif state == SnsState.SQUASH_LAND and land_timer > 0.0 and use_squash_land:
+	elif state == SnsState.SQUASH_LAND and not land_timer_node.is_stopped() and use_squash_land:
 		target_scale = squash_land
-	elif state == SnsState.SQUASH_LAND and land_timer <= 0.0:
+	elif state == SnsState.SQUASH_LAND and land_timer_node.is_stopped():
 		state = SnsState.IDLE
 		target_scale = Vector2(1, 1)
 
@@ -150,32 +178,51 @@ func _physics_process(delta: float) -> void:
 	# --- Sprite flipping logic based on velocity and input ---
 	var input_left = Input.is_action_pressed("move_left")
 	var input_right = Input.is_action_pressed("move_right")
-	flip_cooldown = max(flip_cooldown - delta, 0.0)
+	var input_dir = int(input_right) - int(input_left) # 1 for right, -1 for left, 0 for none
 	var desired_flip_h = flip_h # default to current
+	var fighting_momentum = false
+	var can_flip_back = flip_back_timer.is_stopped()
 
 	if input_left and not input_right:
 		if h_vel > flip_velocity_threshold:
-			# Fighting strong rightward momentum: require taps
-			if left_tap_times.size() >= flip_tap_count_required:
+			fighting_momentum = true
+			if left_tap_times.size() >= flip_tap_count_required and last_flip_input_dir != -1:
 				desired_flip_h = true
-		else:
-			# Not resisting, allow immediate flip
-			desired_flip_h = true
+				if flip_back_timer.is_stopped():
+					flip_back_timer.start(flip_back_grace_time)
+		elif abs(h_vel) <= flip_velocity_threshold:
+			if last_flip_input_dir != -1:
+				desired_flip_h = true
 	elif input_right and not input_left:
 		if h_vel < -flip_velocity_threshold:
-			# Fighting strong leftward momentum: require taps
-			if right_tap_times.size() >= flip_tap_count_required:
+			fighting_momentum = true
+			if right_tap_times.size() >= flip_tap_count_required and last_flip_input_dir != 1:
 				desired_flip_h = false
-		else:
-			# Not resisting, allow immediate flip
-			desired_flip_h = false
+				if flip_back_timer.is_stopped():
+					flip_back_timer.start(flip_back_grace_time)
+		elif abs(h_vel) <= flip_velocity_threshold:
+			if last_flip_input_dir != 1:
+				desired_flip_h = false
 	elif abs(h_vel) > min_velocity_for_flip:
-		desired_flip_h = h_vel < 0
+		# Only allow flipping back to momentum direction if timer expired or no input
+		if (can_flip_back or input_dir == 0):
+			desired_flip_h = h_vel < 0
 
-	# Only allow flip if cooldown expired or direction changed
-	if desired_flip_h != flip_h and flip_cooldown <= 0.0:
-		flip_h = desired_flip_h
-		flip_cooldown = flip_cooldown_time
+	# Only apply cooldown if fighting momentum; otherwise, allow instant flip
+	if desired_flip_h != flip_h:
+		if fighting_momentum:
+			if flip_cooldown_timer.is_stopped():
+				flip_h = desired_flip_h
+				flip_cooldown_timer.start(flip_cooldown_time)
+				last_flip_input_dir = input_dir
+		else:
+			flip_h = desired_flip_h
+			last_flip_input_dir = input_dir
+	# If no input, reset last_flip_input_dir so next tap/hold can flip again
+	if input_dir == 0:
+		last_flip_input_dir = 0
+		if not flip_back_timer.is_stopped():
+			flip_back_timer.stop()
 
 	if debug_state:
 		print("[Squash&Stretch] State:", state)
