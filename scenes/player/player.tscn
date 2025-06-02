@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dlsbcgh3fi77l"]
+[gd_scene load_steps=7 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/32x32 Palis.png" id="2_dqkch"]
@@ -44,7 +44,6 @@ velocity_threshold = 150.0
 apex_threshold = 100.0
 max_skew = 0.2
 lerp_factor = 0.1
-flip_velocity_threshold = 130.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_j5jx5")
@@ -55,7 +54,6 @@ target_position = Vector2(0, 20)
 [node name="LaunchAbility" parent="." instance=ExtResource("2_qlg0r")]
 launch_power = 723.0
 launch_aim_distance = 71.075
-use_physics_launch = true
 
 [node name="Dash" type="Node2D" parent="."]
 

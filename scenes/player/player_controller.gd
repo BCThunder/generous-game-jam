@@ -8,6 +8,9 @@ class_name PlayerController
 @export var run_speed: float = 300.0
 @export var air_accel_multiplier: float = 0.5
 @export var air_friction: float = 1.0
+@export var tap_speed: float = 10.0
+@export var tap_boost_duration: float = 0.15 # Duration in seconds for tap speed boost
+var tap_boost_time: float = 0.0 # Internal timer for tap boost
 
 # Gravity Tuning
 @export_category("Gravity and Jumping")
@@ -25,6 +28,7 @@ var coyote_timer: float = 0.0 # internal timer
 @export_category("Ground & Slippery")
 @export var ground_friction: float = 8.0
 @export var slippery_acceleration_multiplier: float = 6.0
+@export var tap_slippery_acceleration_multiplier: float = 2.0
 @export var slippery_friction: float = 0.5
 
 
@@ -202,28 +206,31 @@ func _handle_ground_moves(delta: float) -> void:
 	var just_pressed: bool = Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_left")
 	var is_slippery: bool = _is_on_slippery()
 
-	if is_slippery:
-		var accel: float = run_speed * slippery_acceleration_multiplier
-		if direction != 0:
-			if just_pressed:
-				# Instant acceleration on first press
-				velocity.x = direction * run_speed * 0.2
-			else:
-				# Smooth acceleration otherwise
-				velocity.x += direction * accel * delta
-		else:
-			velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
+	# Tap boost logic
+	if just_pressed and direction != 0:
+		tap_boost_time = tap_boost_duration
+
+
 	else:
-		if direction != 0:
-			if just_pressed:
-				print_debug("Just pressed move key")
-				# Instant acceleration on first press
-				velocity.x = direction * run_speed * 0.2
+		if is_slippery:
+			var accel: float = run_speed * slippery_acceleration_multiplier
+			if direction != 0:
+				if tap_boost_time > 0.0:
+					velocity.x += direction * tap_speed * delta * tap_slippery_acceleration_multiplier
+					tap_boost_time -= delta
+				else:
+					velocity.x += direction * accel * delta
 			else:
-				# Smooth acceleration otherwise
-				velocity.x = direction * run_speed
+				velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
 		else:
-			velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
+			if direction != 0:
+				if tap_boost_time > 0.0:
+					velocity.x = direction * tap_speed
+					tap_boost_time -= delta
+				else:
+					velocity.x = direction * run_speed
+			else:
+				velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
 
 	velocity.x = clamp(velocity.x, -run_speed, run_speed)
 

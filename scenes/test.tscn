@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=4 uid="uid://eohey75c4ul6"]
 
-[ext_resource type="PackedScene" uid="uid://dlsbcgh3fi77l" path="res://scenes/player/player.tscn" id="1_bl13t"]
+[ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_bl13t"]
 [ext_resource type="TileSet" uid="uid://ccjwrw4eh8do7" path="res://assets/tile_set.tres" id="5_j5jx5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
@@ -19,6 +19,9 @@ height = 29
 
 [node name="Player" parent="." instance=ExtResource("1_bl13t")]
 position = Vector2(131, -2)
+scale = Vector2(1, 0.987265)
+tap_speed = 30.0
+tap_boost_duration = 0.05
 
 [node name="Terrain" type="TileMapLayer" parent="."]
 texture_filter = 1
