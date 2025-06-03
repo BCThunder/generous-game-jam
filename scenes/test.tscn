@@ -28,7 +28,7 @@ width = 94
 height = 29
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lpvoh"]
-size = Vector2(11, 103)
+size = Vector2(11, 105)
 
 [node name="Test Level" type="Node2D"]
 
@@ -37,6 +37,7 @@ layer = -1
 follow_viewport_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="CanvasLayer"]
+visible = false
 color = Color(0.341584, 0.341584, 0.341584, 1)
 
 [node name="Terrain" type="TileMapLayer" parent="CanvasLayer"]
@@ -49,6 +50,7 @@ tile_map_data = PackedByteArray("AAD//wEABgAGAAQAAAD+/wEABgAHAAQAAADz/wEABgAGAAQ
 tile_set = ExtResource("5_j5jx5")
 
 [node name="Sprite2D" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(6, 16)
 scale = Vector2(12.8895, 12.6035)
 texture = SubResource("GradientTexture2D_j5jx5")
@@ -71,6 +73,7 @@ position = Vector2(1, -2.41494e-07)
 use_physics_launch = true
 
 [node name="Camera2D" parent="Player" index="7"]
+zoom = Vector2(1.49, 1.49)
 limit_smoothed = true
 position_smoothing_speed = 15.0
 
@@ -85,25 +88,25 @@ shape = SubResource("RectangleShape2D_j5jx5")
 [node name="Sprite2D" type="Sprite2D" parent="Area2D"]
 texture = SubResource("GradientTexture2D_at5dv")
 
-[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("trigger_area")]
-process_mode = 1
+[node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("trigger_area", "raycast_node")]
 position = Vector2(-8, -96)
 script = ExtResource("3_74lek")
 drop_object_scene = ExtResource("4_j5jx5")
 trigger_area = NodePath("Area2D")
 use_raycast = false
+raycast_node = NodePath("RayCast2D")
 
 [node name="Area2D" type="Area2D" parent="Node2D"]
 position = Vector2(0, 104)
-collision_layer = 128
+collision_layer = 0
 collision_mask = 128
-monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/Area2D"]
-position = Vector2(0.5, -49.5)
+position = Vector2(0.5, -50.5)
 shape = SubResource("RectangleShape2D_lpvoh")
 
-[connection signal="body_entered" from="Node2D/Stalactite" to="Node2D/Stalactite/Sprite2D" method="is_visible" unbinds=1]
-[connection signal="body_entered" from="Node2D/Stalactite" to="Node2D/Stalactite/GPUParticles2D" method="is_emitting" unbinds=1]
+[node name="RayCast2D" type="RayCast2D" parent="Node2D"]
+target_position = Vector2(1, 109)
+collision_mask = 128
 
 [editable path="Player"]
