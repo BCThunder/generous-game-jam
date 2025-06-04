@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bwwe6ab8ltyfa" path="res://scripts/checkpoint.gd" id="1_yyywg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywqth"]
-size = Vector2(8, 45)
+size = Vector2(21, 45)
 
 [node name="Checkpoint" type="Area2D"]
 script = ExtResource("1_yyywg")
@@ -12,5 +12,6 @@ script = ExtResource("1_yyywg")
 shape = SubResource("RectangleShape2D_ywqth")
 
 [node name="RespawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, -17)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
