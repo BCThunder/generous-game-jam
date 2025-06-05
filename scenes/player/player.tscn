@@ -1,9 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=16 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/player/32x32 Palis.png" id="2_dqkch"]
 [ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_qlg0r"]
 [ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://448xxdgvn2uj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis1.png" id="4_je7p5"]
+[ext_resource type="Texture2D" uid="uid://uct62b0qjcqh" path="res://assets/sprites/animations/Palis Jump/32x32 Palis2.png" id="5_fm80t"]
+[ext_resource type="Texture2D" uid="uid://73rtlbv00wn" path="res://assets/sprites/animations/Palis Jump/32x32 Palis3.png" id="6_gx1jg"]
+[ext_resource type="Texture2D" uid="uid://8pa88kqag2ul" path="res://assets/sprites/animations/Palis Jump/32x32 Palis4.png" id="7_ugbui"]
+[ext_resource type="Texture2D" uid="uid://xntrhohok8nj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis5.png" id="8_fcs02"]
+[ext_resource type="Texture2D" uid="uid://3g55psl6e3kj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis6.png" id="9_myrg7"]
+[ext_resource type="Texture2D" uid="uid://brllbsrvjj2bu" path="res://assets/sprites/animations/Palis Jump/32x32 Palis7.png" id="10_kvlxm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
 animations = [{
@@ -14,6 +21,32 @@ animations = [{
 "loop": true,
 "name": &"default",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_je7p5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_fm80t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gx1jg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ugbui")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_fcs02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_myrg7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_kvlxm")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 30.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
@@ -30,7 +63,7 @@ fill_from = Vector2(0.5, 0.5)
 
 [node name="Player" type="CharacterBody2D"]
 texture_filter = 1
-collision_layer = 129
+collision_layer = 128
 collision_mask = 129
 script = ExtResource("1_qhqgy")
 ground_tilemap_layer_path = NodePath("../Terrain")
@@ -39,6 +72,8 @@ debug_jumps = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_74lek")
+animation = &"jump"
+frame_progress = 0.75579
 script = ExtResource("3_qlg0r")
 squash_apex = Vector2(0.9, 1.1)
 squash_land = Vector2(1.2, 0.8)
@@ -65,6 +100,7 @@ launch_aim_distance = 71.075
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -64.34)
+zoom = Vector2(2.055, 2.055)
 process_callback = 0
 position_smoothing_enabled = true
 position_smoothing_speed = 25.0
