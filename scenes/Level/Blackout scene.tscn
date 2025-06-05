@@ -1,8 +1,11 @@
-[gd_scene load_steps=12 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=16 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
 [ext_resource type="Texture2D" uid="uid://qepqdgq5wd4n" path="res://assets/sprites/oasis/Sky.png" id="3_pqhl5"]
+[ext_resource type="Script" uid="uid://jnaex81fgrb7" path="res://scenes/elements/replace_tile_with_scene.gd" id="4_kjymn"]
+[ext_resource type="PackedScene" uid="uid://bx10emgiv6plg" path="res://scenes/elements/ceiling_drop_stalactite.tscn" id="5_aox7h"]
+[ext_resource type="Script" uid="uid://djags063tgxu1" path="res://scenes/elements/scene_tile_pair.gd" id="6_ker30"]
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
 interpolation_mode = 2
@@ -40,6 +43,12 @@ width = 20
 height = 300
 fill_from = Vector2(1, 1)
 
+[sub_resource type="Resource" id="Resource_iiqan"]
+script = ExtResource("6_ker30")
+type = "Stalactite"
+scene = ExtResource("5_aox7h")
+metadata/_custom_type_script = "uid://djags063tgxu1"
+
 [sub_resource type="Gradient" id="Gradient_pqhl5"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
 
@@ -53,7 +62,7 @@ fill_from = Vector2(1, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_pqhl5")]
 light_mask = 2
-position = Vector2(-48, -48)
+position = Vector2(-93, -34)
 ground_tilemap_layer_path = NodePath("../Underground/main toppers")
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
@@ -68,27 +77,30 @@ limit_right = 965
 [node name="PointLight2D" parent="Player" index="9"]
 light_mask = 7
 visibility_layer = 7
+position = Vector2(0.468323, -1.78729)
 color = Color(0.8742, 0.94, 0.94, 1)
 energy = 3.12
 range_item_cull_mask = 1
 shadow_item_cull_mask = 7
 texture_scale = 6.69
-height = 100.0
+height = 30.0
 
 [node name="PointLight2D2" type="PointLight2D" parent="Player"]
 light_mask = 7
 visibility_layer = 7
+position = Vector2(0.468323, -1.78729)
 scale = Vector2(1.96423, 1.87376)
 range_layer_min = -10
 range_item_cull_mask = 2
 shadow_filter = 1
 texture = SubResource("GradientTexture2D_lvxji")
 texture_scale = 4.88
-height = 10.0
+height = 30.0
 
 [node name="PointLight2D3" type="PointLight2D" parent="Player"]
 light_mask = 7
 visibility_layer = 7
+position = Vector2(0.468323, -1.78729)
 scale = Vector2(1.96423, 1.87376)
 color = Color(0.168627, 0.439216, 0.729412, 1)
 range_layer_min = -10
@@ -96,7 +108,7 @@ range_item_cull_mask = 2
 shadow_filter = 1
 texture = SubResource("GradientTexture2D_lvxji")
 texture_scale = 4.88
-height = 10.0
+height = 30.0
 
 [node name="Oasis" type="CanvasLayer" parent="."]
 layer = -1
@@ -251,9 +263,13 @@ y_sort_origin = 10
 
 [node name="stalactites" type="TileMapLayer" parent="Underground"]
 light_mask = 2
-tile_map_data = PackedByteArray("AAAyACIABgABAAoAAAAxACIABgABAAoAAAAvACIABgABAAoAAAAuACIABgABAAoAAAD0/yMABgABAAoAAADh/ygABgABAAoAAADd/ykABgABAAoAAADX/x0ABgABAAoAAADa/xwABgABAAoAABAOAFcABgABAAoAABANAFYABgABAAoAABAMAFYABgABAAoAABAPAFcABgABAAoAABD1/2wABgABAAoAABDn/3sABgABAAoAABDm/3sABgABAAoAABDq/1kABgABAAoAABDp/1kABgABAAoAABAEAHwABgABAAoAABAIAHwABgABAAoAABAWAHoABgABAAoAABAZAHgABgABAAoAABAcAHoABgABAAoAABAiAH4ABgABAAoAABAtAIQABgABAAoAABAIAJoABgABAAoAABAJAJoABgABAAoAABAVAJcABgABAAoAABD5/6kABgABAAoAAADt/6oABgABAAoAAADV/7IABgABAAoAAAAfAMQABgABAAoAAAAjAMQABgABAAoAAAAtANcABgABAAoAAAAuANcABgABAAoAAAApAM0ABgABAAoAAAAXAO8ABgABAAoAAAAWAO8ABgABAAoAAAD6/94ABgABAAoAAAD7/94ABgABAAoAAADg/+4ABgABAAoAABDf/+4ABgABAAoAABDe/+4ABgABAAoAABDd/+4ABgABAAoAABDc/+4ABgABAAoAABDb/+4ABgABAAoAABDa/+4ABgABAAoAABDZ/+4ABgABAAoAABDX/+8ABgABAAoAABDW/+8ABgABAAoAABDh//AABgABAAoAABDV/+8ABgABAAoAABDU/+8ABgABAAoAABDy/wUBBgABAAoAABDc/zoBBgABAAoAABAXADMBBgABAAoAABAWADMBBgABAAoAABAYADMBBgABAAoAABAZADMBBgABAAoAABAaADMBBgABAAoAABAaAF0BBgABAAoAABAbAF0BBgABAAoAABAUAF4BBgABAAoAABATAF4BBgABAAoAABASAF4BBgABAAoAABAIAF0BBgABAAoAABAHAF0BBgABAAoAABD7/2kBBgABAAoAABD2/4IBBgABAAoAABDy/4EBBgABAAoAABD9/5ABBgABAAoAABAOAI4BBgABAAoAABATAH4BBgABAAoAABAMAHoBBgABAAoAABAJAHwBBgABAAoAABAsAHEBBgABAAoAABDp/54BBgABAAoAABDx/5sBBgABAAoAABAZAKUBBgABAAoAABDU/8QBBgABAAoAABDb/30ABgABAAoAAADi/04ABgABAAoAABDj/08ABgABAAoAABD8/34ABgABAAoAAAD+/34ABgABAAoAAAAmAH4ABgABAAoAAADi/7cABgABAAoAAADk/7cABgABAAoAAADm/7cABgABAAoAAAAOABIBBgABAAoAAAAUABIBBgABAAoAAAD4/zYBBgABAAoAABAlADMBBgABAAoAAAAnADMBBgABAAoAAADK/1MBBgAKAAgAABDK/04BBgAKAAgAABDM/0sBBgAKAAgAAADc/3gBBgABAAoAAADS/30BBgABAAoAAADR/30BBgABAAoAAAAkAHMBBgABAAoAABApAHABBgABAAoAABAVAKUBBgABAAoAABAdAKYBBgABAAoAABDn/+4BBgABAAoAAADy/+8BBgABAAoAAAD5//ABBgABAAoAAAD8//ABBgABAAoAAAD9//ABBgABAAoAAAD+//ABBgABAAoAAAAEAPABBgABAAoAAAAFAPABBgABAAoAAAAHAO8BBgABAAoAAAAIAO8BBgABAAoAAAAOAPEBBgABAAoAABAQAPEBBgABAAoAABAPAPEBBgABAAoAABAVAO8BBgABAAoAABDs/+4BBgABAAoAABDt/+4BBgABAAoAABDu/+4BBgABAAoAABDv/+4BBgABAAoAABDS/+8BBgABAAoAABDT/+8BBgABAAoAABDU/+4BBgABAAoAAADV/+4BBgABAAoAAADW/+4BBgABAAoAAADX/+4BBgABAAoAAADY/+4BBgABAAoAAADW//YBBgAJAAoAAAA=")
+tile_map_data = PackedByteArray("AADK/1MBBgAKAAgAABDK/04BBgAKAAgAABDM/0sBBgAKAAgAAADW//YBBgAJAAoAAAA=")
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 10
+script = ExtResource("4_kjymn")
+replacement = SubResource("Resource_iiqan")
+offset = Vector2(0, -8)
+run_replacement = true
 
 [node name="salt patches" type="TileMapLayer" parent="Underground"]
 light_mask = 2
