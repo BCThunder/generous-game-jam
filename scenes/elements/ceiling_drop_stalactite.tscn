@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bx10emgiv6plg"]
+
+[ext_resource type="Script" uid="uid://boduutxcc71db" path="res://scenes/ceiling_drop.gd" id="1_gsfj7"]
+[ext_resource type="PackedScene" uid="uid://3mg1bxd5jluy" path="res://scenes/elements/stalactite.tscn" id="2_e3xun"]
+
+[node name="Ceiling Drop Stalactite" type="Node2D" node_paths=PackedStringArray("raycast_node")]
+script = ExtResource("1_gsfj7")
+drop_object_scene = ExtResource("2_e3xun")
+raycast_node = NodePath("RayCast2D")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 200)
+collision_mask = 128

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://eohey75c4ul6"]
+[gd_scene load_steps=13 format=4 uid="uid://eohey75c4ul6"]
 
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_bl13t"]
 [ext_resource type="Script" uid="uid://boduutxcc71db" path="res://scenes/ceiling_drop.gd" id="3_74lek"]
@@ -14,6 +14,17 @@ gradient = SubResource("Gradient_74lek")
 width = 1920
 height = 5000
 fill_from = Vector2(1, 1)
+
+[sub_resource type="Gradient" id="Gradient_bl13t"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.328976, 0.507625, 0.882353)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lvxji"]
+gradient = SubResource("Gradient_bl13t")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
 size = Vector2(91, 30)
@@ -76,6 +87,9 @@ use_physics_launch = true
 zoom = Vector2(1.49, 1.49)
 limit_smoothed = true
 position_smoothing_speed = 15.0
+
+[node name="PointLight2D" parent="Player" index="9"]
+texture = SubResource("GradientTexture2D_lvxji")
 
 [node name="Area2D" type="Area2D" parent="." groups=["LaunchZones"]]
 position = Vector2(280, 22)

@@ -53,11 +53,13 @@ animations = [{
 radius = 7.0
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
-offsets = PackedFloat32Array(0, 0.620915, 0.647059)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.106754, 0.324619, 0.59695, 0.762527)
+colors = PackedColorArray(1, 1, 1, 1, 0.90694, 0.90694, 0.90694, 0.90694, 0.620756, 0.620756, 0.620756, 0.620756, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_lvxji"]
 gradient = SubResource("Gradient_bl13t")
+use_hdr = true
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
