@@ -67,7 +67,7 @@ func _physics_process(delta):
 
 
 func _reset():
-	print_debug("CeilingDrop: Resetting drop object.")
+	#print_debug("CeilingDrop: Resetting drop object.")
 	if not drop_object_scene:
 		push_error("CeilingDrop: No drop_object_scene set. Please assign a scene in the inspector.")
 	else:
@@ -82,12 +82,12 @@ func _reset():
 		drop_object_instance.rotation = rotation
 		drop_object_instance.scale = scale
 		set_physics_process(true)
-		print_debug("set_physics_process(true)")
+		#print_debug("set_physics_process(true)")
 
 
 func drop(body: Node = null):
 	set_physics_process(false)
-	print_debug("set_physics_process(false)")
+	#print_debug("set_physics_process(false)")
 	if drop_object_instance.has_method("drop"):
 		drop_object_instance.drop()
 	else:
