@@ -62,7 +62,7 @@ fill_from = Vector2(1, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_pqhl5")]
 light_mask = 2
-position = Vector2(-553, 2060)
+position = Vector2(-93, -34)
 ground_tilemap_layer_path = NodePath("../Underground/main toppers")
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
