@@ -9,8 +9,8 @@ func _ready() -> void:
 	player = get_parent().get_node("Player")
 
 func _on_body_entered(body: Node2D) -> void:
-	print("You died...")
 	if body.is_in_group("Player"):
+		print("You died...")
 		kill_player()
 
 func kill_player():
