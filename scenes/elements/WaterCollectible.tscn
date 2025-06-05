@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx8jpjwiei0qv"]
+
+[ext_resource type="Script" uid="uid://d0q53dhs278ls" path="res://scenes/elements/water_collectible.gd" id="1_alhe5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06fbr"]
+
+[node name="WaterCollectible" type="Area2D"]
+script = ExtResource("1_alhe5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_06fbr")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
