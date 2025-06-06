@@ -46,7 +46,7 @@ func _ready():
 	_reset()
 
 		
-func _physics_process(delta):
+func _physics_process(_delta):
 	#print_debug("CeilingDrop: Physics process running.")
 	if use_raycast and raycast_node:
 		raycast_node.force_raycast_update()
@@ -85,7 +85,7 @@ func _reset():
 		#print_debug("set_physics_process(true)")
 
 
-func drop(body: Node = null):
+func drop(_body: Node = null):
 	set_physics_process(false)
 	#print_debug("set_physics_process(false)")
 	if drop_object_instance.has_method("drop"):

@@ -70,7 +70,6 @@ collision_mask = 129
 script = ExtResource("1_qhqgy")
 ground_tilemap_layer_path = NodePath("../Terrain")
 launch_ability_scene = ExtResource("2_qlg0r")
-debug_jumps = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_74lek")
