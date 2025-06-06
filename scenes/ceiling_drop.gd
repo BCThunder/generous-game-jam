@@ -28,21 +28,12 @@ var drop_object_instance: Node2D = null
 
 
 func _ready():
-	var game_manager = get_node_or_null("/root/GameManager")
-	if game_manager:
-		game_manager.player_respawn.connect(_reset)
-	else:
-		pass
-		#push_error("CeilingDrop: Could not find GameManager node in the scene tree.")
-	
 	# if not use_raycast and trigger_area:
 	# 	trigger_area.body_entered.connect(drop)
 	# elif use_raycast and raycast_node:
 	# 	pass
-
 	# else:
 	# 	push_error("CeilingDrop: No trigger area or raycast node set. Please assign one in the inspector.")
-
 	_reset()
 
 		
