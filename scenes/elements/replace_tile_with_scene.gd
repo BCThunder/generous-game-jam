@@ -1,6 +1,11 @@
 @tool
 extends TileMapLayer
 
+@export_category("Debug")
+@export var debug_enabled: bool = false
+@export var debug_replacement: bool = false
+@export var debug_visibility: bool = false
+
 @export var replacement: SceneTilePair = null:
 	set(value):
 		if value and value is SceneTilePair:
@@ -24,9 +29,7 @@ extends TileMapLayer
 			else:
 				# Remove all child nodes that were added as replacements
 				for child in get_children():
-					# Optionally, check for a marker or type if you only want to remove certain nodes
 					if child is Node2D and child != self:
-						#remove_child(child)
 						child.queue_free()
 			run_replacement = value # do not auto-reset, so you can toggle on/off
 
@@ -39,13 +42,18 @@ func _ready() -> void:
 
 func replace_with_scene() -> void:
 	if Engine.is_editor_hint():
-		print_debug("ReplaceTileWithScene: Starting replacement process...")
-	
+		if debug_enabled and debug_replacement:
+			print_debug("ReplaceTileWithScene: Starting replacement process...")
+		make_layer_visible()
+		_replace()
+	else:
+		make_layer_invisible()
+		_replace()
 	if not replacement or not replacement.scene:
 		push_error("ReplaceTileWithScene: No valid scene_tile_pair set.")
 		return
 
-	# Get the used rectangle (area with tiles)
+func _replace() -> void:
 	var used_rect = get_used_rect()
 	for x in range(used_rect.position.x, used_rect.position.x + used_rect.size.x):
 		for y in range(used_rect.position.y, used_rect.position.y + used_rect.size.y):
@@ -57,17 +65,23 @@ func replace_with_scene() -> void:
 			var tile_data = get_cell_tile_data(cell)
 			var type_value = tile_data.get_custom_data("Type") if tile_data else null
 
-			# Only replace if the type matches
-			if type_value == replacement.type: # assuming you add this to SceneTilePair
+			if type_value == replacement.type:
 				var scene_instance = replacement.scene.instantiate()
 				if not scene_instance:
 					push_error("ReplaceTileWithScene: Failed to instantiate scene from PackedScene.")
 					continue
 
-				# Position the scene at the cell's world position
 				scene_instance.global_position = map_to_local(cell) + offset
-				add_child(scene_instance) # Add to parent so it's not deleted with the layer
+				add_child(scene_instance)
+				if debug_enabled and debug_replacement:
+					print_debug("Replaced tile at %s with scene %s" % [str(cell), replacement.scene.resource_name])
 
-				set_cell(cell, -1) # Remove the tile
+func make_layer_invisible():
+	self.self_modulate = Color(1, 1, 1, 0)
+	if debug_enabled and debug_visibility:
+		print_debug("Layer made invisible.")
 
-				print_debug("Replaced tile at %s with scene %s" % [str(cell), replacement.scene.resource_name])
+func make_layer_visible():
+	self.self_modulate = Color(1, 1, 1, 1)
+	if debug_enabled and debug_visibility:
+		print_debug("Layer made visible.")

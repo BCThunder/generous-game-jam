@@ -30,6 +30,8 @@ window/stretch/mode="viewport"
 
 LaunchZones="Zones to enable launch ability"
 Player=""
+spikes=""
+death=""
 
 [input]
 

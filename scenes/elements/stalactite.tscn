@@ -7,10 +7,11 @@
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_x8va4"]
 points = PackedVector2Array(4, 1, -4, 1, 0, 15)
 
-[node name="Stalactite" type="RigidBody2D" node_paths=PackedStringArray("shard_emitter")]
+[node name="Stalactite" type="RigidBody2D" node_paths=PackedStringArray("shard_emitter") groups=["death"]]
 texture_filter = 1
 disable_mode = 1
-collision_mask = 129
+collision_layer = 65
+collision_mask = 0
 freeze = true
 contact_monitor = true
 max_contacts_reported = 1
