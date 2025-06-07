@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=20 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/player/32x32 Palis.png" id="2_dqkch"]
@@ -11,6 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://xntrhohok8nj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis5.png" id="8_fcs02"]
 [ext_resource type="Texture2D" uid="uid://3g55psl6e3kj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis6.png" id="9_myrg7"]
 [ext_resource type="Texture2D" uid="uid://brllbsrvjj2bu" path="res://assets/sprites/animations/Palis Jump/32x32 Palis7.png" id="10_kvlxm"]
+[ext_resource type="AudioStream" uid="uid://de435qxv83p7" path="res://assets/audio/sfx/walking.wav" id="12_fm80t"]
+[ext_resource type="AudioStream" uid="uid://cpd8lp2qoq4m4" path="res://assets/audio/sfx/launch.wav" id="13_ugbui"]
+[ext_resource type="AudioStream" uid="uid://dehvnfaqbd2h1" path="res://assets/audio/sfx/jump.wav" id="14_myrg7"]
+[ext_resource type="AudioStream" uid="uid://0tjynd3i461b" path="res://assets/audio/sfx/slam_new.wav" id="15_fcs02"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
 animations = [{
@@ -113,7 +117,20 @@ drag_top_margin = 0.05
 drag_right_margin = 0.05
 drag_bottom_margin = 0.05
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="SFX" type="Node" parent="."]
+
+[node name="WalkingSFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("12_fm80t")
+
+[node name="LaunchSFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("13_ugbui")
+
+[node name="JumpSFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("14_myrg7")
+
+[node name="SlamSFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("15_fcs02")
+volume_db = 4.0
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(1.96423, 1.87376)

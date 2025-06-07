@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://qepqdgq5wd4n" path="res://assets/sprites/oasis/Sky.png" id="3_pqhl5"]
 [ext_resource type="Script" uid="uid://jnaex81fgrb7" path="res://scenes/elements/replace_tile_with_scene.gd" id="4_kjymn"]
 [ext_resource type="PackedScene" uid="uid://bx10emgiv6plg" path="res://scenes/elements/ceiling_drop_stalactite.tscn" id="5_aox7h"]
-[ext_resource type="PackedScene" path="res://scenes/elements/WaterCollectible.tscn" id="6_4cbp5"]
+[ext_resource type="PackedScene" uid="uid://cx8jpjwiei0qv" path="res://scenes/elements/WaterCollectible.tscn" id="6_4cbp5"]
 [ext_resource type="Script" uid="uid://djags063tgxu1" path="res://scenes/elements/scene_tile_pair.gd" id="6_ker30"]
 [ext_resource type="Texture2D" uid="uid://bltonr231ct1v" path="res://assets/sprites/cave backgrounds/backgound 1.png" id="7_j0kd2"]
 [ext_resource type="Texture2D" uid="uid://cuq13hnjpmc7x" path="res://assets/sprites/cave backgrounds/background 2.png" id="8_ibm0y"]
@@ -105,7 +105,7 @@ min_jump_velocity = 130.0
 jump_gravity_scale = 1.0
 ground_friction = 16.0
 ground_tilemap_layer_path = NodePath("../Underground/CanvasGroup/ice slicks")
-debug_jumps = true
+debug_enabled = true
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 4

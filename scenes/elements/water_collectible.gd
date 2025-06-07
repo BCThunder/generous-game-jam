@@ -9,8 +9,10 @@ extends Area2D
 			
 var small_water_instance: Node2D = null
 
+@onready var collect_sfx: AudioStreamPlayer2D = $CollectSFX
+
 func _on_body_entered(_body: Node2D) -> void:
 	GameManager.collected_water += 1
 	self.monitorable = false
-	
+	collect_sfx.play()
 	print("Small water collected!")

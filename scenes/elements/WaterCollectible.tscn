@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cx8jpjwiei0qv"]
+[gd_scene load_steps=4 format=3 uid="uid://cx8jpjwiei0qv"]
 
 [ext_resource type="Script" uid="uid://d0q53dhs278ls" path="res://scenes/elements/water_collectible.gd" id="1_alhe5"]
+[ext_resource type="AudioStream" uid="uid://bb2et3sapwukm" path="res://assets/audio/sfx/water_collected.wav" id="2_06fbr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_06fbr"]
 
@@ -9,5 +10,8 @@ script = ExtResource("1_alhe5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_06fbr")
+
+[node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_06fbr")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
