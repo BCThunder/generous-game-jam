@@ -6,7 +6,7 @@ var save_path := "res://game_save.cfg"
 
 
 func _ready():
-	player = get_parent().get_node("Player")
+	player = get_tree().get_current_scene().get_node("Player")
 
 
 func save_game():
@@ -27,7 +27,6 @@ func load_save():
 		GameManager.tile_data = config.get_value("Level", "small_water")
 		print("Spawn character at ", player_last_location)
 		$%CheckpointManager.update_checkpoint(player_last_location)
-
 
 
 func _on_save_button_pressed() -> void:
