@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=26 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://qepqdgq5wd4n" path="res://assets/sprites/oasis/Sky.png" id="3_pqhl5"]
 [ext_resource type="Script" uid="uid://jnaex81fgrb7" path="res://scenes/elements/replace_tile_with_scene.gd" id="4_kjymn"]
 [ext_resource type="PackedScene" uid="uid://bx10emgiv6plg" path="res://scenes/elements/ceiling_drop_stalactite.tscn" id="5_aox7h"]
+[ext_resource type="PackedScene" uid="uid://cx8jpjwiei0qv" path="res://scenes/elements/WaterCollectible.tscn" id="6_4cbp5"]
 [ext_resource type="Script" uid="uid://djags063tgxu1" path="res://scenes/elements/scene_tile_pair.gd" id="6_ker30"]
 [ext_resource type="Texture2D" uid="uid://bltonr231ct1v" path="res://assets/sprites/cave backgrounds/backgound 1.png" id="7_j0kd2"]
 [ext_resource type="Texture2D" uid="uid://cuq13hnjpmc7x" path="res://assets/sprites/cave backgrounds/background 2.png" id="8_ibm0y"]
@@ -13,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d4l1x4fb1afy8" path="res://assets/sprites/cave backgrounds/background 4.png" id="10_lldvu"]
 [ext_resource type="Texture2D" uid="uid://eiksfgkyj111" path="res://assets/sprites/cave backgrounds/background 5.png" id="11_jbupj"]
 [ext_resource type="Texture2D" uid="uid://67tlv4ojmx6" path="res://assets/sprites/cave backgrounds/background 6.png" id="12_dwx4m"]
+[ext_resource type="PackedScene" uid="uid://dul2tqvletkou" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
 interpolation_mode = 2
@@ -50,6 +52,12 @@ width = 20
 height = 300
 fill_from = Vector2(1, 1)
 
+[sub_resource type="Resource" id="Resource_lldvu"]
+script = ExtResource("6_ker30")
+type = "SmallWater"
+scene = ExtResource("6_4cbp5")
+metadata/_custom_type_script = "uid://djags063tgxu1"
+
 [sub_resource type="Resource" id="Resource_iiqan"]
 script = ExtResource("6_ker30")
 type = "Stalactite"
@@ -65,11 +73,11 @@ width = 20
 height = 300
 fill_from = Vector2(1, 1)
 
-[node name="Node2D" type="Node2D"]
+[node name="MainLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_pqhl5")]
 light_mask = 2
-position = Vector2(-32, 318)
+position = Vector2(1, 351)
 run_speed = 168.0
 double_jump_enabled = false
 max_jump_velocity = 345.0
@@ -311,6 +319,8 @@ collision_enabled = false
 light_mask = 3
 tile_map_data = PackedByteArray("AAD9/ygABgAMAAAAAAD1/zMABgAMAAAAAAAeAGMABgAMAAAAAADa/1EABgAMAAAAAADv/5QABgAMAAAAAAAXAI8ABgAMAAAAAAA0AIYABgAMAAAAAAAEAJgABgAMAAAAAAAUANIABgAMAAAAAAD6/9kABgAMAAAAAADR//4ABgAMAAAAAAALABUBBgAMAAAAAAD3/2cBBgAMAAAAAADY/4ABBgAMAAAAAAAuAHYBBgAMAAAAAAAiAKsBBgAMAAAAAADt/78BBgAMAAAAAAA=")
 tile_set = ExtResource("1_okrmv")
+script = ExtResource("4_kjymn")
+replacement = SubResource("Resource_lldvu")
 
 [node name="water launchers" type="TileMapLayer" parent="Underground/CanvasGroup"]
 light_mask = 3
@@ -413,5 +423,7 @@ light_mask = 2
 texture_filter = 1
 position = Vector2(136, 7608)
 texture = ExtResource("12_dwx4m")
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_jbupj")]
 
 [editable path="Player"]

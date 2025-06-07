@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://q3xrjcvk3q0i"]
+
+[ext_resource type="AudioStream" uid="uid://c0y512srw0q7k" path="res://assets/audio/the_oasis_below.ogg" id="1_w0eid"]
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_w0eid")
+autoplay = true
