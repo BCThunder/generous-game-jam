@@ -73,6 +73,12 @@ var destroy_ability_timer: Timer
 @export var debug_collisions: bool = false
 @export var debug_death: bool = false
 
+# Sound Effects
+@onready var walking_sfx: AudioStreamPlayer2D = $SFX/WalkingSFX
+@onready var launch_sfx: AudioStreamPlayer2D = $SFX/LaunchSFX
+@onready var slam_sfx: AudioStreamPlayer2D = $SFX/SlamSFX
+@onready var jump_sfx: AudioStreamPlayer2D = $SFX/JumpSFX
+
 # Context Flags
 var is_jump_held: bool = false
 var can_double_jump: bool = false
@@ -138,6 +144,7 @@ class GroundState extends PlayerState:
 
 # --- Air State ---
 class AirState extends PlayerState:
+
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
 			print("Entered AirState")
@@ -158,6 +165,7 @@ class AirState extends PlayerState:
 			if player.debug_enabled and player.debug_movement:
 				print("Slam pressed (Air)")
 			player._change_state(SlamState)
+			player.slam_sfx.play()
 
 		# Release jump for variable height
 		if event.is_action_released("jump"):
@@ -365,10 +373,17 @@ func _handle_ground_moves(delta: float) -> void:
 				velocity.x = direction * tap_speed
 			else:
 				velocity.x = direction * run_speed
+				
+			play_walking_sfx()
 		else:
 			velocity.x = lerp(velocity.x, 0.0, ground_friction * delta)
 
 	velocity.x = clamp(velocity.x, -run_speed, run_speed)
+	
+func play_walking_sfx():
+	if walking_sfx.playing == false:
+		walking_sfx.pitch_scale = randf_range(.8, 1.2)
+		walking_sfx.play()
 
 func _handle_air_moves(delta: float) -> void:
 	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -434,10 +449,18 @@ func _try_jump() -> void:
 		coyote_timer_node.stop()
 		if in_spike_grace and spike_jump_once:
 			has_jumped_off_spikes = true
+			
+		play_jump_sfx()
 	elif double_jump_enabled and can_double_jump:
 		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = false
+		
+		play_jump_sfx()
+
+func play_jump_sfx():
+	jump_sfx.pitch_scale = randf_range(.8, 1.2)
+	jump_sfx.play()
 
 func _try_destroy_ability() -> void:
 	# Cast a short ray in facing direction to detect breakable rocks

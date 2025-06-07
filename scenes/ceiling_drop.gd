@@ -26,6 +26,7 @@ var drop_object_instance: Node2D = null
 @export var use_raycast: bool = true
 @export var raycast_node: RayCast2D
 
+@onready var fall_sfx: AudioStreamPlayer2D = $FallSFX
 
 func _ready():
 	# if not use_raycast and trigger_area:
@@ -81,5 +82,11 @@ func drop(_body: Node = null):
 	#print_debug("set_physics_process(false)")
 	if drop_object_instance.has_method("drop"):
 		drop_object_instance.drop()
+		play_drop_sfx()
 	else:
 		push_warning("CeilingDrop: drop_object_instance does not have a 'drop' method. Please ensure the scene has a drop method implemented.")
+
+
+func play_drop_sfx():
+	fall_sfx.pitch_scale = randf_range(.8, 1.2)
+	fall_sfx.play()
