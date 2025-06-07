@@ -55,6 +55,7 @@ flat = true
 [node name="LoadSaveButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
+disabled = true
 text = "Load Save"
 flat = true
 

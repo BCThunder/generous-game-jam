@@ -86,7 +86,7 @@ func physics(delta):
 			# Physics-based launch logic
 			player._apply_gravity(delta)
 			var collision = player.move_and_slide()
-			player._check_collisions()
+			player._collision_checker()
 			if collision:
 				# Handle collision response if needed
 				_finish()

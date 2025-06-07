@@ -6,6 +6,8 @@ extends CanvasLayer
 func _ready() -> void:
 	settings_panel.visible = false
 
+	$Buttons/LoadSaveButton.disabled = not SaveManager.has_valid_save()
+
 
 func _on_start_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/Level/Blackout scene.tscn")

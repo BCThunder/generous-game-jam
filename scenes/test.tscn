@@ -29,12 +29,12 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j5jx5"]
 size = Vector2(91, 30)
 
-[sub_resource type="Gradient" id="Gradient_lpvoh"]
+[sub_resource type="Gradient" id="Gradient_j5jx5"]
 offsets = PackedFloat32Array(0.263617)
 colors = PackedColorArray(0, 0.545098, 0.6, 0.478431)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_at5dv"]
-gradient = SubResource("Gradient_lpvoh")
+gradient = SubResource("Gradient_j5jx5")
 width = 94
 height = 29
 
@@ -91,15 +91,15 @@ position_smoothing_speed = 15.0
 [node name="PointLight2D" parent="Player" index="9"]
 texture = SubResource("GradientTexture2D_lvxji")
 
-[node name="Area2D" type="Area2D" parent="." groups=["LaunchZones"]]
+[node name="Launch zone" type="Area2D" parent="." groups=["LaunchZones"]]
 position = Vector2(280, 22)
 collision_layer = 128
 collision_mask = 128
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Launch zone"]
 shape = SubResource("RectangleShape2D_j5jx5")
 
-[node name="Sprite2D" type="Sprite2D" parent="Area2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Launch zone"]
 texture = SubResource("GradientTexture2D_at5dv")
 
 [node name="Node2D" type="Node2D" parent="." node_paths=PackedStringArray("trigger_area", "raycast_node")]

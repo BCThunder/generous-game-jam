@@ -39,6 +39,7 @@ icon_entries = [SubResource("Resource_rc2mg"), SubResource("Resource_5l4wp")]
 text_entries = [SubResource("Resource_owrub"), SubResource("Resource_wt6x8")]
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
+light_mask = 0
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -53,25 +54,30 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Launch" type="Label" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 text = "Launch"
 
 [node name="TextureRect" type="TextureRect" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 texture = ExtResource("1_fo2r4")
 expand_mode = 3
 stretch_mode = 5
 
 [node name="Slash" type="Label" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 text = "/"
 
 [node name="TextureRect2" type="TextureRect" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 texture = ExtResource("2_tddua")
 expand_mode = 3
 stretch_mode = 5
 
 [node name="Cancel" type="Label" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 text = "Cancel"

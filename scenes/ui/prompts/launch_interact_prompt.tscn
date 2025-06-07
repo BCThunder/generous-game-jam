@@ -32,6 +32,7 @@ icon_entries = [SubResource("Resource_34kor")]
 text_entries = [SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")]
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
+light_mask = 0
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -46,16 +47,19 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Prompt Text" type="Label" parent="HSplitContainer"]
+light_mask = 0
 texture_filter = 1
 layout_mode = 2
 text = "Press"
 
 [node name="Prompt Icon" type="TextureRect" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 texture = ExtResource("4_joj8x")
 expand_mode = 3
 stretch_mode = 3
 
 [node name="Prompt Text2" type="Label" parent="HSplitContainer"]
+light_mask = 0
 layout_mode = 2
 text = "to Launch"
