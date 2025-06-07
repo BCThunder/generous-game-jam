@@ -1,0 +1,128 @@
+[gd_scene load_steps=7 format=3 uid="uid://pphrdpv7qwki"]
+
+[ext_resource type="Script" uid="uid://h0n8m8gyoxum" path="res://scenes/ui/main_menu.gd" id="1_sl1te"]
+[ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="2_1g8jr"]
+[ext_resource type="FontFile" uid="uid://cy1y5nhpgt2ss" path="res://assets/fonts/RasterForge.ttf" id="3_m1kxf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2yvf"]
+bg_color = Color(0.404511, 0.404511, 0.404511, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uhagc"]
+bg_color = Color(0.288518, 0.288518, 0.288518, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btxxm"]
+
+[node name="MainMenu" type="CanvasLayer"]
+script = ExtResource("1_sl1te")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 52.0
+offset_top = 51.0
+offset_right = 214.0
+offset_bottom = 138.0
+theme = ExtResource("2_1g8jr")
+theme_override_font_sizes/font_size = 48
+text = "LAST
+OASIS"
+horizontal_alignment = 1
+
+[node name="Backdrop" type="Sprite2D" parent="."]
+
+[node name="Buttons" type="BoxContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -316.0
+offset_top = -165.0
+offset_right = -21.0
+offset_bottom = -29.0
+grow_horizontal = 0
+grow_vertical = 0
+vertical = true
+
+[node name="StartButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("2_1g8jr")
+theme_override_fonts/font = ExtResource("3_m1kxf")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x2yvf")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_uhagc")
+theme_override_styles/normal = SubResource("StyleBoxFlat_btxxm")
+text = "Play Game"
+flat = true
+
+[node name="LoadSaveButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("2_1g8jr")
+text = "Load Save"
+flat = true
+
+[node name="SettingsButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("2_1g8jr")
+text = "Settings"
+flat = true
+
+[node name="ExitGameButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("2_1g8jr")
+text = "Exit"
+flat = true
+
+[node name="SettingsPanel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CloseSettingsButton" type="Button" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -193.0
+offset_top = -113.0
+offset_right = -143.0
+offset_bottom = -82.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_1g8jr")
+text = "Close"
+
+[node name="VolumeLabel" type="Label" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -147.0
+offset_right = 95.0
+offset_bottom = -124.0
+grow_vertical = 0
+theme = ExtResource("2_1g8jr")
+text = "Volume"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -113.0
+offset_right = 238.43
+offset_bottom = -97.0
+grow_vertical = 0
+value = 50.0
+rounded = true
+
+[connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Buttons/LoadSaveButton" to="." method="_on_load_save_button_pressed"]
+[connection signal="pressed" from="Buttons/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="renamed" from="Buttons/ExitGameButton" to="." method="_on_exit_game_button_renamed"]
+[connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="." method="_on_close_settings_button_pressed"]
+[connection signal="value_changed" from="SettingsPanel/VolumeSlider" to="." method="_on_volume_changed"]
