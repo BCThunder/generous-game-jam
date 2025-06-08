@@ -1,36 +1,163 @@
-[gd_scene load_steps=4 format=3 uid="uid://kallldgk8jaw"]
+[gd_scene load_steps=28 format=3 uid="uid://kallldgk8jaw"]
 
 [ext_resource type="Script" uid="uid://ck72ra4gbjx75" path="res://scripts/npc.gd" id="1_abqhh"]
-[ext_resource type="Texture2D" uid="uid://df225s8rttpjo" path="res://icon.svg" id="2_rv78h"]
+[ext_resource type="Texture2D" uid="uid://bxt5px5e7umry" path="res://assets/sprites/npcs/18x13 dwarf survivor.png" id="2_bw2c7"]
+[ext_resource type="Texture2D" uid="uid://kjf0gwrotsmw" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk1.png" id="2_ewlk4"]
+[ext_resource type="Texture2D" uid="uid://tbkaoj1sx8oc" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee1.png" id="2_rv78h"]
+[ext_resource type="Texture2D" uid="uid://cjkvy7qb2x17u" path="res://assets/sprites/oasis/water droplet.png" id="3_7n8xq"]
+[ext_resource type="Texture2D" uid="uid://di6ntotery1dy" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk2.png" id="3_bw2c7"]
+[ext_resource type="Texture2D" uid="uid://c32oujbxn4wa8" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee2.png" id="3_sptji"]
+[ext_resource type="Texture2D" uid="uid://3rjr64ehhpwd" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk3.png" id="4_gc4mq"]
+[ext_resource type="Texture2D" uid="uid://dnxvna64q6e7m" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee3.png" id="4_v4e37"]
+[ext_resource type="Texture2D" uid="uid://bkxu431vsep3v" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee4.png" id="5_1h837"]
+[ext_resource type="Texture2D" uid="uid://c42m4dj36nqtx" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk4.png" id="5_2gr28"]
+[ext_resource type="Texture2D" uid="uid://cjxm401l76eij" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee5.png" id="6_gl1un"]
+[ext_resource type="Texture2D" uid="uid://c8f26cqk4rboc" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk5.png" id="6_tkdcp"]
+[ext_resource type="Texture2D" uid="uid://d288x7vcdgekr" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk6.png" id="7_15fp6"]
+[ext_resource type="Texture2D" uid="uid://cm0cdyluw5rlb" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee6.png" id="7_wuru7"]
+[ext_resource type="Texture2D" uid="uid://ymgn6pxa3qjy" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk7.png" id="8_bll4x"]
+[ext_resource type="Texture2D" uid="uid://dwddxrfrl7ssv" path="res://assets/sprites/animations/Dwarf Refugee/18x13 dwarf refugee7.png" id="8_nyaq3"]
+[ext_resource type="Texture2D" uid="uid://dhf1wtesos1ut" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk8.png" id="9_46t2e"]
+[ext_resource type="Texture2D" uid="uid://b82y6t83odldp" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk9.png" id="10_u8ld7"]
+[ext_resource type="Texture2D" uid="uid://yefhjg4v5gpn" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk10.png" id="11_jwdfw"]
+[ext_resource type="Texture2D" uid="uid://d00eqm45yqpq7" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk11.png" id="12_y1ua7"]
+[ext_resource type="Texture2D" uid="uid://b80dnu0xk7dym" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk12.png" id="13_8hjb1"]
+[ext_resource type="Texture2D" uid="uid://b0phay688y15h" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk13.png" id="14_ub7sa"]
+[ext_resource type="Texture2D" uid="uid://b66dimnpxhg7a" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk14.png" id="15_fdkk8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yf2ql"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bw2c7")
+}],
+"loop": true,
+"name": &"clean_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_ewlk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_bw2c7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gc4mq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_2gr28")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_tkdcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_15fp6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_bll4x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_46t2e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_u8ld7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_jwdfw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_y1ua7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_8hjb1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_ub7sa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_fdkk8")
+}],
+"loop": true,
+"name": &"clean_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rv78h")
+}],
+"loop": true,
+"name": &"dirty_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_rv78h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_sptji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_v4e37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1h837")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gl1un")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_wuru7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_nyaq3")
+}],
+"loop": true,
+"name": &"dirty_walk",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rv78h"]
+radius = 7.0
+height = 24.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7n8xq"]
 radius = 40.0
 
-[node name="NPC" type="Area2D"]
+[node name="NPC" type="CharacterBody2D" groups=["NPC"]]
+z_index = 100
 script = ExtResource("1_abqhh")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0.200001, -19.8)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_rv78h")
-
-[node name="WaterSprite" type="Sprite2D" parent="."]
-modulate = Color(0, 0, 1, 1)
-position = Vector2(-18, -38)
-scale = Vector2(0.078125, 0.0859375)
-texture = ExtResource("2_rv78h")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -13.5)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_yf2ql")
+animation = &"dirty_walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -12)
+shape = SubResource("CapsuleShape2D_rv78h")
+
+[node name="InteractArea" type="Area2D" parent="."]
+position = Vector2(-1, 8)
+collision_layer = 129
+collision_mask = 129
+
+[node name="InteractCollision" type="CollisionShape2D" parent="InteractArea"]
 position = Vector2(0.200001, -19.8)
 shape = SubResource("CircleShape2D_7n8xq")
 
-[node name="LeftWalkPoint" type="Marker2D" parent="."]
-position = Vector2(-87, 0)
-
-[node name="RightWalkPoint" type="Marker2D" parent="."]
-position = Vector2(81, 0)
+[node name="WaterSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-10, -23)
+scale = Vector2(0.105, 0.105)
+texture = ExtResource("3_7n8xq")
 
 [node name="WalkTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="timeout" from="WalkTimer" to="." method="_on_walk_timer_timeout"]

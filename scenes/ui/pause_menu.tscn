@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dul2tqvletkou"]
+[gd_scene load_steps=5 format=3 uid="uid://dul2tqvletkou"]
 
 [ext_resource type="Script" uid="uid://2a1qsxmmavlp" path="res://scenes/ui/pause_menu.gd" id="1_0lmf7"]
 [ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="2_f6eus"]
+[ext_resource type="Texture2D" uid="uid://cjkvy7qb2x17u" path="res://assets/sprites/oasis/water droplet.png" id="3_8uki6"]
+[ext_resource type="Texture2D" uid="uid://0u1alwi60yul" path="res://assets/sprites/npcs/18x13 dwarf refugee.png" id="4_0bnpd"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -53,6 +55,51 @@ layout_mode = 2
 theme = ExtResource("2_f6eus")
 text = "Main Menu"
 flat = true
+
+[node name="CollectibleAmount" type="VBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+offset_left = 34.0
+offset_top = 130.0
+offset_right = 134.0
+offset_bottom = 230.0
+alignment = 1
+
+[node name="Water" type="HBoxContainer" parent="Panel/CollectibleAmount"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="WaterSprite" type="TextureRect" parent="Panel/CollectibleAmount/Water"]
+texture_filter = 1
+custom_minimum_size = Vector2(20.5, 40)
+layout_mode = 2
+texture = ExtResource("3_8uki6")
+expand_mode = 1
+
+[node name="WaterAmount" type="Label" parent="Panel/CollectibleAmount/Water"]
+layout_mode = 2
+theme = ExtResource("2_f6eus")
+text = "x0"
+metadata/_edit_use_anchors_ = true
+
+[node name="NPCs" type="HBoxContainer" parent="Panel/CollectibleAmount"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="NPCSprite" type="TextureRect" parent="Panel/CollectibleAmount/NPCs"]
+texture_filter = 1
+custom_minimum_size = Vector2(26, 36)
+layout_mode = 2
+texture = ExtResource("4_0bnpd")
+expand_mode = 1
+
+[node name="NPCAmount" type="Label" parent="Panel/CollectibleAmount/NPCs"]
+layout_mode = 2
+theme = ExtResource("2_f6eus")
+text = "x0"
+metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="Panel/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

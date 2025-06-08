@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=43 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
@@ -17,8 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://d4l1x4fb1afy8" path="res://assets/sprites/cave backgrounds/background 4.png" id="10_lldvu"]
 [ext_resource type="Texture2D" uid="uid://eiksfgkyj111" path="res://assets/sprites/cave backgrounds/background 5.png" id="11_jbupj"]
 [ext_resource type="Texture2D" uid="uid://67tlv4ojmx6" path="res://assets/sprites/cave backgrounds/background 6.png" id="12_dwx4m"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
+[ext_resource type="PackedScene" uid="uid://dul2tqvletkou" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
 [ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="17_dwx4m"]
+[ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="20_6jgsi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awpht"]
 size = Vector2(8, 30)
@@ -56,6 +57,13 @@ fill_to = Vector2(0.5, 0)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dwx4m"]
 atlas = ExtResource("5_jbupj")
 region = Rect2(96, 337.393, 96, 46.6072)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jgsi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jgsi"]
+size = Vector2(20, 1000)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jkv08"]
 
 [sub_resource type="Gradient" id="Gradient_74lek"]
 interpolation_mode = 2
@@ -120,7 +128,7 @@ height = 29
 light_mask = 2
 z_index = 10
 z_as_relative = false
-position = Vector2(-174, -158)
+position = Vector2(-63, -16)
 collision_mask = 161
 run_speed = 168.0
 double_jump_enabled = false
@@ -131,8 +139,6 @@ coyote_time_duration = 0.15
 ground_friction = 16.0
 death_duration = 1.02
 ground_tilemap_layer_path = NodePath("../Underground/CanvasGroup/ice slicks")
-debug_enabled = true
-debug_jumps = true
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 4
@@ -402,6 +408,26 @@ scale = Vector2(-1, -1)
 skew = 0.190241
 texture = SubResource("AtlasTexture_dwx4m")
 
+[node name="TopBoundaries" type="Node2D" parent="Oasis"]
+
+[node name="LeftBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_6jgsi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/LeftBoundary"]
+position = Vector2(-921, -235)
+shape = SubResource("RectangleShape2D_6jgsi")
+
+[node name="RightBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_jkv08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/RightBoundary"]
+position = Vector2(1025, -234)
+shape = SubResource("RectangleShape2D_6jgsi")
+
 [node name="Oasis layer 0" type="CanvasGroup" parent="."]
 modulate = Color(0.568973, 0.568973, 0.568973, 1)
 light_mask = 9
@@ -463,6 +489,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage2" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 2 far background" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 8
@@ -494,6 +521,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage3" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 8
@@ -525,6 +553,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage4" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 8
@@ -766,5 +795,21 @@ shape = SubResource("RectangleShape2D_lldvu")
 
 [node name="Sprite2D" type="Sprite2D" parent="Launch zone"]
 texture = SubResource("GradientTexture2D_jbupj")
+
+[node name="NPCs" type="Node2D" parent="."]
+z_index = 10
+
+[node name="NPC_1" parent="NPCs" node_paths=PackedStringArray("patrol_points") instance=ExtResource("20_6jgsi")]
+position = Vector2(-138, 0)
+patrol_points = NodePath("PatrolPoints1")
+SPEED = 600
+
+[node name="PatrolPoints1" type="Node2D" parent="NPCs/NPC_1"]
+
+[node name="LeftWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(-87, -4)
+
+[node name="RightWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(81, -4)
 
 [editable path="Player"]
