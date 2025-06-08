@@ -88,6 +88,7 @@ var destroy_ability_timer: Timer
 
 # Context Flags
 var is_jump_held: bool = false
+var has_jumped: bool = false
 var can_double_jump: bool = false
 var in_slam_zone: bool = false
 var in_launch_zone: bool = false
@@ -131,10 +132,14 @@ class GroundState extends PlayerState:
 		# Reset jump flags on landing
 		player.can_double_jump = false
 		player.is_jump_held = false
-		player.coyote_timer_node.start(player.coyote_time_duration)
+		player.has_jumped = false
 
 		if player.debug_enabled and player.debug_movement:
 			print("Entered GroundState")
+
+		# Stop coyote timer if running
+		if not player.coyote_timer_node.is_stopped():
+			player.coyote_timer_node.stop()
 
 	func input(event: InputEvent) -> void:
 		if event.is_action_pressed("jump"):
@@ -148,6 +153,8 @@ class GroundState extends PlayerState:
 		player.move_and_slide()
 		player._collision_checker()
 		if not player.is_on_floor():
+			# Start coyote timer here!
+			player.coyote_timer_node.start(player.coyote_time_duration)
 			player._change_state(AirState)
 
 # --- Air State ---
@@ -157,14 +164,11 @@ class AirState extends PlayerState:
 			print("Entered AirState")
 		player.can_double_jump = player.double_jump_enabled
 		# Start coyote time if not already running
-		if player.coyote_timer_node.is_stopped():
-			player.coyote_timer_node.start(player.coyote_time_duration)
 
 	func input(event: InputEvent) -> void:
-		# Handle double jump on second press
-		if event.is_action_pressed("jump") and player.can_double_jump:
+		if event.is_action_pressed("jump"):
 			if player.debug_enabled and player.debug_jumps:
-				print("Jump pressed (Air) - Double Jump")
+				print("Jump pressed (Ground)")
 			player._try_jump()
 
 		# Handle Slam ability
@@ -181,7 +185,9 @@ class AirState extends PlayerState:
 				player.velocity.y = - player.min_jump_velocity
 
 	func physics(delta: float) -> void:
-		player._apply_gravity(delta)
+		if player.coyote_timer_node.is_stopped() or player.has_jumped:
+			# If coyote timer is stopped, we can't jump anymore
+			player._apply_gravity(delta)
 		player._handle_air_moves(delta)
 		player.move_and_slide()
 		player._collision_checker()
@@ -254,6 +260,7 @@ class DeathState extends PlayerState:
 
 		var tween = player.create_tween()
 		tween.tween_property(player, "modulate:a", 0.0, player.death_duration)
+		player.animation_player.play("fade_out") # Play fade out animation
 		await tween.finished
 		
 		player.get_tree().reload_current_scene()
@@ -435,21 +442,55 @@ func _connect_zone_signals() -> void:
 
 # region Jump & Destroy Abilities
 func _try_jump() -> void:
-	if (is_on_floor() or not coyote_timer_node.is_stopped()) or (in_spike_grace and (not spike_jump_once or not has_jumped_off_spikes)):
+	if debug_enabled and debug_jumps:
+		print_debug("Jump attempt - is_jump_held: ", is_jump_held, ", can_double_jump: ", can_double_jump, ", double_jump_enabled: ", double_jump_enabled, ", in_spike_grace: ", in_spike_grace, ", spike_jump_once: ", spike_jump_once, ", has_jumped_off_spikes: ", has_jumped_off_spikes, ", coyote_timer_node.is_stopped(): ", coyote_timer_node.is_stopped())
+
+	# --- FLOOR JUMP ---
+	if is_on_floor():
 		velocity.y = - max_jump_velocity
 		is_jump_held = true
-		can_double_jump = true
+		can_double_jump = double_jump_enabled
 		coyote_timer_node.stop()
-		if in_spike_grace and spike_jump_once:
-			has_jumped_off_spikes = true
-			
+		has_jumped = true
+		if debug_enabled and debug_jumps:
+			print_debug("Floor jump")
 		play_jump_sfx()
-	elif double_jump_enabled and can_double_jump:
+		return
+
+	# --- COYOTE JUMP ---
+	if not coyote_timer_node.is_stopped() and not has_jumped:
+		velocity.y = - max_jump_velocity
+		is_jump_held = true
+		can_double_jump = double_jump_enabled
+		coyote_timer_node.stop()
+		has_jumped = true
+		if debug_enabled and debug_jumps:
+			print_debug("Coyote jump")
+		play_jump_sfx()
+		return
+
+	# --- SPIKE GRACE JUMP ---
+	if in_spike_grace and (not spike_jump_once or not has_jumped_off_spikes):
+		velocity.y = - max_jump_velocity
+		is_jump_held = true
+		can_double_jump = double_jump_enabled
+		has_jumped_off_spikes = true
+		has_jumped = true
+		if debug_enabled and debug_jumps:
+			print_debug("Spike grace jump")
+		play_jump_sfx()
+		return
+
+	# --- DOUBLE JUMP ---
+	if double_jump_enabled and can_double_jump:
 		velocity.y = - max_jump_velocity
 		is_jump_held = true
 		can_double_jump = false
-		
+		has_jumped = true
+		if debug_enabled and debug_jumps:
+			print_debug("Double jump")
 		play_jump_sfx()
+		return
 
 func play_jump_sfx():
 	var pitch = randf_range(.8, 1.2)
@@ -482,13 +523,13 @@ func _try_destroy_ability() -> void:
 	var result = space.intersect_ray(params)
 	if result and result.collider and result.collider.is_in_group(destroy_ability_group):
 		if debug_enabled and debug_state_changes:
-			print("Destroying rock: ", result.collider.name)
+			print("Destroyingrock: ", result.collider.name)
 		# Break the initial object and start chain break
 		_chain_destroy(result.collider, global_position, 0)
 		# Optionally play effect or sound here
 	else:
 		if debug_enabled and debug_state_changes:
-			print("No breakable rock detected.")
+			print("Nobreakablerockdetected.")
 
 # Progressive chain break with delay for surrounding objects
 func _chain_destroy(center_obj: Node, center_pos: Vector2, depth: int) -> void:
@@ -498,12 +539,12 @@ func _chain_destroy(center_obj: Node, center_pos: Vector2, depth: int) -> void:
 	if center_obj.has_method("destroy"):
 		center_obj.call("destroy")
 	else:
-		push_warning("DestroyAbility: Object does not have a 'destroy' method.")
+		push_warning("DestroyAbility: Objectdoes not havea'destroy'method.")
 	# Start cooldown timer only for the initial call
 	if depth == 0:
 		destroy_ability_timer.start(destroy_ability_cooldown)
 	if debug_enabled and debug_state_changes:
-		print("Destroy ability used on: ", center_obj.name)
+		print("Destroyabilityusedon: ", center_obj.name)
 	if depth >= destroy_ability_chain_depth:
 		return
 	for obj in get_tree().get_nodes_in_group(destroy_ability_group):
@@ -528,13 +569,13 @@ func _on_slam_zone_exited(_body: Node) -> void:
 
 func _on_launch_zone_entered(_body: Node) -> void:
 	if debug_enabled and debug_input_events:
-		print_debug("Entered launch zone")
+		print_debug("Enteredlaunchzone")
 	in_launch_zone = true
 	launch_ability._show_prompt()
 
 func _on_launch_zone_exited(_body: Node) -> void:
 	if debug_enabled and debug_input_events:
-		print_debug("Exited launch zone")
+		print_debug("Exitedlaunchzone")
 	in_launch_zone = false
 	launch_ability._hide_prompt()
 
@@ -551,12 +592,8 @@ func _get_tilemap_layers() -> void:
 	if not ground_tilemap_layer_path.is_empty():
 		ground_tilemap_layer = get_node(ground_tilemap_layer_path) as TileMapLayer
 	else:
-		push_error("Ground tilemap layer path is not set.")
+		push_error("Groundtilemaplayerpath is not set.")
 
-	if not dissolve_tilemap_layer_path.is_empty():
-		dissolve_tilemap_layer = get_node(dissolve_tilemap_layer_path) as TileMapLayer
-	else:
-		push_error("Dissolve tilemap layer path is not set.")
 
 ## Detect layers for physics interactions
 func _collision_checker() -> void:
@@ -564,7 +601,7 @@ func _collision_checker() -> void:
 		var collision: KinematicCollision2D = get_slide_collision(i)
 		if collision:
 			if debug_enabled and debug_collisions:
-				print_debug("Collision detected: ", collision.get_collider().name, " at ", collision.get_position())
+				print_debug("Collisiondetected: ", collision.get_collider().name, "at", collision.get_position())
 			var collider = collision.get_collider()
 			if not collider:
 				continue
@@ -575,22 +612,22 @@ func _collision_checker() -> void:
 
 			if collider.is_in_group("death"):
 				if debug_enabled and debug_death:
-					print_debug("Death collider hit: ", collider.name)
+					print_debug("Deathcolliderhit: ", collider.name)
 				# If we hit a death collider, transition to DeathState
 				_change_state(DeathState)
 
 			if collider.is_in_group("dissolve"):
 				if debug_enabled and debug_collisions:
-					print_debug("Dissolve collider hit: ", collider.name)
+					print_debug("Dissolvecolliderhit: ", collider.name)
 					if dissolve_tilemap_layer:
 						if dissolve_tilemap_layer.has_method("dissolve_tile"):
 							var coords = ground_tilemap_layer.local_to_map(collision.get_position())
 							dissolve_tilemap_layer.dissolve_tile(coords)
-							print_debug("Dissolving tile at coords: ", coords)
+							print_debug("Dissolvingtileatcoords: ", coords)
 						else:
-							push_error("Dissolve tilemap layer does not have 'dissolve_tile' method.")
+							push_error("Dissolvetilemaplayerdoes not have'dissolve_tile'method.")
 					else:
-						push_error("Dissolve tilemap layer not set.")
+						push_error("Dissolvetilemaplayer not set.")
 
 
 func _in_spikes(is_in_spike: bool) -> void:

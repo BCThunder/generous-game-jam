@@ -11,7 +11,6 @@ extends Area2D
 @export var debug_enabled: bool = false # Enable debug messages
 
 @export var physical_collider: CollisionShape2D
-var spawn_position: Vector2
 
 var collision_timer: Timer
 var respawn_timer: Timer
@@ -38,6 +37,7 @@ func _on_collision_entered(_collision: Node) -> void:
 	if debug_enabled:
 		print_debug("DissolvingPlatform: Collision detected with ", _collision.name)
 	# Start the dissolving effect
+	await get_tree().create_timer(0.5).timeout # Delay to ensure collision is registered
 	_dissolve_platform()
 
 
@@ -63,15 +63,14 @@ func _on_respawn_timeout() -> void:
 
 func _reset() -> void:
 	# Reset the platform's position and state
-	global_position = spawn_position
-	modulate = Color(1, 1, 1, 1) # Reset alpha to fully opaque
+	var tween = create_tween()
+	
+	await tween.tween_property(self, "modulate:a", 1.0, dissolve_duration).finished
 	
 	# Stop any active timers
 	collision_timer.stop()
 	respawn_timer.stop()
 	
-	# Optionally, reset any other properties as needed
-	spawn_position = global_position # Update spawn position to current position
 
 	_disable_collisions(false)
 

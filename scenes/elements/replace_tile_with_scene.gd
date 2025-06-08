@@ -69,7 +69,9 @@ func _replace() -> void:
 					scene_instance.global_position = map_to_local(cell) + offset
 
 					
-					scene_instance.rotation = get_rotation_vector(cell)
+					var tf = get_transform_from_tile(cell)
+					scene_instance.rotation = tf.rotation
+					scene_instance.scale = tf.scale
 
 					add_child(scene_instance)
 					if debug_enabled and debug_replacement:
@@ -104,3 +106,26 @@ func get_rotation_vector(coords: Vector2i) -> float:
 
 	# Convert the direction vector to a degree angle
 	return vec.angle()
+
+func get_transform_from_tile(coords: Vector2i) -> Dictionary:
+	var alt = get_cell_alternative_tile(coords)
+	var cell_rotation = 0.0
+	var cell_scale = Vector2(1, 1)
+
+	# Handle transpose (diagonal flip)
+	if alt & TileSetAtlasSource.TRANSFORM_TRANSPOSE:
+		cell_scale = Vector2(scale.y, scale.x)
+		cell_rotation += PI / 2
+
+	# Handle horizontal flip
+	if alt & TileSetAtlasSource.TRANSFORM_FLIP_H:
+		cell_scale.x *= -1
+
+	# Handle vertical flip
+	if alt & TileSetAtlasSource.TRANSFORM_FLIP_V:
+		cell_scale.y *= -1
+
+	return {
+		"rotation": rotation,
+		"scale": scale
+	}
