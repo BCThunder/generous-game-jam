@@ -29,6 +29,7 @@ class_name PlayerController
 @export var tap_slippery_acceleration_multiplier: float = 2.0
 @export var slippery_friction: float = 0.5
 
+
 @export_category("Damage and Death")
 @export var spike_grace_time: float = 0.08 # seconds (about 5 frames at 60fps)
 @export var spike_jump_once: bool = true # If true, only allow one jump off spikes per contact
@@ -40,6 +41,7 @@ var has_jumped_off_spikes: bool = false
 # Environment
 @export_category("Environment")
 @export var ground_tilemap_layer_path: NodePath
+@export var dissolve_tilemap_layer_path: NodePath
 
 # Abilities
 @export_category("Launch Ability")
@@ -95,6 +97,7 @@ var launch_ability: Node2D = null
 
 # Cached References
 var ground_tilemap_layer: TileMapLayer
+var dissolve_tilemap_layer: TileMapLayer
 
 # Timers for duration-based effects
 var tap_boost_timer: Timer
@@ -149,7 +152,6 @@ class GroundState extends PlayerState:
 
 # --- Air State ---
 class AirState extends PlayerState:
-
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
 			print("Entered AirState")
@@ -268,10 +270,8 @@ class DeathState extends PlayerState:
 var current_state: PlayerState = null
 
 func _ready() -> void:
+	_get_tilemap_layers()
 	animation_player.play("fade_in") # fade in to hide "teleporting" to last save spot
-	ground_tilemap_layer = get_node(ground_tilemap_layer_path)
-	if not ground_tilemap_layer:
-		push_error("TileMapLayer not found at %s" % ground_tilemap_layer_path)
 
 	_init_launch_ability()
 
@@ -409,27 +409,6 @@ func _handle_air_moves(delta: float) -> void:
 
 	velocity.x = clamp(velocity.x, -run_speed, run_speed)
 
-func _is_on_slippery() -> bool:
-	if not is_on_floor():
-		return false
-
-	var half_height: float = _get_collision_half_height()
-	var foot_position: Vector2 = global_position + Vector2(0, half_height + 1)
-	var tile_size: Vector2 = ground_tilemap_layer.tile_set.tile_size
-	var coords: Vector2i = Vector2i(int(foot_position.x / tile_size.x), int(foot_position.y / tile_size.y))
-	var cell_data = ground_tilemap_layer.get_cell_tile_data(coords)
-
-	return cell_data and cell_data.get_custom_data("slippery")
-
-func _get_collision_half_height() -> float:
-	var shape = $CollisionShape2D.shape
-	if shape is CapsuleShape2D:
-		return shape.height * 0.5 + shape.radius
-	if shape is RectangleShape2D:
-		return shape.extents.y
-	if shape is CircleShape2D:
-		return shape.radius
-	return 0.0
 # endregion
 
 # region Launch Ability & Zones
@@ -567,6 +546,18 @@ func _on_spike_grace_timeout() -> void:
 # endregion
 
 # region Collision & Spikes
+
+func _get_tilemap_layers() -> void:
+	if not ground_tilemap_layer_path.is_empty():
+		ground_tilemap_layer = get_node(ground_tilemap_layer_path) as TileMapLayer
+	else:
+		push_error("Ground tilemap layer path is not set.")
+
+	if not dissolve_tilemap_layer_path.is_empty():
+		dissolve_tilemap_layer = get_node(dissolve_tilemap_layer_path) as TileMapLayer
+	else:
+		push_error("Dissolve tilemap layer path is not set.")
+
 ## Detect layers for physics interactions
 func _collision_checker() -> void:
 	for i in range(get_slide_collision_count()):
@@ -581,13 +572,26 @@ func _collision_checker() -> void:
 				_in_spikes(true)
 			else:
 				in_spike_grace = false # Not in spikes this frame
+
 			if collider.is_in_group("death"):
 				if debug_enabled and debug_death:
 					print_debug("Death collider hit: ", collider.name)
 				# If we hit a death collider, transition to DeathState
 				_change_state(DeathState)
-				return
-	
+
+			if collider.is_in_group("dissolve"):
+				if debug_enabled and debug_collisions:
+					print_debug("Dissolve collider hit: ", collider.name)
+					if dissolve_tilemap_layer:
+						if dissolve_tilemap_layer.has_method("dissolve_tile"):
+							var coords = ground_tilemap_layer.local_to_map(collision.get_position())
+							dissolve_tilemap_layer.dissolve_tile(coords)
+							print_debug("Dissolving tile at coords: ", coords)
+						else:
+							push_error("Dissolve tilemap layer does not have 'dissolve_tile' method.")
+					else:
+						push_error("Dissolve tilemap layer not set.")
+
 
 func _in_spikes(is_in_spike: bool) -> void:
 	if is_in_spike:
@@ -597,4 +601,26 @@ func _in_spikes(is_in_spike: bool) -> void:
 		has_jumped_off_spikes = false
 		spike_grace_timer_node.wait_time = spike_grace_time
 		spike_grace_timer_node.start()
+
+func _is_on_slippery() -> bool:
+	if not is_on_floor():
+		return false
+
+	var half_height: float = _get_collision_half_height()
+	var foot_position: Vector2 = global_position + Vector2(0, half_height + 1)
+	var tile_size: Vector2 = ground_tilemap_layer.tile_set.tile_size
+	var coords: Vector2i = Vector2i(int(foot_position.x / tile_size.x), int(foot_position.y / tile_size.y))
+	var cell_data = ground_tilemap_layer.get_cell_tile_data(coords)
+
+	return cell_data and cell_data.get_custom_data("slippery")
+
+func _get_collision_half_height() -> float:
+	var shape = $CollisionShape2D.shape
+	if shape is CapsuleShape2D:
+		return shape.height * 0.5 + shape.radius
+	if shape is RectangleShape2D:
+		return shape.extents.y
+	if shape is CircleShape2D:
+		return shape.radius
+	return 0.0
 # endregion

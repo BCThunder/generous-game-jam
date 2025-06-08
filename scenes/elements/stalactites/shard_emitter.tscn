@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1s5jyghutdvl"]
 
-[ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/shard_emitter.gd" id="1_qfmb0"]
+[ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/stalactites/shard_emitter.gd" id="1_qfmb0"]
 
 [node name="ShardEmitter" type="Node2D"]
 script = ExtResource("1_qfmb0")
