@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=34 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bx10emgiv6plg" path="res://scenes/elements/ceiling_drop_stalactite.tscn" id="5_aox7h"]
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="5_jbupj"]
 [ext_resource type="PackedScene" uid="uid://cx8jpjwiei0qv" path="res://scenes/elements/WaterCollectible.tscn" id="6_4cbp5"]
-[ext_resource type="Script" path="res://scenes/elements/scene_tile_pair.gd" id="6_ker30"]
+[ext_resource type="Script" uid="uid://djags063tgxu1" path="res://scenes/elements/scene_tile_pair.gd" id="6_ker30"]
 [ext_resource type="Texture2D" uid="uid://bltonr231ct1v" path="res://assets/sprites/cave backgrounds/backgound 1.png" id="7_j0kd2"]
 [ext_resource type="Texture2D" uid="uid://cuq13hnjpmc7x" path="res://assets/sprites/cave backgrounds/background 2.png" id="8_ibm0y"]
 [ext_resource type="Texture2D" uid="uid://b3v6s457r3ojo" path="res://assets/sprites/cave backgrounds/background 3.png" id="9_4cbp5"]
@@ -37,14 +37,14 @@ size = Vector2(12, 21)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dwx4m"]
 size = Vector2(11, 21)
 
-[sub_resource type="Gradient" id="Gradient_kjymn"]
+[sub_resource type="Gradient" id="Gradient_dwx4m"]
 interpolation_mode = 2
 interpolation_color_space = 2
 offsets = PackedFloat32Array(0)
 colors = PackedColorArray(0.345098, 0.713726, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_jxpnh"]
-gradient = SubResource("Gradient_kjymn")
+gradient = SubResource("Gradient_dwx4m")
 fill_from = Vector2(0.5, 1)
 fill_to = Vector2(0.5, 0)
 
@@ -103,7 +103,7 @@ height = 29
 light_mask = 2
 z_index = 10
 z_as_relative = false
-position = Vector2(-214, -37)
+position = Vector2(-248, -10)
 run_speed = 168.0
 double_jump_enabled = false
 max_jump_velocity = 365.0
@@ -406,10 +406,10 @@ tile_set = ExtResource("1_okrmv")
 tile_map_data = PackedByteArray("AADE/wAABgADAAgAAADF/wAABgACAAgAAADG/wAABgADAAgAAADH/wAABgACAAgAAADI/wAABgADAAgAAADJ/wAABgACAAgAAADK/wAABgADAAgAAADL/wAABgACAAgAAADM/wAABgADAAgAAADN/wAABgACAAgAAADO/wAABgADAAgAAADP/wAABgACAAgAAADQ/wAABgADAAgAAADR/wAABgACAAgAAADS/wAABgADAAgAAADT/wAABgACAAgAAADU/wAABgADAAgAAADV/wAABgACAAgAAADW/wAABgADAAgAAADX/wAABgACAAgAAADY/wAABgADAAgAAADZ/wAABgACAAgAAADa/wAABgADAAgAAADb/wAABgACAAgAAADc/wAABgADAAgAAADd/wAABgACAAgAAADe/wAABgADAAgAAADf/wAABgACAAgAAADg/wAABgADAAgAAADh/wAABgACAAgAAADi/wAABgADAAgAAADj/wAABgACAAgAAADk/wAABgADAAgAAADl/wAABgACAAgAAADm/wAABgADAAgAAADn/wAABgACAAgAAADo/wAABgADAAgAAADp/wAABgACAAgAAADq/wAABgADAAgAAADr/wAABgACAAgAAADs/wAABgADAAgAAADt/wAABgACAAgAAADu/wAABgADAAgAAADv/wAABgACAAgAAADw/wAABgADAAgAAADx/wAABgACAAgAAADy/wAABgADAAgAAADz/wAABgACAAgAAAD0/wAABgADAAgAAAD1/wAABgACAAgAAAD2/wAABgADAAgAAAD3/wAABgABAAQAABD4/wAABgAAAAQAABD5/wAABgACAAQAAAD6/wAABgADAAQAAAD7/wAABgACAAQAAAD8/wAABgADAAQAAAD9/wAABgACAAQAAAD+/wAABgADAAQAAAABAAAABgACAAQAAAACAAAABgADAAQAAAADAAAABgACAAQAAAAEAAAABgADAAQAAAAFAAAABgACAAQAAAAGAAAABgADAAQAAAAHAAAABgAAAAQAAAAIAAAABgABAAQAAAAJAAAABgACAAgAAAAKAAAABgADAAgAAAALAAAABgACAAgAAAAMAAAABgADAAgAAAANAAAABgACAAgAAAAOAAAABgADAAgAAAAPAAAABgACAAgAAAAQAAAABgADAAgAAAARAAAABgACAAgAAAASAAAABgADAAgAAAATAAAABgACAAgAAAAUAAAABgADAAgAAAAVAAAABgACAAgAAAAWAAAABgADAAgAAAAXAAAABgACAAgAAAAYAAAABgADAAgAAAAZAAAABgACAAgAAAAaAAAABgADAAgAAAAbAAAABgACAAgAAAAcAAAABgADAAgAAAAdAAAABgACAAgAAAAeAAAABgADAAgAAAAfAAAABgACAAgAAAAgAAAABgADAAgAAAAhAAAABgACAAgAAAAiAAAABgADAAgAAAAjAAAABgACAAgAAAAkAAAABgADAAgAAAAlAAAABgACAAgAAAAmAAAABgADAAgAAAAnAAAABgACAAgAAAAoAAAABgADAAgAAAApAAAABgACAAgAAAAqAAAABgADAAgAAAArAAAABgACAAgAAAAsAAAABgADAAgAAAAtAAAABgACAAgAAAAuAAAABgADAAgAAAAvAAAABgACAAgAAAAwAAAABgADAAgAAAAxAAAABgACAAgAAAAyAAAABgADAAgAAAAzAAAABgACAAgAAAA0AAAABgADAAgAAAA1AAAABgACAAgAAAA2AAAABgADAAgAAAA3AAAABgACAAgAAAA4AAAABgADAAgAAAA5AAAABgACAAgAAAA6AAAABgADAAgAAAA7AAAABgACAAgAAAA8AAAABgADAAgAAAA9AAAABgACAAgAAAA+AAAABgADAAgAAAA/AAAABgACAAgAAABAAAAABgADAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="Oasis Stage 1" type="CanvasGroup" parent="."]
+[node name="OasisStage1" type="CanvasGroup" parent="."]
 visible = false
 
-[node name="oasis stage 1 far background" type="TileMapLayer" parent="Oasis Stage 1"]
+[node name="oasis stage 1 far background" type="TileMapLayer" parent="OasisStage1"]
 light_mask = 8
 visibility_layer = 8
 y_sort_enabled = true
@@ -417,19 +417,19 @@ tile_map_data = PackedByteArray("AAD7////BgAAABwAAAADAP//BgAAAAwAAAAEAP//BgABAAw
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="oasis stage 1 background" type="TileMapLayer" parent="Oasis Stage 1"]
+[node name="oasis stage 1 background" type="TileMapLayer" parent="OasisStage1"]
 light_mask = 4
 tile_map_data = PackedByteArray("AAD5////BgAVAAoAABD6////BgACACYAABD7////BgAZAAgAABD8////BgAYAAgAABD9////BgAAACYAABABAP//BgAAACYAAAACAP//BgAVAAoAAAADAP//BgACACYAAAAFAP//BgAZAAgAABDy////BgAAACYAABD2////BgAAACYAAAAMAP//BgACACYAAAAKAP//BgACACYAAADc////BgAaAAgAAADd////BgAbAAgAAADG////BgAaAAgAAADH////BgAbAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 1 middleground" type="TileMapLayer" parent="Oasis Stage 1"]
+[node name="oasis stage 1 middleground" type="TileMapLayer" parent="OasisStage1"]
 top_level = true
 light_mask = 4
 z_as_relative = false
 tile_map_data = PackedByteArray("AAD9////BgAWAAgAAAABAP//BgAZAAgAAAADAP//BgAUAAgAAAAEAP//BgAVAAgAAAD6////BgAUAAgAAAD7////BgAVAAgAAAAGAP//BgAAACIAAAD4////BgAGAAwAAADy////BgAAAAwAAADz////BgABAAwAAAD0////BgACAAwAAAD1////BgADAAwAAAD2////BgAEAAwAAAD3////BgAFAAwAAAD5////BgAHAAwAAADn////BgAaAAgAAAAmAP//BgAaAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 1 foreground grass" type="TileMapLayer" parent="Oasis Stage 1"]
+[node name="oasis stage 1 foreground grass" type="TileMapLayer" parent="OasisStage1"]
 light_mask = 8
 visibility_layer = 8
 y_sort_enabled = true
@@ -437,10 +437,10 @@ tile_map_data = PackedByteArray("AADE/wAABgADAAgAAADF/wAABgACAAgAAADG/wAABgADAAg
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="Oasis Stage 2" type="CanvasGroup" parent="."]
+[node name="OasisStage2" type="CanvasGroup" parent="."]
 visible = false
 
-[node name="oasis stage 2 far background" type="TileMapLayer" parent="Oasis Stage 2"]
+[node name="oasis stage 2 far background" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 8
 visibility_layer = 8
 y_sort_enabled = true
@@ -448,19 +448,19 @@ tile_map_data = PackedByteArray("AAD7////BgAAABwAAAADAP//BgAAAAwAAAAEAP//BgABAAw
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="oasis stage 2 background" type="TileMapLayer" parent="Oasis Stage 2"]
+[node name="oasis stage 2 background" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 4
 tile_map_data = PackedByteArray("AAD5////BgAVAAoAABD6////BgACACYAABD7////BgAZAAgAABD8////BgAYAAgAABD9////BgAAACYAABABAP//BgAAACYAAAACAP//BgAVAAoAAAADAP//BgACACYAAAAFAP//BgAZAAgAABDy////BgAAACYAABD2////BgAAACYAAAAMAP//BgACACYAAAAKAP//BgACACYAAAAOAP//BgAYAAgAAAAPAP//BgAZAAgAAAAdAP//BgAVAAoAAAAeAP//BgAaAAgAAAAfAP//BgAbAAgAAADi////BgAaAAgAAADj////BgAbAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 2 middleground" type="TileMapLayer" parent="Oasis Stage 2"]
+[node name="oasis stage 2 middleground" type="TileMapLayer" parent="OasisStage2"]
 top_level = true
 light_mask = 4
 z_as_relative = false
 tile_map_data = PackedByteArray("AAD9////BgAWAAgAAAABAP//BgAZAAgAAAADAP//BgAUAAgAAAAEAP//BgAVAAgAAAD6////BgAUAAgAAAD7////BgAVAAgAAAAGAP//BgAAACIAAAD4////BgAGAAwAAADy////BgAAAAwAAADz////BgABAAwAAAD0////BgACAAwAAAD1////BgADAAwAAAD2////BgAEAAwAAAD3////BgAFAAwAAAD5////BgAHAAwAAAASAP//BgAJAAMAAAARAP//BgAJAAMAABAXAP//BgAJAAMAABAHAP//BgAJAAMAABAIAP//BgAJAAMAAADq////BgAGAAwAAADr////BgAHAAwAAADs////BgACAAwAAADt////BgADAAwAAADu////BgAEAAwAAADv////BgAFAAwAAADw////BgAGAAwAAADx////BgAHAAwAAADk////BgAAAAwAAADl////BgABAAwAAADm////BgACAAwAAADn////BgADAAwAAADo////BgAEAAwAAADp////BgAFAAwAAAAVAP//BgAUAAgAAAAWAP//BgAVAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 2 foreground grass" type="TileMapLayer" parent="Oasis Stage 2"]
+[node name="oasis stage 2 foreground grass" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 8
 visibility_layer = 8
 z_as_relative = false
@@ -469,10 +469,10 @@ tile_map_data = PackedByteArray("AADj/wAABgAAAAQAABDi/wAABgABAAQAABDk/wAABgACAAQ
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="Oasis Stage 3" type="CanvasGroup" parent="."]
+[node name="OasisStage3" type="CanvasGroup" parent="."]
 visible = false
 
-[node name="oasis stage 3 far background" type="TileMapLayer" parent="Oasis Stage 3"]
+[node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 8
 visibility_layer = 8
 y_sort_enabled = true
@@ -480,19 +480,19 @@ tile_map_data = PackedByteArray("AAD7////BgAAABwAAAADAP//BgAAAAwAAAAEAP//BgABAAw
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="oasis stage 3 background" type="TileMapLayer" parent="Oasis Stage 3"]
+[node name="oasis stage 3 background" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 4
 tile_map_data = PackedByteArray("AAD5////BgAVAAoAABD6////BgACACYAABD7////BgAZAAgAABD8////BgAYAAgAABD9////BgAAACYAABABAP//BgAAACYAAAACAP//BgAVAAoAAAADAP//BgACACYAAAAFAP//BgAZAAgAABDy////BgAAACYAABD2////BgAAACYAAAAMAP//BgACACYAAAAKAP//BgACACYAAAAOAP//BgAYAAgAAAAPAP//BgAZAAgAAADi////BgAaAAgAAADj////BgAbAAgAAADa////BgAAABwAAADW////BgAWAAgAAADX////BgAXAAgAAAArAP//BgAWAAgAAAAsAP//BgAXAAgAAADp////BgAXAAgAAADo////BgAWAAgAAADu////BgAXAAgAAADt////BgAWAAgAAADm////BgAXAAgAAADl////BgAWAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 3 middleground" type="TileMapLayer" parent="Oasis Stage 3"]
+[node name="oasis stage 3 middleground" type="TileMapLayer" parent="OasisStage3"]
 top_level = true
 light_mask = 4
 z_as_relative = false
 tile_map_data = PackedByteArray("AAD9////BgAWAAgAAAABAP//BgAZAAgAAAADAP//BgAUAAgAAAAEAP//BgAVAAgAAAD6////BgAUAAgAAAD7////BgAVAAgAAAAGAP//BgAAACIAAAD4////BgAGAAwAAADy////BgAAAAwAAADz////BgABAAwAAAD0////BgACAAwAAAD1////BgADAAwAAAD2////BgAEAAwAAAD3////BgAFAAwAAAD5////BgAHAAwAAAASAP//BgAJAAMAAAARAP//BgAJAAMAABAXAP//BgAJAAMAABAHAP//BgAJAAMAABAIAP//BgAJAAMAAADq////BgAGAAwAAADr////BgAHAAwAAADs////BgACAAwAAADt////BgADAAwAAADu////BgAEAAwAAADv////BgAFAAwAAADw////BgAGAAwAAADx////BgAHAAwAAADk////BgAAAAwAAADl////BgABAAwAAADm////BgACAAwAAADn////BgADAAwAAADo////BgAEAAwAAADp////BgAFAAwAAAAVAP//BgAUAAgAAAAWAP//BgAVAAgAAAAjAP//BgAAABwAAAAcAP//BgAAABwAAADX////BgAYAAgAAADY////BgAZAAgAAADV////BgAVAAgAAAAtAP//BgAXAAgAAAAsAP//BgAWAAgAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 3 foreground" type="TileMapLayer" parent="Oasis Stage 3"]
+[node name="oasis stage 3 foreground" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 8
 visibility_layer = 8
 z_as_relative = false
@@ -501,10 +501,10 @@ tile_map_data = PackedByteArray("AAArAAAABgAAAAQAAAAsAAAABgABAAQAAADU/wAABgAAAAQ
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="Oasis Stage 4" type="CanvasGroup" parent="."]
+[node name="OasisStage4" type="CanvasGroup" parent="."]
 visible = false
 
-[node name="oasis stage 3 far background" type="TileMapLayer" parent="Oasis Stage 4"]
+[node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 8
 visibility_layer = 8
 y_sort_enabled = true
@@ -512,19 +512,19 @@ tile_map_data = PackedByteArray("AAD7////BgAAABwAAAADAP//BgAAAAwAAAAEAP//BgABAAw
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
-[node name="oasis stage 3 background" type="TileMapLayer" parent="Oasis Stage 4"]
+[node name="oasis stage 3 background" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 4
 tile_map_data = PackedByteArray("AAD5////BgAVAAoAABD6////BgACACYAABD7////BgAZAAgAABD8////BgAYAAgAABD9////BgAAACYAABABAP//BgAAACYAAAACAP//BgAVAAoAAAADAP//BgACACYAAAAFAP//BgAZAAgAABDy////BgAAACYAABD2////BgAAACYAAAAMAP//BgACACYAAAAKAP//BgACACYAAAAOAP//BgAYAAgAAAAPAP//BgAZAAgAAADi////BgAaAAgAAADj////BgAbAAgAAADa////BgAAABwAAADW////BgAWAAgAAADX////BgAXAAgAAAArAP//BgAWAAgAAAAsAP//BgAXAAgAAADp////BgAXAAgAAADo////BgAWAAgAAADu////BgAXAAgAAADt////BgAWAAgAAADm////BgAXAAgAAADl////BgAWAAgAAAAtAP//BgAAAAwAAAAuAP//BgABAAwAAAAvAP//BgACAAwAAAAwAP//BgADAAwAAAAxAP//BgAEAAwAAAAyAP//BgAFAAwAAAAzAP//BgAGAAwAAAA0AP//BgAHAAwAAAA1AP//BgAAAAwAAAA2AP//BgABAAwAAAA3AP//BgACAAwAAAA4AP//BgADAAwAAADR////BgAYAAgAAADS////BgAZAAgAAADU////BgAAACYAAADL//3/BgAAAC0AAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 3 middleground" type="TileMapLayer" parent="Oasis Stage 4"]
+[node name="oasis stage 3 middleground" type="TileMapLayer" parent="OasisStage4"]
 top_level = true
 light_mask = 4
 z_as_relative = false
 tile_map_data = PackedByteArray("AAD9////BgAWAAgAAAABAP//BgAZAAgAAAADAP//BgAUAAgAAAAEAP//BgAVAAgAAAD6////BgAUAAgAAAD7////BgAVAAgAAAAGAP//BgAAACIAAAD4////BgAGAAwAAADy////BgAAAAwAAADz////BgABAAwAAAD0////BgACAAwAAAD1////BgADAAwAAAD2////BgAEAAwAAAD3////BgAFAAwAAAD5////BgAHAAwAAAASAP//BgAJAAMAAAARAP//BgAJAAMAABAXAP//BgAJAAMAABAHAP//BgAJAAMAABAIAP//BgAJAAMAAADq////BgAGAAwAAADr////BgAHAAwAAADs////BgACAAwAAADt////BgADAAwAAADu////BgAEAAwAAADv////BgAFAAwAAADw////BgAGAAwAAADx////BgAHAAwAAADk////BgAAAAwAAADl////BgABAAwAAADm////BgACAAwAAADn////BgADAAwAAADo////BgAEAAwAAADp////BgAFAAwAAAAVAP//BgAUAAgAAAAWAP//BgAVAAgAAAAjAP//BgAAABwAAAAcAP//BgAAABwAAADX////BgAYAAgAAADY////BgAZAAgAAADV////BgAVAAgAAAAtAP//BgAXAAgAAAAsAP//BgAWAAgAAADN////BgAUAAgAAADO////BgAVAAgAAADI////BgAUAAgAAADJ////BgAVAAgAAADK////BgAYAAgAAADL////BgAZAAgAAADP////BgAYAAgAAFDH////BgAYAAgAAFDM////BgAVAAoAAAA=")
 tile_set = ExtResource("1_okrmv")
 
-[node name="oasis stage 4 foreground" type="TileMapLayer" parent="Oasis Stage 4"]
+[node name="oasis stage 4 foreground" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 8
 visibility_layer = 8
 z_as_relative = false
@@ -727,7 +727,7 @@ texture = ExtResource("12_dwx4m")
 [node name="PauseMenu" parent="." instance=ExtResource("15_jbupj")]
 
 [node name="Launch zone" type="Area2D" parent="." groups=["LaunchZones"]]
-position = Vector2(0, 360)
+position = Vector2(-68, 359)
 collision_layer = 128
 collision_mask = 128
 
@@ -754,39 +754,39 @@ texture = SubResource("GradientTexture2D_jbupj")
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_427" to="Underground/CanvasGroup/Small Water spots/Replacement_427" method="_on_body_entered"]
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_374" to="Underground/CanvasGroup/Small Water spots/Replacement_374" method="_on_body_entered"]
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_134" to="Underground/CanvasGroup/Small Water spots/Replacement_134" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169080" to="Underground/CanvasGroup/Small Water spots/@Area2D@169080" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169081" to="Underground/CanvasGroup/Small Water spots/@Area2D@169081" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169082" to="Underground/CanvasGroup/Small Water spots/@Area2D@169082" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169083" to="Underground/CanvasGroup/Small Water spots/@Area2D@169083" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169084" to="Underground/CanvasGroup/Small Water spots/@Area2D@169084" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169085" to="Underground/CanvasGroup/Small Water spots/@Area2D@169085" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169086" to="Underground/CanvasGroup/Small Water spots/@Area2D@169086" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169087" to="Underground/CanvasGroup/Small Water spots/@Area2D@169087" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169088" to="Underground/CanvasGroup/Small Water spots/@Area2D@169088" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169089" to="Underground/CanvasGroup/Small Water spots/@Area2D@169089" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169090" to="Underground/CanvasGroup/Small Water spots/@Area2D@169090" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169091" to="Underground/CanvasGroup/Small Water spots/@Area2D@169091" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169092" to="Underground/CanvasGroup/Small Water spots/@Area2D@169092" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169093" to="Underground/CanvasGroup/Small Water spots/@Area2D@169093" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169094" to="Underground/CanvasGroup/Small Water spots/@Area2D@169094" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169095" to="Underground/CanvasGroup/Small Water spots/@Area2D@169095" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169096" to="Underground/CanvasGroup/Small Water spots/@Area2D@169096" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169097" to="Underground/CanvasGroup/Small Water spots/@Area2D@169097" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169098" to="Underground/CanvasGroup/Small Water spots/@Area2D@169098" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169099" to="Underground/CanvasGroup/Small Water spots/@Area2D@169099" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169100" to="Underground/CanvasGroup/Small Water spots/@Area2D@169100" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169101" to="Underground/CanvasGroup/Small Water spots/@Area2D@169101" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169102" to="Underground/CanvasGroup/Small Water spots/@Area2D@169102" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169103" to="Underground/CanvasGroup/Small Water spots/@Area2D@169103" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169104" to="Underground/CanvasGroup/Small Water spots/@Area2D@169104" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169105" to="Underground/CanvasGroup/Small Water spots/@Area2D@169105" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169106" to="Underground/CanvasGroup/Small Water spots/@Area2D@169106" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169107" to="Underground/CanvasGroup/Small Water spots/@Area2D@169107" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169108" to="Underground/CanvasGroup/Small Water spots/@Area2D@169108" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169109" to="Underground/CanvasGroup/Small Water spots/@Area2D@169109" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169110" to="Underground/CanvasGroup/Small Water spots/@Area2D@169110" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169111" to="Underground/CanvasGroup/Small Water spots/@Area2D@169111" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169112" to="Underground/CanvasGroup/Small Water spots/@Area2D@169112" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169113" to="Underground/CanvasGroup/Small Water spots/@Area2D@169113" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68774" to="Underground/CanvasGroup/Small Water spots/@Area2D@68774" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68775" to="Underground/CanvasGroup/Small Water spots/@Area2D@68775" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68776" to="Underground/CanvasGroup/Small Water spots/@Area2D@68776" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68777" to="Underground/CanvasGroup/Small Water spots/@Area2D@68777" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68778" to="Underground/CanvasGroup/Small Water spots/@Area2D@68778" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68779" to="Underground/CanvasGroup/Small Water spots/@Area2D@68779" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68780" to="Underground/CanvasGroup/Small Water spots/@Area2D@68780" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68781" to="Underground/CanvasGroup/Small Water spots/@Area2D@68781" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68782" to="Underground/CanvasGroup/Small Water spots/@Area2D@68782" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68783" to="Underground/CanvasGroup/Small Water spots/@Area2D@68783" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68784" to="Underground/CanvasGroup/Small Water spots/@Area2D@68784" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68785" to="Underground/CanvasGroup/Small Water spots/@Area2D@68785" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68786" to="Underground/CanvasGroup/Small Water spots/@Area2D@68786" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68787" to="Underground/CanvasGroup/Small Water spots/@Area2D@68787" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68788" to="Underground/CanvasGroup/Small Water spots/@Area2D@68788" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68789" to="Underground/CanvasGroup/Small Water spots/@Area2D@68789" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68790" to="Underground/CanvasGroup/Small Water spots/@Area2D@68790" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68791" to="Underground/CanvasGroup/Small Water spots/@Area2D@68791" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68792" to="Underground/CanvasGroup/Small Water spots/@Area2D@68792" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68793" to="Underground/CanvasGroup/Small Water spots/@Area2D@68793" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68794" to="Underground/CanvasGroup/Small Water spots/@Area2D@68794" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68795" to="Underground/CanvasGroup/Small Water spots/@Area2D@68795" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68796" to="Underground/CanvasGroup/Small Water spots/@Area2D@68796" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68797" to="Underground/CanvasGroup/Small Water spots/@Area2D@68797" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68798" to="Underground/CanvasGroup/Small Water spots/@Area2D@68798" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68799" to="Underground/CanvasGroup/Small Water spots/@Area2D@68799" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68800" to="Underground/CanvasGroup/Small Water spots/@Area2D@68800" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68801" to="Underground/CanvasGroup/Small Water spots/@Area2D@68801" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68802" to="Underground/CanvasGroup/Small Water spots/@Area2D@68802" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68803" to="Underground/CanvasGroup/Small Water spots/@Area2D@68803" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68804" to="Underground/CanvasGroup/Small Water spots/@Area2D@68804" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68805" to="Underground/CanvasGroup/Small Water spots/@Area2D@68805" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68806" to="Underground/CanvasGroup/Small Water spots/@Area2D@68806" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@68807" to="Underground/CanvasGroup/Small Water spots/@Area2D@68807" method="_on_body_entered"]
 
 [editable path="Player"]

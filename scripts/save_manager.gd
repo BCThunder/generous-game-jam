@@ -16,6 +16,7 @@ func save_game():
 	config.set_value("Player", "position", last_location)
 	config.set_value("Player", "collected_water", GameManager.collected_water)
 	save_collected_water()
+	config.set_value("Level", "stage_progress", GameManager.stage_progress)
 	config.set_value("Level", "small_water", has_water_been_collected)
 	config.save(save_path)
 	
@@ -29,6 +30,7 @@ func load_save():
 	if save_file == OK:
 		last_location = config.get_value("Player", "position")
 		GameManager.collected_water = config.get_value("Player", "collected_water")
+		GameManager.stage_progress = config.get_value("Level", "stage_progress")
 		has_water_been_collected = config.get_value("Level", "small_water")
 		load_collected_water()
 		update_checkpoint(last_location)
@@ -54,13 +56,13 @@ func has_valid_save() -> bool:
 
 
 func _on_scene_changed(_node: Node) -> void:
-	if not player:
+	if not player and GameManager.is_in_the_game:
 		player = _find_player()
 	
-	# Delay call until all nodes are ready
-	await get_tree().process_frame
-	load_collected_water()
-	spawn_player()
+		# Delay call until all nodes are ready
+		await get_tree().process_frame
+		load_collected_water()
+		spawn_player()
 
 
 func _find_player():
@@ -98,5 +100,4 @@ func spawn_player():
 	if not last_location:
 		player = _find_player()
 		last_location = player.global_position
-	
-	player.global_position = last_location
+		player.global_position = last_location
