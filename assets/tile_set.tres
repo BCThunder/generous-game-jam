@@ -225,6 +225,7 @@ texture = SubResource("CanvasTexture_b4n3o")
 15:8/0/physics_layer_0/polygon_0/one_way = true
 15:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 16:8/0 = 0
+16:8/0/custom_data_3 = "launch"
 17:8/0 = 0
 18:8/0 = 0
 19:8/0 = 0

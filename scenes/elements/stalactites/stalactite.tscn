@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://3mg1bxd5jluy"]
 
-[ext_resource type="Script" uid="uid://d3iybd2d2t2tg" path="res://scenes/elements/stalactite.gd" id="1_x8va4"]
-[ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/shard_emitter.gd" id="2_a67fs"]
+[ext_resource type="Script" uid="uid://d3iybd2d2t2tg" path="res://scenes/elements/stalactites/stalactite.gd" id="1_x8va4"]
+[ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/stalactites/shard_emitter.gd" id="2_a67fs"]
 [ext_resource type="Texture2D" uid="uid://cc5t4c2m3xt27" path="res://assets/sprites/all/8x16 stalactite.png" id="2_x8va4"]
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_x8va4"]
@@ -25,12 +25,6 @@ offset = Vector2(-4, 0)
 
 [node name="ShardEmitter" type="Node2D" parent="Sprite2D"]
 script = ExtResource("2_a67fs")
-nbr_of_shards = null
-threshold = null
-min_impulse = null
-max_impulse = null
-lifetime = null
-display_triangles = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("ConvexPolygonShape2D_x8va4")

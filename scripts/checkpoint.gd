@@ -6,3 +6,4 @@ extends Area2D
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		SaveManager.update_checkpoint(respawn_point.global_position)
+	print_debug("Checkpoint reached at: ", respawn_point.global_position)

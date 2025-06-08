@@ -1,8 +1,13 @@
-[gd_scene load_steps=0 format=3 uid="uid://ni848rc30clt"]
+[gd_scene format=3 uid="uid://ni848rc30clt"]
 
 [node name="Shard" type="RigidBody2D"]
+modulate = Color(0.214703, 0.214703, 0.214702, 1)
 collision_layer = 0
+mass = 2.0
+gravity_scale = 0.8
 freeze = true
+linear_damp = 1.0
+angular_damp = 1.0
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 
