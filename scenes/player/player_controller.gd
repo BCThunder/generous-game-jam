@@ -22,6 +22,16 @@ class_name PlayerController
 @export var down_hold_gravity_multiplier: float = 3.0
 @export var coyote_time_duration: float = 0.2 # seconds of grace time
 
+# Wall Sliding and Jumping
+@export_category("Wall Sliding")
+@export var wall_slide_enabled: bool = true
+@export var wall_slide_speed: float = 100.0 # Speed at which the player slides down walls
+@export var wall_jump_velocity: float = 200.0 # Velocity applied when jumping off a wall
+@export var wall_jump_angle: float = 45.0 # Angle of the wall jump in degrees
+@export var use_wall_jump_time_limit: bool = true # If true, limit wall jumps to a certain duration
+@export var wall_slide_max_duration: float = 0.5 # Maximum time to slide on a wall before falling off
+@export var can_double_jump_after_wall_jump: bool = true # Allow double jump after wall jump
+
 # Ground & Slippery Tiles
 @export_category("Ground & Slippery")
 @export var ground_friction: float = 8.0
@@ -57,7 +67,7 @@ var has_jumped_off_spikes: bool = false
 @export var destroy_ability_enabled: bool = true
 @export var destroy_ability_cooldown: float = 0.3 # seconds
 @export var destroy_ability_range: float = 32.0 # Raycast distance in pixels
-@export var destroy_ability_collision_mask: int = 0xFFFFFFFF # Collision mask for raycast
+@export_flags_2d_physics var destroy_ability_collision_mask
 @export var destroy_ability_hit_from_inside: bool = true # Allow hit from inside
 @export var destroy_ability_group: String = "breakable_rock" # Group name for breakable objects
 @export var destroy_ability_chain_radius: float = 48.0 # Radius for chain breaking
@@ -74,6 +84,8 @@ var destroy_ability_timer: Timer
 @export var debug_state_changes: bool = false
 @export var debug_collisions: bool = false
 @export var debug_death: bool = false
+@export var debug_destroy_ability: bool = false
+@export var debug_destroy_ray: bool = false # Draw the destroy ray for debugging
 
 # Sound Effects
 @onready var walking_sfx: AudioStreamPlayer2D = $SFX/WalkingSFX
@@ -86,12 +98,20 @@ var destroy_ability_timer: Timer
 # Animation
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+
+# Input Tracking
+var input_x_direction: float = 0.0 # -1 for left, 1 for right, 0 for none
+var previous_input_x_direction: float = 0.0 # Last input input_x_direction
+var x_dir_just_pressed: bool = false # True if left/right was just pressed
+
+
 # Context Flags
 var is_jump_held: bool = false
 var has_jumped: bool = false
 var can_double_jump: bool = false
 var in_slam_zone: bool = false
 var in_launch_zone: bool = false
+var can_wall_slide: bool = false # Whether wall sliding is enabled
 
 # Ability Reference
 var launch_ability: Node2D = null
@@ -104,6 +124,7 @@ var dissolve_tilemap_layer: TileMapLayer
 var tap_boost_timer: Timer
 var coyote_timer_node: Timer
 var spike_grace_timer_node: Timer # Timer node for spike grace
+var wall_slide_timer: Timer # Timer for wall slide duration
 # endregion
 
 # region State Machine
@@ -133,6 +154,7 @@ class GroundState extends PlayerState:
 		player.can_double_jump = false
 		player.is_jump_held = false
 		player.has_jumped = false
+		player.can_wall_slide = player.wall_slide_enabled
 
 		if player.debug_enabled and player.debug_movement:
 			print("Entered GroundState")
@@ -193,7 +215,51 @@ class AirState extends PlayerState:
 		player._collision_checker()
 		if player.is_on_floor():
 			player._change_state(GroundState)
+		elif can_wall_slide and player.is_on_wall():
+			# If on wall, switch to WallSlideState
+			player._change_state(WallSlideState)
 
+class WallSlideState extends PlayerState:
+	var wall_dir = 0.0
+
+	func enter() -> void:
+		if player.debug_enabled and player.debug_movement:
+			print("Entered WallSlideState")
+		player.velocity.y = 0.0 # Stop vertical movement
+		player.is_jump_held = false # Reset jump hold
+		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
+		for i in range(player.get_slide_collision_count()):
+			var coll = player.get_slide_collision(i)
+			if coll and coll.normal.x != 0:
+				wall_dir = - coll.normal.x
+				break
+
+		# Optionally start sliding at a fixed speed
+		player.velocity.y = player.wall_slide_speed
+
+	func input(event: InputEvent) -> void:
+		if event.is_action_pressed("jump"):
+			if player.debug_enabled and player.debug_jumps:
+				print("Jump pressed (Wall Slide)")
+			player._try_wall_jump()
+
+	func physics(delta: float) -> void:
+		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+		player.velocity.y = wall_slider_speed # Maintain wall slide speed
+		player.move_and_slide()
+		player._collision_checker()
+
+
+func _try_wall_jump()
+		if player.debug_enabled and player.debug_jumps:
+			print("Wall jump attempt")
+		if player.use_wall_jump_time_limit:
+			player._change_state(WallJumpState)
+		else:
+			player._change_state(AirState)
+
+		
 class SlamState extends PlayerState:
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
@@ -279,6 +345,8 @@ var current_state: PlayerState = null
 func _ready() -> void:
 	_get_tilemap_layers()
 	animation_player.play("fade_in") # fade in to hide "teleporting" to last save spot
+	# Initialize player state
+	position = SaveManager.last_location if SaveManager.last_location else Vector2.ZERO
 
 	_init_launch_ability()
 
@@ -314,7 +382,7 @@ func _ready() -> void:
 	set_physics_process(true)
 
 	_collision_checker()
-	_connect_zone_signals()
+	call_deferred("_connect_zone_signals")
 # endregion
 
 
@@ -371,29 +439,28 @@ func _apply_gravity(delta: float) -> void:
 	velocity.y += gravity * grav_scale * delta
 
 func _handle_ground_moves(delta: float) -> void:
-	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	var just_pressed: bool = Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_left")
+	_updated_x_input()
 	var is_slippery: bool = _is_on_slippery()
 
 	# Tap boost logic
-	if just_pressed and direction != 0:
+	if x_dir_just_pressed and input_x_direction != 0:
 		tap_boost_timer.start(tap_boost_duration)
 
 	if is_slippery:
 		var accel: float = run_speed * slippery_acceleration_multiplier
-		if direction != 0:
+		if input_x_direction != 0:
 			if not tap_boost_timer.is_stopped():
-				velocity.x += direction * tap_speed * delta * tap_slippery_acceleration_multiplier
+				velocity.x += input_x_direction * tap_speed * delta * tap_slippery_acceleration_multiplier
 			else:
-				velocity.x += direction * accel * delta
+				velocity.x += input_x_direction * accel * delta
 		else:
 			velocity.x = lerp(velocity.x, 0.0, slippery_friction * delta)
 	else:
-		if direction != 0:
+		if input_x_direction != 0:
 			if not tap_boost_timer.is_stopped():
-				velocity.x = direction * tap_speed
+				velocity.x = input_x_direction * tap_speed
 			else:
-				velocity.x = direction * run_speed
+				velocity.x = input_x_direction * run_speed
 				
 			play_walking_sfx()
 		else:
@@ -407,10 +474,9 @@ func play_walking_sfx():
 		walking_sfx.play()
 
 func _handle_air_moves(delta: float) -> void:
-	var direction: float = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-
-	if direction != 0:
-		velocity.x += direction * run_speed * air_accel_multiplier * delta
+	_updated_x_input()
+	if input_x_direction != 0:
+		velocity.x += input_x_direction * run_speed * air_accel_multiplier * delta
 	else:
 		velocity.x = lerp(velocity.x, 0.0, air_friction * delta)
 
@@ -440,7 +506,7 @@ func _connect_zone_signals() -> void:
 		zone.connect("body_exited", Callable(self, "_on_launch_zone_exited"))
 # endregion
 
-# region Jump & Destroy Abilities
+# region Jump
 func _try_jump() -> void:
 	if debug_enabled and debug_jumps:
 		print_debug("Jump attempt - is_jump_held: ", is_jump_held, ", can_double_jump: ", can_double_jump, ", double_jump_enabled: ", double_jump_enabled, ", in_spike_grace: ", in_spike_grace, ", spike_jump_once: ", spike_jump_once, ", has_jumped_off_spikes: ", has_jumped_off_spikes, ", coyote_timer_node.is_stopped(): ", coyote_timer_node.is_stopped())
@@ -510,54 +576,102 @@ func play_death_sfx():
 	slam_sfx.stop()
 	death_sfx.play(2.0 - death_duration)
 
+# endregion
+
+# region Destroy Ability
+# Cast a short ray in facing direction to detect breakable rocks
 func _try_destroy_ability() -> void:
-	# Cast a short ray in facing direction to detect breakable rocks
-	var direction = Vector2(sign($Sprite2D.scale.x), 0)
-	var ray_origin = global_position
-	var ray_end = ray_origin + direction * destroy_ability_range # Use exported range
+	if debug_enabled and debug_state_changes:
+		print_debug("Destroy ability triggered.")
+	# Use the most recent input direction for the destroy ray
+	var ray_origin: Vector2 = global_position
+	var ray_end: Vector2 = ray_origin + Vector2(previous_input_x_direction * destroy_ability_range, 0) # Use exported range\
 	var space = get_world_2d().direct_space_state
 	var params = PhysicsRayQueryParameters2D.create(ray_origin, ray_end)
+	if debug_enabled and debug_destroy_ray:
+		# create a red debug line
+		var debug_line := Line2D.new()
+		debug_line.width = 2.0
+		debug_line.default_color = Color.RED
+		# points are local to the player, so subtract global_position
+		debug_line.points = [
+			ray_origin - global_position,
+			ray_end - global_position
+		]
+		add_child(debug_line)
+		# remove it shortly after
+		await get_tree().create_timer(0.1).timeout
+		debug_line.queue_free()
 	params.exclude = [self]
 	params.collision_mask = destroy_ability_collision_mask
 	params.hit_from_inside = destroy_ability_hit_from_inside
 	var result = space.intersect_ray(params)
 	if result and result.collider and result.collider.is_in_group(destroy_ability_group):
 		if debug_enabled and debug_state_changes:
-			print("Destroyingrock: ", result.collider.name)
+			print("Destroying rock: ", result.collider.name)
+		if debug_enabled and debug_destroy_ability:
+			print_debug("Destroying rock: ", result.collider.name)
 		# Break the initial object and start chain break
+
+
+		if is_on_floor():
+			_change_state(GroundState)
+		else:
+			_change_state(AirState)
+
 		_chain_destroy(result.collider, global_position, 0)
 		# Optionally play effect or sound here
 	else:
 		if debug_enabled and debug_state_changes:
-			print("Nobreakablerockdetected.")
+			print("No breakable rock detected.")
+		if debug_enabled and debug_destroy_ability:
+			print_debug("No breakable rock detected.")
+
+		if is_on_floor():
+			_change_state(GroundState)
+		else:
+			_change_state(AirState)
 
 # Progressive chain break with delay for surrounding objects
 func _chain_destroy(center_obj: Node, center_pos: Vector2, depth: int) -> void:
+	if debug_enabled and debug_destroy_ability:
+		print_debug("Chain destroy called on: ", center_obj.name, " at depth: ", depth)
 	if not center_obj:
 		return
 	# Optionally play destroy animation or effect
-	if center_obj.has_method("destroy"):
-		center_obj.call("destroy")
-	else:
-		push_warning("DestroyAbility: Objectdoes not havea'destroy'method.")
-	# Start cooldown timer only for the initial call
-	if depth == 0:
-		destroy_ability_timer.start(destroy_ability_cooldown)
+		#destroy_ability_timer.start(destroy_ability_cooldown)
 	if debug_enabled and debug_state_changes:
-		print("Destroyabilityusedon: ", center_obj.name)
+		print("Destroy ability used on: ", center_obj.name)
+		print_debug("Destroy ability used on: ", center_obj.name)
 	if depth >= destroy_ability_chain_depth:
 		return
-	for obj in get_tree().get_nodes_in_group(destroy_ability_group):
-		if obj == center_obj:
-			continue
-		if obj.global_position.distance_to(center_pos) <= destroy_ability_chain_radius:
+	
+	center_obj.get_node("Sprite2D/ShardEmitter").call_deferred("shatter") # Assuming the destructible has a ShardEmitter child
+
+	# Use overlap shape (circle) to find only nearby destructibles
+	var space = get_world_2d().direct_space_state
+	var circle_shape = CircleShape2D.new()
+	circle_shape.radius = destroy_ability_chain_radius * (1 + depth) # Increase radius with depth
+	var query = PhysicsShapeQueryParameters2D.new()
+	query.shape = circle_shape
+	query.transform = Transform2D(0, center_pos)
+	query.exclude = [center_obj]
+	query.collision_mask = destroy_ability_collision_mask
+	query.margin = -0.01
+	var results = space.intersect_shape(query)
+	for result in results:
+		if debug_enabled and debug_destroy_ability:
+			print_debug("Chain destroy found: ", result.collider.name, " at depth: ", depth + 1)
+		var obj = result.collider
+		if obj and obj.is_in_group(destroy_ability_group):
 			# Schedule next break with delay
 			var delay = destroy_ability_chain_delay * (depth + 1)
-			call_deferred("_delayed_chain_destroy", obj, obj.global_position, depth + 1, delay)
+			call_deferred("_delayed_chain_destroy", obj, center_obj.global_position, depth + 1, delay)
 
 func _delayed_chain_destroy(obj: Node, pos: Vector2, depth: int, delay: float) -> void:
 	await get_tree().create_timer(delay).timeout
 	_chain_destroy(obj, pos, depth)
+
 # endregion
 
 # region Zone Callbacks
@@ -661,3 +775,20 @@ func _get_collision_half_height() -> float:
 		return shape.radius
 	return 0.0
 # endregion
+
+
+# region Input 
+func _updated_x_input() -> void:
+	# Update the input_x_direction based on current input
+	input_x_direction = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	x_dir_just_pressed = Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_left")
+	if input_x_direction != 0:
+		if Input.is_action_pressed("move_right") and not Input.is_action_pressed("move_left"):
+			previous_input_x_direction = 1.0
+		elif Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
+			previous_input_x_direction = -1.0
+
+
+	if debug_enabled and debug_input_events:
+		print_debug("Updated input_x_direction: ", input_x_direction, " (Just Pressed: ", x_dir_just_pressed, ")",
+					" Previous: ", previous_input_x_direction)

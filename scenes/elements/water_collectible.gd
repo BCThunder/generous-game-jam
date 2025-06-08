@@ -8,6 +8,7 @@ func _ready():
 		disable_self()
 
 func _on_body_entered(_body: Node2D) -> void:
+	print_debug("Water collectible collected by: ", _body.name)
 	GameManager.add_water()
 	disable_self()
 	collect_sfx.play()

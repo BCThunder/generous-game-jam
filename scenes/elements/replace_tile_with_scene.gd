@@ -126,6 +126,6 @@ func get_transform_from_tile(coords: Vector2i) -> Dictionary:
 		cell_scale.y *= -1
 
 	return {
-		"rotation": rotation,
-		"scale": scale
+		"rotation": cell_rotation,
+		"scale": cell_scale
 	}

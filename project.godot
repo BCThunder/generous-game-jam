@@ -35,6 +35,7 @@ Player=""
 spikes=""
 death=""
 SmallWater=""
+breakable=""
 
 [input]
 

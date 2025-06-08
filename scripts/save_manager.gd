@@ -11,7 +11,6 @@ func _ready():
 	get_tree().node_added.connect(_on_scene_changed)
 	
 
-
 func save_game():
 	config.set_value("Player", "position", last_location)
 	config.set_value("Player", "collected_water", GameManager.collected_water)
@@ -85,7 +84,7 @@ func load_collected_water():
 		if has_water_been_collected.has(tile.name):
 			tile.set_deferred("monitoring", has_water_been_collected[tile.name])
 		else:
-			tile.set_deferred("monitoring", true)  # default
+			tile.set_deferred("monitoring", true) # default
 
 		
 func get_collected_water_state(tile_name):

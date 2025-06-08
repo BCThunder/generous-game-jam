@@ -18,6 +18,13 @@ class_name ShardEmitter extends Node2D
 ## Whether to display the triangles, for debug purposes.
 @export var display_triangles: bool = false
 
+@export_category("Destroy Parent")
+@export var destroy_parent: bool = true
+
+@export_category("Debug")
+@export var debug: bool = false
+
+
 const SHARD = preload("res://scenes/elements/shard.tscn")
 
 var triangles = []
@@ -95,8 +102,11 @@ func add_shards() -> void:
 
 
 func shatter() -> void:
+	if debug:
+		print_debug("ShardEmitter: Shattering shards")
 	randomize()
 	get_parent().self_modulate.a = 0
+	get_parent().get_parent().get_node("CollisionShape2D").disabled = true
 	for s in shards:
 		s.freeze = false
 		var direction = Vector2.UP.rotated(randf_range(0, 2 * PI))
@@ -118,7 +128,9 @@ func _on_DeleteTimer_timeout() -> void:
 			var tween := get_tree().create_tween()
 			tween.tween_property(poly, "modulate:a", 0, tween_time)
 	await get_tree().create_timer(tween_time).timeout
-	#get_parent().queue_free()
+
+	if destroy_parent:
+		get_parent().queue_free()
 
 func _draw() -> void:
 	if display_triangles:
