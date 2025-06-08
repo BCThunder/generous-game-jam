@@ -1,7 +1,6 @@
-[gd_resource type="TileSet" load_steps=10 format=3 uid="uid://trq1pj3s0pg2"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://trq1pj3s0pg2"]
 
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="1_eslq1"]
-[ext_resource type="Texture2D" uid="uid://b8c0ojq45pqkj" path="res://assets/sprites/normal map.png" id="2_ki5qi"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_ki5qi"]
 tile_data = PackedInt32Array(0, 6, 0, 65536, 6, 1, 1, 65542, 0, 65537, 65542, 1)
@@ -116,12 +115,10 @@ texture_region_size = Vector2i(32, 32)
 polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ki5qi"]
-cull_mode = 2
-polygon = PackedVector2Array(-8, -8, -8, 8, 8, 8, 8, -8)
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_b4n3o"]
 diffuse_texture = ExtResource("1_eslq1")
-normal_texture = ExtResource("2_ki5qi")
 texture_filter = 1
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u4lx5"]
@@ -143,7 +140,11 @@ texture = SubResource("CanvasTexture_b4n3o")
 8:4/0 = 0
 9:4/0 = 0
 9:8/0 = 0
+9:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+9:8/0/physics_layer_0/polygon_0/one_way = true
+9:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 10:8/0 = 0
+10:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -8, 0, 8, 0, 8, -8)
 8:0/0 = 0
 9:0/0 = 0
 4:1/0 = 0
@@ -165,17 +166,51 @@ texture = SubResource("CanvasTexture_b4n3o")
 15:4/0 = 0
 1:6/0 = 0
 0:8/0 = 0
+0:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+0:8/0/physics_layer_0/polygon_0/one_way = true
+0:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 1:8/0 = 0
+1:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+1:8/0/physics_layer_0/polygon_0/one_way = true
+1:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 2:8/0 = 0
+2:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+2:8/0/physics_layer_0/polygon_0/one_way = true
+2:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 3:8/0 = 0
+3:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+3:8/0/physics_layer_0/polygon_0/one_way = true
+3:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 4:8/0 = 0
+4:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+4:8/0/physics_layer_0/polygon_0/one_way = true
+4:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 5:8/0 = 0
+5:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+5:8/0/physics_layer_0/polygon_0/one_way = true
+5:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 6:8/0 = 0
+6:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+6:8/0/physics_layer_0/polygon_0/one_way = true
+6:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 7:8/0 = 0
+7:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+7:8/0/physics_layer_0/polygon_0/one_way = true
+7:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 8:8/0 = 0
+8:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+8:8/0/physics_layer_0/polygon_0/one_way = true
+8:8/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 11:8/0 = 0
+11:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -8, 0, 8, 0, 8, -8)
+12:8/next_alternative_id = 2
 12:8/0 = 0
+12:8/0/custom_data_3 = "dissolve1"
+13:8/next_alternative_id = 2
 13:8/0 = 0
+13:8/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -6.66667, 8, -8, -8, -8)
+13:8/0/physics_layer_0/polygon_0/one_way = true
+13:8/0/custom_data_3 = "dissolve2"
 14:8/0 = 0
 15:8/0 = 0
 16:8/0 = 0
@@ -185,10 +220,15 @@ texture = SubResource("CanvasTexture_b4n3o")
 1:10/0 = 0
 1:10/0/custom_data_3 = "Stalactite"
 3:10/0 = 0
+3:10/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -5.33333, -5.33333, 5.33333, -5.33333, 8, -8)
+3:10/0/physics_layer_0/polygon_0/one_way = true
+3:10/0/physics_layer_0/polygon_0/one_way_margin = 0.5
 5:10/0 = 0
 5:10/0/custom_data_3 = "Spike"
 7:10/0 = 0
+9:10/next_alternative_id = 2
 9:10/0 = 0
+9:10/0/custom_data_3 = "dissolve1"
 0:4/0 = 0
 6:4/0 = 0
 6:4/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_eslq1")
@@ -264,11 +304,9 @@ texture = SubResource("CanvasTexture_b4n3o")
 17:10/0 = 0
 19:10/0 = 0
 21:10/0 = 0
-20:11/0 = 0
-20:12/0 = 0
-19:13/0 = 0
 0:42/size_in_atlas = Vector2i(8, 3)
 0:42/0 = 0
+15:6/0 = 0
 
 [resource]
 occlusion_layer_0/light_mask = 1
