@@ -218,49 +218,49 @@ class AirState extends PlayerState:
 		player._collision_checker()
 		if player.is_on_floor():
 			player._change_state(GroundState)
-		elif can_wall_slide and player.is_on_wall():
-			# If on wall, switch to WallSlideState
-			player._change_state(WallSlideState)
+		# elif can_wall_slide and player.is_on_wall():
+		# 	# If on wall, switch to WallSlideState
+		# 	player._change_state(WallSlideState)
 
-class WallSlideState extends PlayerState:
-	var wall_dir = 0.0
+# class WallSlideState extends PlayerState:
+# 	var wall_dir = 0.0
 
-	func enter() -> void:
-		if player.debug_enabled and player.debug_movement:
-			print("Entered WallSlideState")
-		player.velocity.y = 0.0 # Stop vertical movement
-		player.is_jump_held = false # Reset jump hold
-		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
-		for i in range(player.get_slide_collision_count()):
-			var coll = player.get_slide_collision(i)
-			if coll and coll.normal.x != 0:
-				wall_dir = - coll.normal.x
-				break
+# 	func enter() -> void:
+# 		if player.debug_enabled and player.debug_movement:
+# 			print("Entered WallSlideState")
+# 		player.velocity.y = 0.0 # Stop vertical movement
+# 		player.is_jump_held = false # Reset jump hold
+# 		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
+# 		for i in range(player.get_slide_collision_count()):
+# 			var coll = player.get_slide_collision(i)
+# 			if coll and coll.normal.x != 0:
+# 				wall_dir = - coll.normal.x
+# 				break
 
-		# Optionally start sliding at a fixed speed
-		player.velocity.y = player.wall_slide_speed
+# 		# Optionally start sliding at a fixed speed
+# 		player.velocity.y = player.wall_slide_speed
 
-	func input(event: InputEvent) -> void:
-		if event.is_action_pressed("jump"):
-			if player.debug_enabled and player.debug_jumps:
-				print("Jump pressed (Wall Slide)")
-			player._try_wall_jump()
+# 	func input(event: InputEvent) -> void:
+# 		if event.is_action_pressed("jump"):
+# 			if player.debug_enabled and player.debug_jumps:
+# 				print("Jump pressed (Wall Slide)")
+# 			player._try_wall_jump()
 
-	func physics(delta: float) -> void:
-		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+# 	func physics(delta: float) -> void:
+# 		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
-		player.velocity.y = wall_slider_speed # Maintain wall slide speed
-		player.move_and_slide()
-		player._collision_checker()
+# 		player.velocity.y = wall_slider_speed # Maintain wall slide speed
+# 		player.move_and_slide()
+# 		player._collision_checker()
 
 
-func _try_wall_jump()
-		if player.debug_enabled and player.debug_jumps:
-			print("Wall jump attempt")
-		if player.use_wall_jump_time_limit:
-			player._change_state(WallJumpState)
-		else:
-			player._change_state(AirState)
+# func _try_wall_jump()
+# 		if player.debug_enabled and player.debug_jumps:
+# 			print("Wall jump attempt")
+# 		if player.use_wall_jump_time_limit:
+# 			player._change_state(WallJumpState)
+# 		else:
+# 			player._change_state(AirState)
 
 		
 class SlamState extends PlayerState:
