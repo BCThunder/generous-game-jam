@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=43 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
@@ -57,6 +57,13 @@ fill_to = Vector2(0.5, 0)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dwx4m"]
 atlas = ExtResource("5_jbupj")
 region = Rect2(96, 337.393, 96, 46.6072)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jgsi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jgsi"]
+size = Vector2(20, 1000)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jkv08"]
 
 [sub_resource type="Gradient" id="Gradient_74lek"]
 interpolation_mode = 2
@@ -121,7 +128,7 @@ height = 29
 light_mask = 2
 z_index = 10
 z_as_relative = false
-position = Vector2(-174, -158)
+position = Vector2(-63, -16)
 collision_mask = 161
 run_speed = 168.0
 double_jump_enabled = false
@@ -401,6 +408,26 @@ scale = Vector2(-1, -1)
 skew = 0.190241
 texture = SubResource("AtlasTexture_dwx4m")
 
+[node name="TopBoundaries" type="Node2D" parent="Oasis"]
+
+[node name="LeftBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_6jgsi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/LeftBoundary"]
+position = Vector2(-921, -235)
+shape = SubResource("RectangleShape2D_6jgsi")
+
+[node name="RightBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_jkv08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/RightBoundary"]
+position = Vector2(1025, -234)
+shape = SubResource("RectangleShape2D_6jgsi")
+
 [node name="Oasis layer 0" type="CanvasGroup" parent="."]
 modulate = Color(0.568973, 0.568973, 0.568973, 1)
 light_mask = 9
@@ -462,6 +489,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage2" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 2 far background" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 8
@@ -493,6 +521,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage3" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 8
@@ -524,6 +553,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage4" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 8

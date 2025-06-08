@@ -96,6 +96,7 @@ func _on_interact_area_body_entered(body: Node2D) -> void:
 		GameManager.current_npc = self
 		water_sprite.visible = true
 
+
 func _on_interact_area_body_exited(body: Node2D) -> void:
 	if body.is_in_group("Player"):
 		GameManager.can_player_interact = false

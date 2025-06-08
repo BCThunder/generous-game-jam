@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+@onready var water_amount: Label = $Panel/CollectibleAmount/Water/WaterAmount
+@onready var npc_amount: Label = $Panel/CollectibleAmount/NPCs/NPCAmount
+
 
 func _ready():
 	self.visible = false
@@ -19,8 +22,13 @@ func resume():
 	get_tree().paused = false
 
 
+func update_collectibles():
+	water_amount.text = "x" + str(GameManager.collected_water)
+
+
 func pause_game():
 	if Input.is_action_just_pressed("esc") and get_tree().paused == false:
+		update_collectibles()
 		pause()
 	elif Input.is_action_just_pressed("esc") and get_tree().paused == true:
 		resume()
