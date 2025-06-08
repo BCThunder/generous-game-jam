@@ -11,7 +11,8 @@ func _ready() -> void:
 
 func _on_start_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/Level/Blackout scene.tscn")
-
+	
+	GameManager._init_game()
 
 func _on_load_save_button_pressed() -> void:
 	SaveManager.load_save()
@@ -33,9 +34,9 @@ func _on_close_settings_button_pressed() -> void:
 
 
 func convert_volume_to_db(percentage) -> float:
-	var scale := 20.0
+	var vol_scale := 20.0
 	var divisor := 50.0
-	return scale * log(percentage / divisor) / log(10)
+	return vol_scale * log(percentage / divisor) / log(10)
 
 
 func _on_volume_changed(value: float) -> void:

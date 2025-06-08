@@ -1,16 +1,36 @@
-[gd_scene load_steps=7 format=3 uid="uid://pphrdpv7qwki"]
+[gd_scene load_steps=14 format=4 uid="uid://pphrdpv7qwki"]
 
 [ext_resource type="Script" uid="uid://h0n8m8gyoxum" path="res://scenes/ui/main_menu.gd" id="1_sl1te"]
 [ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="2_1g8jr"]
 [ext_resource type="FontFile" uid="uid://cy1y5nhpgt2ss" path="res://assets/fonts/RasterForge.ttf" id="3_m1kxf"]
+[ext_resource type="Texture2D" uid="uid://btcyysbgyl4yj" path="res://assets/sprites/oasis/background.png" id="3_uhagc"]
+[ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="4_btxxm"]
+[ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="5_wb0q5"]
+[ext_resource type="Texture2D" uid="uid://druheukqx4cdd" path="res://assets/sprites/oasis/Well.png" id="6_btxxm"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2yvf"]
-bg_color = Color(0.404511, 0.404511, 0.404511, 1)
+[sub_resource type="Gradient" id="Gradient_kjymn"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.345098, 0.713726, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q85j6"]
+gradient = SubResource("Gradient_kjymn")
+fill_from = Vector2(0.5, 1)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8g5eo"]
+atlas = ExtResource("4_btxxm")
+region = Rect2(96, 337.393, 96, 46.6072)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wb0q5"]
+size = Vector2(12, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q85j6"]
+size = Vector2(11, 21)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uhagc"]
 bg_color = Color(0.266667, 0.572549, 0.776471, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btxxm"]
 
 [node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_sl1te")
@@ -27,6 +47,227 @@ OASIS"
 horizontal_alignment = 1
 
 [node name="Backdrop" type="Sprite2D" parent="."]
+position = Vector2(324, 331)
+
+[node name="Oasis Sky" type="CanvasGroup" parent="Backdrop"]
+z_index = -50
+
+[node name="Sky" type="Sprite2D" parent="Backdrop/Oasis Sky"]
+self_modulate = Color(1.2, 1.2, 2, 1)
+light_mask = 8
+visibility_layer = 8
+texture_filter = 1
+position = Vector2(33, -273)
+texture = ExtResource("3_uhagc")
+
+[node name="Sky2" type="Sprite2D" parent="Backdrop/Oasis Sky"]
+visible = false
+self_modulate = Color(0.85098, 1, 1, 1)
+light_mask = 8
+visibility_layer = 8
+texture_filter = 1
+position = Vector2(3.02196e-05, -582)
+scale = Vector2(30, 6.3125)
+texture = SubResource("GradientTexture2D_q85j6")
+
+[node name="Parallax2D" type="Parallax2D" parent="Backdrop/Oasis Sky"]
+scroll_offset = Vector2(-32, -144)
+repeat_size = Vector2(300, 0)
+autoscroll = Vector2(7, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-188, -275)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-80, -145)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-342, -208)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-179, -114)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-595, -67)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-380, -222)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-330, -125)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-528, -253)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D9" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-68, -161)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D10" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(359, -232)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D11" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(202.349, -257.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D21" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-181, -169)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D12" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(312, -125)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D13" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(48.3492, -190.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D14" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(211.349, -96.4149)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D15" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-204.651, -49.4149)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D16" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(10.3492, -204.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D17" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(60.3492, -107.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D18" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-137.651, -235.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D19" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(-276, -143)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Sprite2D20" type="Sprite2D" parent="Backdrop/Oasis Sky/Parallax2D"]
+modulate = Color(0.961935, 0.951233, 0.972327, 1)
+position = Vector2(749.349, -214.415)
+scale = Vector2(-1, -1)
+skew = 0.190241
+texture = SubResource("AtlasTexture_8g5eo")
+
+[node name="Oasis layer 0" type="CanvasGroup" parent="Backdrop"]
+modulate = Color(0.568973, 0.568973, 0.568973, 1)
+light_mask = 9
+visibility_layer = 9
+z_index = -5
+
+[node name="Oasis stage 0 far background" type="TileMapLayer" parent="Backdrop/Oasis layer 0"]
+light_mask = 4
+tile_map_data = PackedByteArray("AAD7////BgAAABwAAAA=")
+tile_set = ExtResource("5_wb0q5")
+
+[node name="oasis stage 0 background" type="TileMapLayer" parent="Backdrop/Oasis layer 0"]
+light_mask = 4
+tile_map_data = PackedByteArray("AAD4////BgANAAoAAAD5////BgAVAAoAABD6////BgACACYAABD7////BgAZAAgAABD8////BgAYAAgAABD9////BgAAACYAABABAP//BgAAACYAAAACAP//BgAVAAoAAAADAP//BgACACYAAAAFAP//BgAZAAgAABAGAP//BgANAAoAAAAHAP//BgANAAoAAAAfAP//BgARAAoAAAAtAP//BgARAAoAABA9AP//BgARAAoAABAQAP//BgARAAoAAADX////BgARAAoAAADJ////BgARAAoAAAA=")
+tile_set = ExtResource("5_wb0q5")
+
+[node name="oasis stage 0 middleground" type="TileMapLayer" parent="Backdrop/Oasis layer 0"]
+top_level = true
+light_mask = 4
+z_as_relative = false
+position = Vector2(324, 331)
+tile_map_data = PackedByteArray("AAD9////BgAWAAgAAAABAP//BgAZAAgAAAADAP//BgAUAAgAAAAEAP//BgAVAAgAAAD6////BgAUAAgAAAD7////BgAVAAgAAAAGAP//BgAAACIAAAD4////BgAAACIAABAXAP//BgAaAAgAAAAYAP//BgAbAAgAAAA0AP//BgAaAAgAAAA1AP//BgAbAAgAAAAnAP//BgAbAAgAAAA/AP//BgAbAAgAAADm////BgAaAAgAAADQ////BgAaAAgAAADG////BgAbAAgAAADa////BgAaAAgAAADb////BgAbAAgAAADv////BgAaAAgAAADw////BgAbAAgAAAA=")
+tile_set = ExtResource("5_wb0q5")
+
+[node name="oasis foreground grass" type="TileMapLayer" parent="Backdrop/Oasis layer 0"]
+tile_map_data = PackedByteArray("AADE/wAABgADAAgAAADF/wAABgACAAgAAADG/wAABgADAAgAAADH/wAABgACAAgAAADI/wAABgADAAgAAADJ/wAABgACAAgAAADK/wAABgADAAgAAADL/wAABgACAAgAAADM/wAABgADAAgAAADN/wAABgACAAgAAADO/wAABgADAAgAAADP/wAABgACAAgAAADQ/wAABgADAAgAAADR/wAABgACAAgAAADS/wAABgADAAgAAADT/wAABgACAAgAAADU/wAABgADAAgAAADV/wAABgACAAgAAADW/wAABgADAAgAAADX/wAABgACAAgAAADY/wAABgADAAgAAADZ/wAABgACAAgAAADa/wAABgADAAgAAADb/wAABgACAAgAAADc/wAABgADAAgAAADd/wAABgACAAgAAADe/wAABgADAAgAAADf/wAABgACAAgAAADg/wAABgADAAgAAADh/wAABgACAAgAAADi/wAABgADAAgAAADj/wAABgACAAgAAADk/wAABgADAAgAAADl/wAABgACAAgAAADm/wAABgADAAgAAADn/wAABgACAAgAAADo/wAABgADAAgAAADp/wAABgACAAgAAADq/wAABgADAAgAAADr/wAABgACAAgAAADs/wAABgADAAgAAADt/wAABgACAAgAAADu/wAABgADAAgAAADv/wAABgACAAgAAADw/wAABgADAAgAAADx/wAABgACAAgAAADy/wAABgADAAgAAADz/wAABgACAAgAAAD0/wAABgADAAgAAAD1/wAABgACAAgAAAD2/wAABgADAAgAAAD3/wAABgABAAQAABD4/wAABgAAAAQAABD5/wAABgACAAQAAAD6/wAABgADAAQAAAD7/wAABgACAAQAAAD8/wAABgADAAQAAAD9/wAABgACAAQAAAD+/wAABgADAAQAAAABAAAABgACAAQAAAACAAAABgADAAQAAAADAAAABgACAAQAAAAEAAAABgADAAQAAAAFAAAABgACAAQAAAAGAAAABgADAAQAAAAHAAAABgAAAAQAAAAIAAAABgABAAQAAAAJAAAABgACAAgAAAAKAAAABgADAAgAAAALAAAABgACAAgAAAAMAAAABgADAAgAAAANAAAABgACAAgAAAAOAAAABgADAAgAAAAPAAAABgACAAgAAAAQAAAABgADAAgAAAARAAAABgACAAgAAAASAAAABgADAAgAAAATAAAABgACAAgAAAAUAAAABgADAAgAAAAVAAAABgACAAgAAAAWAAAABgADAAgAAAAXAAAABgACAAgAAAAYAAAABgADAAgAAAAZAAAABgACAAgAAAAaAAAABgADAAgAAAAbAAAABgACAAgAAAAcAAAABgADAAgAAAAdAAAABgACAAgAAAAeAAAABgADAAgAAAAfAAAABgACAAgAAAAgAAAABgADAAgAAAAhAAAABgACAAgAAAAiAAAABgADAAgAAAAjAAAABgACAAgAAAAkAAAABgADAAgAAAAlAAAABgACAAgAAAAmAAAABgADAAgAAAAnAAAABgACAAgAAAAoAAAABgADAAgAAAApAAAABgACAAgAAAAqAAAABgADAAgAAAArAAAABgACAAgAAAAsAAAABgADAAgAAAAtAAAABgACAAgAAAAuAAAABgADAAgAAAAvAAAABgACAAgAAAAwAAAABgADAAgAAAAxAAAABgACAAgAAAAyAAAABgADAAgAAAAzAAAABgACAAgAAAA0AAAABgADAAgAAAA1AAAABgACAAgAAAA2AAAABgADAAgAAAA3AAAABgACAAgAAAA4AAAABgADAAgAAAA5AAAABgACAAgAAAA6AAAABgADAAgAAAA7AAAABgACAAgAAAA8AAAABgADAAgAAAA9AAAABgACAAgAAAA+AAAABgADAAgAAAA/AAAABgACAAgAAABAAAAABgADAAgAAAA=")
+tile_set = ExtResource("5_wb0q5")
+
+[node name="oasis foreground" type="TileMapLayer" parent="Backdrop"]
+top_level = true
+light_mask = 4
+z_index = 20
+position = Vector2(324, 330)
+tile_map_data = PackedByteArray("AAD2////BgAaAAgAAAD3////BgAbAAgAAAAIAP//BgARAAoAAAAJAP//BgARAAoAABD4////BgATAAoAAAAEAP//BgAJAAMAAAAGAP//BgAJAAMAAAD+////BgANAAoAAAAAAP//BgANAAoAAAD/////BgALAAoAAAADAP//BgANAAoAAAD5////BgANAAoAAAA=")
+tile_set = ExtResource("5_wb0q5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Backdrop/oasis foreground"]
+self_modulate = Color(0.666667, 0.666667, 0.666667, 1)
+show_behind_parent = true
+light_mask = 4
+texture_filter = 1
+position = Vector2(1, -41)
+texture = ExtResource("6_btxxm")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Backdrop/oasis foreground/Sprite2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Backdrop/oasis foreground/Sprite2D/StaticBody2D"]
+visible = false
+position = Vector2(21, 30.5)
+shape = SubResource("RectangleShape2D_wb0q5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Backdrop/oasis foreground/Sprite2D/StaticBody2D"]
+visible = false
+position = Vector2(-22.5, 30.5)
+shape = SubResource("RectangleShape2D_q85j6")
 
 [node name="Buttons" type="BoxContainer" parent="."]
 anchors_preset = 3
@@ -46,30 +287,24 @@ vertical = true
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
 theme_override_fonts/font = ExtResource("3_m1kxf")
-theme_override_styles/hover = SubResource("StyleBoxFlat_x2yvf")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_uhagc")
-theme_override_styles/normal = SubResource("StyleBoxFlat_btxxm")
 text = "Play Game"
-flat = true
 
 [node name="LoadSaveButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
 disabled = true
 text = "Load Save"
-flat = true
 
 [node name="SettingsButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
 text = "Settings"
-flat = true
 
 [node name="ExitGameButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
 text = "Exit"
-flat = true
 
 [node name="SettingsPanel" type="Panel" parent="."]
 visible = false
