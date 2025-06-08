@@ -8,7 +8,7 @@
 bg_color = Color(0.404511, 0.404511, 0.404511, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uhagc"]
-bg_color = Color(0.288518, 0.288518, 0.288518, 1)
+bg_color = Color(0.266667, 0.572549, 0.776471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btxxm"]
 
@@ -72,6 +72,7 @@ text = "Exit"
 flat = true
 
 [node name="SettingsPanel" type="Panel" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -93,6 +94,7 @@ grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("2_1g8jr")
 text = "Close"
+flat = true
 
 [node name="VolumeLabel" type="Label" parent="SettingsPanel"]
 layout_mode = 1
