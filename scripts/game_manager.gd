@@ -9,9 +9,12 @@ var is_in_the_game := false
 var stage_progress := {}
 var stage_references := {}
 
+var current_npc = null
+
 
 func _ready():
 	is_in_the_game = false
+
 
 func _init_game():
 	is_in_the_game = true
@@ -26,11 +29,12 @@ func _init_game():
 		var node := get_tree().get_current_scene().get_node(node_name)
 		stage_references[node_name] = node
 		stage_progress[node_name] = node.visible
-	
+
 
 func add_water():
 	collected_water += 1
 	check_water_threshold()
+
 
 func check_water_threshold():
 	print("You have: " + str(collected_water) + " water")
@@ -43,4 +47,8 @@ func check_water_threshold():
 			stage_references["OasisStage3"] = true
 		40:
 			stage_references["OasisStage4"] = true
-			
+
+
+func interact_with_npc():
+	if current_npc:
+		current_npc.emit_signal("player_interact")

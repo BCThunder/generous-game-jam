@@ -146,6 +146,9 @@ class GroundState extends PlayerState:
 			if player.debug_enabled and player.debug_jumps:
 				print("Jump pressed (Ground)")
 			player._try_jump()
+			
+		if GameManager.can_player_interact and event.is_action_pressed("context_interact"):
+			player.interact()
 
 	func physics(delta: float) -> void:
 		player._apply_gravity(delta)
@@ -502,7 +505,12 @@ func play_jump_sfx():
 		_:
 			jump2_sfx.pitch_scale = pitch
 			jump2_sfx.play()
-			
+
+
+func interact():
+	GameManager.interact_with_npc()
+
+
 func play_death_sfx():
 	walking_sfx.stop()
 	jump1_sfx.stop()

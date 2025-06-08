@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://btdp7paicpsrd"]
+[gd_scene load_steps=40 format=4 uid="uid://btdp7paicpsrd"]
 
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
@@ -17,8 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://d4l1x4fb1afy8" path="res://assets/sprites/cave backgrounds/background 4.png" id="10_lldvu"]
 [ext_resource type="Texture2D" uid="uid://eiksfgkyj111" path="res://assets/sprites/cave backgrounds/background 5.png" id="11_jbupj"]
 [ext_resource type="Texture2D" uid="uid://67tlv4ojmx6" path="res://assets/sprites/cave backgrounds/background 6.png" id="12_dwx4m"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
+[ext_resource type="PackedScene" uid="uid://dul2tqvletkou" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
 [ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="17_dwx4m"]
+[ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="20_6jgsi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awpht"]
 size = Vector2(8, 30)
@@ -131,8 +132,6 @@ coyote_time_duration = 0.15
 ground_friction = 16.0
 death_duration = 1.02
 ground_tilemap_layer_path = NodePath("../Underground/CanvasGroup/ice slicks")
-debug_enabled = true
-debug_jumps = true
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 4
@@ -766,5 +765,21 @@ shape = SubResource("RectangleShape2D_lldvu")
 
 [node name="Sprite2D" type="Sprite2D" parent="Launch zone"]
 texture = SubResource("GradientTexture2D_jbupj")
+
+[node name="NPCs" type="Node2D" parent="."]
+z_index = 10
+
+[node name="NPC_1" parent="NPCs" node_paths=PackedStringArray("patrol_points") instance=ExtResource("20_6jgsi")]
+position = Vector2(-138, 0)
+patrol_points = NodePath("PatrolPoints1")
+SPEED = 600
+
+[node name="PatrolPoints1" type="Node2D" parent="NPCs/NPC_1"]
+
+[node name="LeftWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(-87, -4)
+
+[node name="RightWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(81, -4)
 
 [editable path="Player"]
