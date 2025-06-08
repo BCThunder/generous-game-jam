@@ -36,6 +36,8 @@ spikes=""
 death=""
 SmallWater=""
 breakable=""
+NPC=""
+
 
 [input]
 

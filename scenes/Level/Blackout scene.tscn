@@ -19,10 +19,12 @@
 [ext_resource type="Texture2D" uid="uid://67tlv4ojmx6" path="res://assets/sprites/cave backgrounds/background 6.png" id="12_dwx4m"]
 [ext_resource type="PackedScene" uid="uid://e0qmlcfa0pe4" path="res://scenes/elements/launch_zone.tscn" id="12_q1lwa"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
-[ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="17_dwx4m"]
 [ext_resource type="Script" uid="uid://pa0rcv1n4xau" path="res://scenes/elements/destructable rocks/destructable_rock.gd" id="20_jkv08"]
 [ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/stalactites/shard_emitter.gd" id="21_6g1vy"]
 [ext_resource type="Texture2D" uid="uid://dpkme7wefm2su" path="res://assets/sprites/all/32x32 breakable rock.png" id="21_q1lwa"]
+[ext_resource type="PackedScene" uid="uid://dul2tqvletkou" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
+[ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="17_dwx4m"]
+[ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="20_6jgsi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_awpht"]
 size = Vector2(8, 30)
@@ -60,6 +62,13 @@ fill_to = Vector2(0.5, 0)
 [sub_resource type="AtlasTexture" id="AtlasTexture_dwx4m"]
 atlas = ExtResource("5_jbupj")
 region = Rect2(96, 337.393, 96, 46.6072)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jgsi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jgsi"]
+size = Vector2(20, 1000)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_jkv08"]
 
 [sub_resource type="Gradient" id="Gradient_74lek"]
 interpolation_mode = 2
@@ -133,7 +142,7 @@ size = Vector2(32, 32)
 light_mask = 2
 z_index = 10
 z_as_relative = false
-position = Vector2(56, 624)
+position = Vector2(-63, -16)
 collision_mask = 161
 run_speed = 168.0
 double_jump_enabled = false
@@ -152,6 +161,7 @@ destroy_ability_chain_delay = 0.05
 destroy_ability_chain_depth = 3
 debug_enabled = true
 debug_state_changes = true
+
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 4
@@ -421,6 +431,26 @@ scale = Vector2(-1, -1)
 skew = 0.190241
 texture = SubResource("AtlasTexture_dwx4m")
 
+[node name="TopBoundaries" type="Node2D" parent="Oasis"]
+
+[node name="LeftBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_6jgsi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/LeftBoundary"]
+position = Vector2(-921, -235)
+shape = SubResource("RectangleShape2D_6jgsi")
+
+[node name="RightBoundary" type="StaticBody2D" parent="Oasis/TopBoundaries"]
+collision_layer = 129
+collision_mask = 129
+physics_material_override = SubResource("PhysicsMaterial_jkv08")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Oasis/TopBoundaries/RightBoundary"]
+position = Vector2(1025, -234)
+shape = SubResource("RectangleShape2D_6jgsi")
+
 [node name="Oasis layer 0" type="CanvasGroup" parent="."]
 modulate = Color(0.568973, 0.568973, 0.568973, 1)
 light_mask = 9
@@ -482,6 +512,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage2" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 2 far background" type="TileMapLayer" parent="OasisStage2"]
 light_mask = 8
@@ -513,6 +544,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage3" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage3"]
 light_mask = 8
@@ -544,6 +576,7 @@ tile_set = ExtResource("1_okrmv")
 y_sort_origin = 20
 
 [node name="OasisStage4" type="CanvasGroup" parent="."]
+visible = false
 
 [node name="oasis stage 3 far background" type="TileMapLayer" parent="OasisStage4"]
 light_mask = 8
@@ -940,5 +973,20 @@ metadata/_custom_type_script = "uid://cuu1p4vadkx53"
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@51612" to="Underground/CanvasGroup/Small Water spots/@Area2D@51612" method="_on_body_entered"]
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@51613" to="Underground/CanvasGroup/Small Water spots/@Area2D@51613" method="_on_body_entered"]
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@51614" to="Underground/CanvasGroup/Small Water spots/@Area2D@51614" method="_on_body_entered"]
+[node name="NPCs" type="Node2D" parent="."]
+z_index = 10
+
+[node name="NPC_1" parent="NPCs" node_paths=PackedStringArray("patrol_points") instance=ExtResource("20_6jgsi")]
+position = Vector2(-138, 0)
+patrol_points = NodePath("PatrolPoints1")
+SPEED = 600
+
+[node name="PatrolPoints1" type="Node2D" parent="NPCs/NPC_1"]
+
+[node name="LeftWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(-87, -4)
+
+[node name="RightWalkPoint" type="Marker2D" parent="NPCs/NPC_1/PatrolPoints1"]
+position = Vector2(81, -4)
 
 [editable path="Player"]

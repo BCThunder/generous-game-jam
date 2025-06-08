@@ -31,6 +31,9 @@ func load_save():
 		GameManager.collected_water = config.get_value("Player", "collected_water")
 		GameManager.stage_progress = config.get_value("Level", "stage_progress")
 		has_water_been_collected = config.get_value("Level", "small_water")
+		
+		print("Player has collected: " + str(GameManager.collected_water) + " water.")
+		
 		load_collected_water()
 		update_checkpoint(last_location)
 
