@@ -77,9 +77,14 @@ var destroy_ability_timer: Timer
 
 # Sound Effects
 @onready var walking_sfx: AudioStreamPlayer2D = $SFX/WalkingSFX
-@onready var launch_sfx: AudioStreamPlayer2D = $SFX/LaunchSFX
 @onready var slam_sfx: AudioStreamPlayer2D = $SFX/SlamSFX
-@onready var jump_sfx: AudioStreamPlayer2D = $SFX/JumpSFX
+@onready var jump1_sfx: AudioStreamPlayer2D = $SFX/Jump1SFX
+@onready var jump2_sfx: AudioStreamPlayer2D = $SFX/Jump2SFX
+@onready var death_sfx: AudioStreamPlayer2D = $SFX/DeathSFX
+
+
+# Animation
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 # Context Flags
 var is_jump_held: bool = false
@@ -235,16 +240,23 @@ class DeathState extends PlayerState:
 	func enter() -> void:
 		if player.debug_enabled and player.debug_state_changes:
 			print("Entered DeathState")
+		
+		
 		# Stop all movement and input
 		player.velocity = Vector2.ZERO
 		player.set_process_input(false)
 		# Optionally, play death animation, sound, or respawn logic here
 		# Example: player._on_player_death()
+		
+		# Play Death SFX
+		player.play_death_sfx()
+		
 
 		var tween = player.create_tween()
 		tween.tween_property(player, "modulate:a", 0.0, player.death_duration)
 		await tween.finished
-		player.get_tree().reload_current_scene() # Reload the scene or handle respawn logic
+		
+		player.get_tree().reload_current_scene()
 
 	func input(_event: InputEvent) -> void:
 		pass
@@ -259,6 +271,8 @@ var current_state: PlayerState = null
 
 func _ready() -> void:
 	_get_tilemap_layers()
+	animation_player.play("fade_in") # fade in to hide "teleporting" to last save spot
+
 	_init_launch_ability()
 
 	# Add and configure tap boost timer
@@ -295,6 +309,7 @@ func _ready() -> void:
 	_collision_checker()
 	_connect_zone_signals()
 # endregion
+
 
 # region Input and Physics
 func _input(event: InputEvent) -> void:
@@ -437,8 +452,22 @@ func _try_jump() -> void:
 		play_jump_sfx()
 
 func play_jump_sfx():
-	jump_sfx.pitch_scale = randf_range(.8, 1.2)
-	jump_sfx.play()
+	var pitch = randf_range(.8, 1.2)
+	var randomize_jump = randi_range(1, 2)
+	match randomize_jump:
+		1:
+			jump1_sfx.pitch_scale = pitch
+			jump1_sfx.play()
+		_:
+			jump2_sfx.pitch_scale = pitch
+			jump2_sfx.play()
+			
+func play_death_sfx():
+	walking_sfx.stop()
+	jump1_sfx.stop()
+	jump2_sfx.stop()
+	slam_sfx.stop()
+	death_sfx.play(2.0 - death_duration)
 
 func _try_destroy_ability() -> void:
 	# Cast a short ray in facing direction to detect breakable rocks

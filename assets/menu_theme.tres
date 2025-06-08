@@ -4,3 +4,6 @@
 
 [resource]
 default_font = ExtResource("1_tf8oi")
+Button/colors/font_hover_color = Color(0.266667, 0.572549, 0.776471, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=25 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/player/32x32 Palis.png" id="2_dqkch"]
@@ -13,8 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://brllbsrvjj2bu" path="res://assets/sprites/animations/Palis Jump/32x32 Palis7.png" id="10_kvlxm"]
 [ext_resource type="AudioStream" uid="uid://de435qxv83p7" path="res://assets/audio/sfx/walking.wav" id="12_fm80t"]
 [ext_resource type="AudioStream" uid="uid://cpd8lp2qoq4m4" path="res://assets/audio/sfx/launch.wav" id="13_ugbui"]
-[ext_resource type="AudioStream" uid="uid://dehvnfaqbd2h1" path="res://assets/audio/sfx/jump.wav" id="14_myrg7"]
+[ext_resource type="AudioStream" uid="uid://bcvqx0xyv6xx6" path="res://assets/audio/sfx/jump1.wav" id="14_fcs02"]
 [ext_resource type="AudioStream" uid="uid://0tjynd3i461b" path="res://assets/audio/sfx/slam_new.wav" id="15_fcs02"]
+[ext_resource type="AudioStream" uid="uid://cegmj7idt88fo" path="res://assets/audio/sfx/jump2.wav" id="15_myrg7"]
+[ext_resource type="AudioStream" uid="uid://hxdp2ww5sjff" path="res://assets/audio/sfx/death.wav" id="17_kvlxm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
 animations = [{
@@ -55,6 +57,43 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
 radius = 7.0
+
+[sub_resource type="Animation" id="Animation_myrg7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fcs02"]
+resource_name = "fade_in"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kvlxm"]
+_data = {
+&"RESET": SubResource("Animation_myrg7"),
+&"fade_in": SubResource("Animation_fcs02")
+}
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
 interpolation_mode = 2
@@ -102,6 +141,9 @@ launch_aim_distance = 71.075
 [node name="Slam" type="Node2D" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_kvlxm")
+}
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -64.34)
@@ -125,12 +167,18 @@ stream = ExtResource("12_fm80t")
 [node name="LaunchSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("13_ugbui")
 
-[node name="JumpSFX" type="AudioStreamPlayer2D" parent="SFX"]
-stream = ExtResource("14_myrg7")
+[node name="Jump1SFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("14_fcs02")
+
+[node name="Jump2SFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("15_myrg7")
 
 [node name="SlamSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("15_fcs02")
 volume_db = 4.0
+
+[node name="DeathSFX" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("17_kvlxm")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(1.96423, 1.87376)
@@ -142,3 +190,13 @@ shadow_enabled = true
 shadow_filter = 1
 texture = SubResource("GradientTexture2D_lvxji")
 texture_scale = 8.19
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
