@@ -79,6 +79,7 @@ var destroy_ability_timer: Timer
 @onready var slam_sfx: AudioStreamPlayer2D = $SFX/SlamSFX
 @onready var jump_sfx: AudioStreamPlayer2D = $SFX/JumpSFX
 
+
 # Context Flags
 var is_jump_held: bool = false
 var can_double_jump: bool = false
@@ -242,7 +243,8 @@ class DeathState extends PlayerState:
 		var tween = player.create_tween()
 		tween.tween_property(player, "modulate:a", 0.0, player.death_duration)
 		await tween.finished
-		player.get_tree().reload_current_scene() # Reload the scene or handle respawn logic
+		
+		player.get_tree().reload_current_scene()
 
 	func input(_event: InputEvent) -> void:
 		pass
@@ -256,6 +258,7 @@ class DeathState extends PlayerState:
 var current_state: PlayerState = null
 
 func _ready() -> void:
+	SaveManager.spawn_player()
 	ground_tilemap_layer = get_node(ground_tilemap_layer_path)
 	if not ground_tilemap_layer:
 		push_error("TileMapLayer not found at %s" % ground_tilemap_layer_path)
@@ -296,6 +299,7 @@ func _ready() -> void:
 	_collision_checker()
 	_connect_zone_signals()
 # endregion
+
 
 # region Input and Physics
 func _input(event: InputEvent) -> void:

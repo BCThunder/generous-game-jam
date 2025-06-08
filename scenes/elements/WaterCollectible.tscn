@@ -1,17 +1,31 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx8jpjwiei0qv"]
+[gd_scene load_steps=6 format=3 uid="uid://cx8jpjwiei0qv"]
 
 [ext_resource type="Script" uid="uid://d0q53dhs278ls" path="res://scenes/elements/water_collectible.gd" id="1_alhe5"]
 [ext_resource type="AudioStream" uid="uid://bb2et3sapwukm" path="res://assets/audio/sfx/water_collected.wav" id="2_06fbr"]
+[ext_resource type="Texture2D" uid="uid://pp75bc1ay034" path="res://assets/sprites/tiles/32x32 small water source.png" id="3_pnswa"]
+[ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="4_4g1wy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_06fbr"]
+size = Vector2(32, 34)
 
 [node name="WaterCollectible" type="Area2D"]
+collision_layer = 0
+collision_mask = 128
 script = ExtResource("1_alhe5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_06fbr")
 
 [node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_06fbr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("3_pnswa")
+
+[node name="Checkpoint" parent="." instance=ExtResource("4_4g1wy")]
+self_modulate = Color(0.42994, 0.131317, 0.36392, 1)
+position = Vector2(0, -18)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

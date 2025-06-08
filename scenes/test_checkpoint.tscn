@@ -1,12 +1,9 @@
-[gd_scene load_steps=11 format=4 uid="uid://bqvtpndi1mh5o"]
+[gd_scene load_steps=8 format=4 uid="uid://bqvtpndi1mh5o"]
 
-[ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="1_5s2oh"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="2_3d0ib"]
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="2_y64p5"]
-[ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="3_itmmw"]
 [ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="3_w73uy"]
 [ext_resource type="PackedScene" uid="uid://bx6c87yf5ae6e" path="res://scenes/kill_zone.tscn" id="5_h5sx5"]
-[ext_resource type="Texture2D" uid="uid://df225s8rttpjo" path="res://icon.svg" id="7_susor"]
 [ext_resource type="Script" uid="uid://kv4r5j3qlgsu" path="res://scripts/game_manager.gd" id="7_y64p5"]
 [ext_resource type="Script" uid="uid://vgc2corc4o20" path="res://scripts/save_manager.gd" id="9_lavlq"]
 
@@ -38,55 +35,6 @@ collision_mask = 128
 position = Vector2(0, 65)
 shape = SubResource("WorldBoundaryShape2D_h5sx5")
 
-[node name="CheckpointManager" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("1_5s2oh")
-
-[node name="Checkpoint" parent="CheckpointManager" instance=ExtResource("3_itmmw")]
-position = Vector2(157, -1)
-collision_mask = 128
-
-[node name="CollisionShape2D" parent="CheckpointManager/Checkpoint" index="0"]
-position = Vector2(0, -6.5)
-
-[node name="RespawnPoint" parent="CheckpointManager/Checkpoint" index="1"]
-position = Vector2(0, -3)
-
-[node name="Sprite2D" type="Sprite2D" parent="CheckpointManager/Checkpoint"]
-position = Vector2(0.09, 0)
-scale = Vector2(0.075, 0.275)
-texture = ExtResource("7_susor")
-
-[node name="Checkpoint2" parent="CheckpointManager" instance=ExtResource("3_itmmw")]
-position = Vector2(31, -129)
-collision_mask = 128
-
-[node name="CollisionShape2D" parent="CheckpointManager/Checkpoint2" index="0"]
-position = Vector2(0.5, -6.5)
-
-[node name="RespawnPoint" parent="CheckpointManager/Checkpoint2" index="1"]
-position = Vector2(0, -3)
-
-[node name="Sprite2D" type="Sprite2D" parent="CheckpointManager/Checkpoint2"]
-position = Vector2(0.09, 0)
-scale = Vector2(0.075, 0.275)
-texture = ExtResource("7_susor")
-
-[node name="Checkpoint3" parent="CheckpointManager" instance=ExtResource("3_itmmw")]
-position = Vector2(-138, -49)
-collision_mask = 128
-
-[node name="CollisionShape2D" parent="CheckpointManager/Checkpoint3" index="0"]
-position = Vector2(0, -6.5)
-
-[node name="RespawnPoint" parent="CheckpointManager/Checkpoint3" index="1"]
-position = Vector2(0, -3)
-
-[node name="Sprite2D" type="Sprite2D" parent="CheckpointManager/Checkpoint3"]
-position = Vector2(0.09, 0)
-scale = Vector2(0.075, 0.275)
-texture = ExtResource("7_susor")
-
 [node name="GameManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("7_y64p5")
@@ -114,6 +62,3 @@ text = "Load Save"
 [connection signal="pressed" from="CanvasLayer/LoadButton" to="SaveManager" method="_on_load_button_pressed"]
 
 [editable path="DeathZone"]
-[editable path="CheckpointManager/Checkpoint"]
-[editable path="CheckpointManager/Checkpoint2"]
-[editable path="CheckpointManager/Checkpoint3"]
