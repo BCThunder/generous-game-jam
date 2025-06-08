@@ -34,6 +34,7 @@ LaunchZones="Zones to enable launch ability"
 Player=""
 spikes=""
 death=""
+SmallWater=""
 
 [input]
 
@@ -98,4 +99,5 @@ esc={
 
 [rendering]
 
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 environment/solver/contact_max_allowed_penetration=0.3

@@ -1,18 +1,17 @@
 extends Area2D
 
-@export_category("Object")
-@export var small_water_scene: PackedScene:
-	set(value):
-		if value and value is PackedScene:
-			small_water_scene = value
-			small_water_instance = small_water_scene.instantiate()
-			
-var small_water_instance: Node2D = null
-
 @onready var collect_sfx: AudioStreamPlayer2D = $CollectSFX
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
+func _ready():
+	if SaveManager.get_collected_water_state(name) == false:
+		disable_self()
 
 func _on_body_entered(_body: Node2D) -> void:
-	GameManager.collected_water += 1
-	self.monitorable = false
+	GameManager.add_water()
+	disable_self()
 	collect_sfx.play()
-	print("Small water collected!")
+
+func disable_self():
+	self.set_deferred("monitoring", false)
+	collision_shape_2d.set_deferred("monitoring", false)

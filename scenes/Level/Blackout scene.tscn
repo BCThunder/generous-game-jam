@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://eiksfgkyj111" path="res://assets/sprites/cave backgrounds/background 5.png" id="11_jbupj"]
 [ext_resource type="Texture2D" uid="uid://67tlv4ojmx6" path="res://assets/sprites/cave backgrounds/background 6.png" id="12_dwx4m"]
 [ext_resource type="PackedScene" uid="uid://dul2tqvletkou" path="res://scenes/ui/pause_menu.tscn" id="15_jbupj"]
+[ext_resource type="Script" uid="uid://dkglui6j2gqqc" path="res://scripts/checkpoint_manager.gd" id="17_dwx4m"]
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
 interpolation_mode = 2
@@ -98,7 +99,7 @@ height = 29
 
 [node name="MainLevel" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_pqhl5")]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("1_pqhl5")]
 light_mask = 2
 z_index = 10
 z_as_relative = false
@@ -109,6 +110,7 @@ max_jump_velocity = 365.0
 min_jump_velocity = 130.0
 jump_gravity_scale = 0.85
 ground_friction = 16.0
+death_duration = 1.02
 ground_tilemap_layer_path = NodePath("../Underground/CanvasGroup/ice slicks")
 debug_enabled = true
 
@@ -163,6 +165,10 @@ shadow_filter = 1
 texture = SubResource("GradientTexture2D_lvxji")
 texture_scale = 3.0
 height = 60.0
+
+[node name="CheckpointManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("17_dwx4m")
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 blend_mode = 2
@@ -607,6 +613,8 @@ tile_map_data = PackedByteArray("AAD9/ygABgAMAAAAAAD1/zMABgAMAAAAAAAeAGMABgAMAAA
 tile_set = ExtResource("1_okrmv")
 script = ExtResource("4_kjymn")
 replacement = SubResource("Resource_lldvu")
+offset = Vector2(8, 8)
+run_replacement = true
 
 [node name="water launchers" type="TileMapLayer" parent="Underground/CanvasGroup"]
 light_mask = 3
@@ -637,7 +645,7 @@ tile_map_data = PackedByteArray("AAAYABMABgAEAAQAAAAZABMABgAFAAQAAAAaABMABgAEAAQ
 tile_set = ExtResource("1_okrmv")
 y_sort_origin = 10
 
-[node name="spikes" type="TileMapLayer" parent="Underground/CanvasGroup"]
+[node name="spikes" type="TileMapLayer" parent="Underground/CanvasGroup" groups=["spikes"]]
 modulate = Color(0.392157, 0.392157, 0.392157, 1)
 light_mask = 3
 tile_map_data = PackedByteArray("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AFD3//8ABgAFAAoAAFD3/wABBgAFAAoAAFD3/wEBBgAFAAoAAFD3/wIBBgAFAAoAAFD3/wMBBgAFAAoAAFD6//sABgAFAAoAAGD6//wABgAFAAoAAGD6//0ABgAFAAoAAGD6//4ABgAFAAoAAGD6//8ABgAFAAoAAGD6/wABBgAFAAoAAGD6/wEBBgAFAAoAAGD6/wIBBgAFAAoAAGD6/wMBBgAFAAoAAGAcAB8BBgAFAAoAAEAcAB4BBgAFAAoAAEAcAB0BBgAFAAoAAEAcABwBBgAFAAoAAEAcABsBBgAFAAoAAEAcABoBBgAFAAoAAED4/yQBBgAFAAoAABD5/yQBBgAFAAoAABD1/y0BBgAFAAoAAED1/y4BBgAFAAoAAED1/y8BBgAFAAoAAEDv/y4BBgAFAAoAAFDv/y8BBgAFAAoAAFDv/zABBgAFAAoAAFDv/zEBBgAFAAoAAFDu/y0BBgAFAAoAAFDu/ywBBgAFAAoAAFDu/ysBBgAFAAoAAFDt/yoBBgAFAAoAAFDt/ykBBgAFAAoAAFDt/ygBBgAFAAoAAFDt/ycBBgAFAAoAAFDt/yYBBgAFAAoAAFDt/yUBBgAFAAoAAFD2/ywBBgAFAAoAAED2/yoBBgAFAAoAAED2/ysBBgAFAAoAAED3/ykBBgAFAAoAAED3/ygBBgAFAAoAAED3/ycBBgAFAAoAAED3/yYBBgAFAAoAAED3/yUBBgAFAAoAAEDr/0YBBgAFAAoAABDs/0YBBgAFAAoAABDt/0YBBgAFAAoAABDu/0YBBgAFAAoAABDv/0YBBgAFAAoAABDw/0YBBgAFAAoAABDx/0YBBgAFAAoAABDy/0YBBgAFAAoAABDz/0YBBgAFAAoAABD0/0YBBgAFAAoAABD1/0YBBgAFAAoAABD2/0YBBgAFAAoAABD3/0YBBgAFAAoAABD4/0YBBgAFAAoAABD5/0YBBgAFAAoAABDT/0ABBgAFAAoAAHApAEEBBgAFAAoAAHApAEIBBgAFAAoAAHApAEMBBgAFAAoAAHApAEQBBgAFAAoAAHAtAEkBBgAFAAoAAEAtAEoBBgAFAAoAAEAtAEsBBgAFAAoAAEAtAEwBBgAFAAoAAEAtAE0BBgAFAAoAAEAtAE4BBgAFAAoAAEAsAE8BBgAFAAoAAEAsAFABBgAFAAoAAEAoAEUBBgAFAAoAAHAnAEYBBgAFAAoAAHAmAEcBBgAFAAoAAHAmAEgBBgAFAAoAAHAmAEkBBgAFAAoAAHAmAEoBBgAFAAoAAHAmAEsBBgAFAAoAAHAlAEwBBgAFAAoAAHAkAE0BBgAFAAoAAHAkAE4BBgAFAAoAAHAkAE8BBgAFAAoAAHAkAFABBgAFAAoAAHAlAFEBBgAFAAoAAHAmAFMBBgAFAAoAAHAmAFQBBgAFAAoAAHAmAFUBBgAFAAoAAHAmAFIBBgAFAAoAAHAlAFYBBgAFAAoAAHAkAFcBBgAFAAoAAHAjAFgBBgAFAAoAAHAsAFoBBgAFAAoAAEAsAFsBBgAFAAoAAEAsAFwBBgAFAAoAAEAtAF0BBgAFAAoAAEAtAF4BBgAFAAoAAEAtAF8BBgAFAAoAAEAuAGABBgAFAAoAAEAuAGIBBgAFAAoAAEAuAGMBBgAFAAoAAEAuAGEBBgAFAAoAAEADAG0BBgAFAAoAABACAG0BBgAFAAoAABAAAG0BBgAFAAoAABABAG0BBgAFAAoAABD3/24BBgAFAAoAACD2/24BBgAFAAoAACD1/24BBgAFAAoAACD0/24BBgAFAAoAACDz/24BBgAFAAoAACDy/24BBgAFAAoAACDx/24BBgAFAAoAACDw/24BBgAFAAoAACDq/3EBBgAFAAoAAHAcAD0BBgAFAAoAAEAcADwBBgAFAAoAAED9/4kBBgAFAAoAABD//4sBBgAFAAoAABD+/4oBBgAFAAoAABAAAIwBBgAFAAoAABABAI4BBgAFAAoAABAJAIkBBgAFAAoAAEAJAIoBBgAFAAoAAEAJAIsBBgAFAAoAAEAJAIwBBgAFAAoAAEDr/3wBBgAFAAoAAHDr/30BBgAFAAoAAHDr/34BBgAFAAoAAHDr/38BBgAFAAoAAHDr/4ABBgAFAAoAAHDr/4EBBgAFAAoAAHDr/4IBBgAFAAoAAHDr/4MBBgAFAAoAAHDr/4QBBgAFAAoAAHDr/4UBBgAFAAoAAHDi/44BBgAFAAoAABDh/44BBgAFAAoAABDg/44BBgAFAAoAABDf/44BBgAFAAoAABAcAJkBBgAFAAoAABAdAJkBBgAFAAoAABAeAJkBBgAFAAoAABAfAJkBBgAFAAoAABAgAJkBBgAFAAoAABAhAJkBBgAFAAoAABAiAJkBBgAFAAoAABAjAJkBBgAFAAoAABAkAJkBBgAFAAoAABAlAJkBBgAFAAoAABAmAJkBBgAFAAoAABDq/6QBBgAFAAoAAGDq/6UBBgAFAAoAAGDq/6YBBgAFAAoAAGDq/6cBBgAFAAoAAGDm/6cBBgAFAAoAAHDm/6YBBgAFAAoAAHDm/6UBBgAFAAoAAHDm/6QBBgAFAAoAAHDm/54BBgAFAAoAAHDm/58BBgAFAAoAAHDm/6ABBgAFAAoAAHDm/6EBBgAFAAoAAHDm/6IBBgAFAAoAAHDm/6MBBgAFAAoAAHARAKwBBgAFAAoAABASAK0BBgAFAAoAABATAK0BBgAFAAoAABAUAK0BBgAFAAoAABAVAK4BBgAFAAoAABAWALABBgAFAAoAABAXALABBgAFAAoAABAYALEBBgAFAAoAABAZALEBBgAFAAoAABAaALEBBgAFAAoAABAbALABBgAFAAoAABAcALABBgAFAAoAABAdAK8BBgAFAAoAABAeAK8BBgAFAAoAABAfAK0BBgAFAAoAABAgAKwBBgAFAAoAABAeAHwBBgAFAAoAABAfAHwBBgAFAAoAABAgAHwBBgAFAAoAABAhAHwBBgAFAAoAABAiAHwBBgAFAAoAABAjAHwBBgAFAAoAABAkAHwBBgAFAAoAABAlAHwBBgAFAAoAABAqAHwBBgAFAAoAABArAHwBBgAFAAoAABAsAHwBBgAFAAoAABAtAHwBBgAFAAoAABAuAHwBBgAFAAoAABAvAHwBBgAFAAoAABDN/8oBBgAFAAoAAHDN/8kBBgAFAAoAAHDN/8gBBgAFAAoAAHDN/8cBBgAFAAoAAHDW/80BBgAFAAoAABDX/80BBgAFAAoAABDY/80BBgAFAAoAABDZ/80BBgAFAAoAABDd/8UBBgAFAAoAAEDd/8YBBgAFAAoAAEDd/8cBBgAFAAoAAEDd/8gBBgAFAAoAAEDd/8kBBgAFAAoAAEDd/8oBBgAFAAoAAEDc/8ABBgAFAAoAACDd/8ABBgAFAAoAACDe/8ABBgAFAAoAACDu/8gBBgAFAAoAABDv/8gBBgAFAAoAABDw/8gBBgAFAAoAABD5/8wBBgAFAAoAAED5/8sBBgAFAAoAAED8/9QBBgAFAAoAABD7/9QBBgAFAAoAABAHANIBBgAFAAoAABAGANIBBgAFAAoAABAJANkBBgAFAAoAAHAIANgBBgAFAAoAAHAHANcBBgAFAAoAAHAIANYBBgAFAAoAAHAJANUBBgAFAAoAAHAKANQBBgAFAAoAAHALANQBBgAFAAoAACAMANMBBgAFAAoAACANANUBBgAFAAoAACAOANUBBgAFAAoAACAPANUBBgAFAAoAACAQANUBBgAFAAoAACARANUBBgAFAAoAACASANUBBgAFAAoAACAcANkBBgAFAAoAABAbANkBBgAFAAoAABD5/+MBBgAFAAoAABD4/+MBBgAFAAoAABD3/+MBBgAFAAoAABD2/+MBBgAFAAoAABAMAKAABgAFAAoAAAALAKAABgAFAAoAAADy/xYBBgAFAAoAAADz/xYBBgAFAAoAAAD0/xYBBgAFAAoAAAD1/xYBBgAFAAoAAADv/5UBBgAFAAoAAADt/5IBBgAFAAoAAFDu/5EBBgAFAAoAADDv/5EBBgAFAAoAADDw/5EBBgAFAAoAADDx/5EBBgAFAAoAADDw/5IBBgAFAAoAAADx/5IBBgAFAAoAAADu/5IBBgAFAAoAAAAWAH8BBgAFAAoAAGAWAIABBgAFAAoAAGAWAIEBBgAFAAoAAGAWAIIBBgAFAAoAAGAWAIMBBgAFAAoAAGAWAIQBBgAFAAoAAGAWAIUBBgAFAAoAAGAWAIYBBgAFAAoAAGAWAIcBBgAFAAoAAGAWAIgBBgAFAAoAAGAWAIkBBgAFAAoAAGAWAIoBBgAFAAoAAGAWAIsBBgAFAAoAAGAWAIwBBgAFAAoAAGAWAI0BBgAFAAoAAGAQAJUBBgAFAAoAAAARAJUBBgAFAAoAAAASAJUBBgAFAAoAAAATAJQBBgAFAAoAAAAUAJQBBgAFAAoAAAD5/8oBBgAFAAoAAGD5/8kBBgAFAAoAAGD5/8gBBgAFAAoAAGD5/8cBBgAFAAoAAGD5/8YBBgAFAAoAAGD2/9ABBgAFAAoAAAD3/9QBBgAFAAoAABD5/9QBBgAFAAoAABD4/9QBBgAFAAoAABD1/9ABBgAFAAoAAAD0/9ABBgAFAAoAAAD6/9QBBgAFAAoAABDr/6MBBgAFAAoAAADc/4oABgAFAAoAAADd/4kABgAFAAoAAADe/4gABgAFAAoAAADf/4YABgAFAAoAAAAuAIAABgAFAAoAAHAuAH8ABgAFAAoAAHAtAH4ABgAFAAoAAHAvAH0ABgAFAAoAAHAwAHwABgAFAAoAACAxAHwABgAFAAoAACAyAHwABgAFAAoAACAzAHwABgAFAAoAACA0AHwABgAFAAoAACA1AHwABgAFAAoAACA3AH0ABgAFAAoAACA2AH0ABgAFAAoAACA4AH4ABgAFAAoAACA5AH8ABgAFAAoAAEA5AIAABgAFAAoAAEA5AIEABgAFAAoAAEA5AH4ABgAFAAoAAEApAJ8ABgAFAAoAABAoAJ8ABgAFAAoAABAJAPIABgAFAAoAAAAIAPIABgAFAAoAAAAHAPIABgAFAAoAAAAKAPIABgAFAAoAAAAGAPEABgAFAAoAAAAFAPAABgAFAAoAAAABADMBBgAFAAoAADACADMBBgAFAAoAADADADMBBgAFAAoAADAEADIBBgAFAAoAADAGADEBBgAFAAoAADAHADEBBgAFAAoAADAIADEBBgAFAAoAADAKADEBBgAFAAoAADAJADEBBgAFAAoAADALADEBBgAFAAoAADANADEBBgAFAAoAADAMADEBBgAFAAoAADAOADEBBgAFAAoAADAAADUBBgAFAAoAADD+/zYBBgAFAAoAADAiAEUBBgAFAAoAAAAjAEUBBgAFAAoAAAAOAGEBBgAFAAoAADAPAGEBBgAFAAoAADAQAGEBBgAFAAoAADAWAGEBBgAFAAoAADAXAGEBBgAFAAoAADAYAGEBBgAFAAoAADAeAGEBBgAFAAoAADAdAGEBBgAFAAoAADAfAGEBBgAFAAoAADAbABkBBgAFAAoAAEAbABgBBgAFAAoAAEAbABcBBgAFAAoAAEAbABYBBgAFAAoAAEAbABUBBgAFAAoAAEAaABQBBgAFAAoAAEAIAMoBBgAFAAoAACAJAMoBBgAFAAoAACAKAMoBBgAFAAoAACALAMoBBgAFAAoAACAMAMoBBgAFAAoAACANAMoBBgAFAAoAACAPAMoBBgAFAAoAACAOAMoBBgAFAAoAACAQAMoBBgAFAAoAACARAMoBBgAFAAoAACASAM0BBgAFAAoAACATAM0BBgAFAAoAACAUAM0BBgAFAAoAACAVAM0BBgAFAAoAACAWAM0BBgAFAAoAACAXAM0BBgAFAAoAACAYANABBgAFAAoAACADAMsBBgAFAAoAACAEAMsBBgAFAAoAACAFAMsBBgAFAAoAACAGAMsBBgAFAAoAACAHAMsBBgAFAAoAACAaANUBBgAFAAoAACAZANUBBgAFAAoAACAbANUBBgAFAAoAACAcANUBBgAFAAoAACAdANUBBgAFAAoAACAeANUBBgAFAAoAACD6/90BBgAFAAoAACD7/90BBgAFAAoAACD8/90BBgAFAAoAACD9/90BBgAFAAoAACD+/90BBgAFAAoAACD//90BBgAFAAoAACAAAN0BBgAFAAoAACABAN0BBgAFAAoAACACAN0BBgAFAAoAACADAN0BBgAFAAoAACAEAN0BBgAFAAoAACDz/90BBgAFAAoAACDy/90BBgAFAAoAACDx/90BBgAFAAoAACDw/90BBgAFAAoAACDv/90BBgAFAAoAACDu/90BBgAFAAoAACAgAPQBBgAFAAoAAGAhAPUBBgAFAAoAADAiAPUBBgAFAAoAADD1//EBBgAFAAoAADD2//EBBgAFAAoAADAAAPQBBgAFAAoAADALAPEBBgAFAAoAADATAPABBgAFAAoAADASAPEBBgAFAAoAADARAPEBBgAFAAoAADA=")
@@ -658,6 +666,7 @@ scale = Vector2(149.95, 28.5133)
 texture = SubResource("GradientTexture2D_kjymn")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="Underground"]
+visible = false
 light_mask = 7
 visibility_layer = 7
 color = Color(0, 0, 0, 1)
@@ -727,5 +736,57 @@ shape = SubResource("RectangleShape2D_lldvu")
 
 [node name="Sprite2D" type="Sprite2D" parent="Launch zone"]
 texture = SubResource("GradientTexture2D_jbupj")
+
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_254" to="Underground/CanvasGroup/Small Water spots/Replacement_254" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_384" to="Underground/CanvasGroup/Small Water spots/Replacement_384" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_81" to="Underground/CanvasGroup/Small Water spots/Replacement_81" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_447" to="Underground/CanvasGroup/Small Water spots/Replacement_447" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_148" to="Underground/CanvasGroup/Small Water spots/Replacement_148" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_51" to="Underground/CanvasGroup/Small Water spots/Replacement_51" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_359" to="Underground/CanvasGroup/Small Water spots/Replacement_359" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_217" to="Underground/CanvasGroup/Small Water spots/Replacement_217" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_40" to="Underground/CanvasGroup/Small Water spots/Replacement_40" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_152" to="Underground/CanvasGroup/Small Water spots/Replacement_152" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_277" to="Underground/CanvasGroup/Small Water spots/Replacement_277" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_210" to="Underground/CanvasGroup/Small Water spots/Replacement_210" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_143" to="Underground/CanvasGroup/Small Water spots/Replacement_143" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_99" to="Underground/CanvasGroup/Small Water spots/Replacement_99" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_427" to="Underground/CanvasGroup/Small Water spots/Replacement_427" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_374" to="Underground/CanvasGroup/Small Water spots/Replacement_374" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/Replacement_134" to="Underground/CanvasGroup/Small Water spots/Replacement_134" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169080" to="Underground/CanvasGroup/Small Water spots/@Area2D@169080" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169081" to="Underground/CanvasGroup/Small Water spots/@Area2D@169081" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169082" to="Underground/CanvasGroup/Small Water spots/@Area2D@169082" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169083" to="Underground/CanvasGroup/Small Water spots/@Area2D@169083" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169084" to="Underground/CanvasGroup/Small Water spots/@Area2D@169084" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169085" to="Underground/CanvasGroup/Small Water spots/@Area2D@169085" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169086" to="Underground/CanvasGroup/Small Water spots/@Area2D@169086" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169087" to="Underground/CanvasGroup/Small Water spots/@Area2D@169087" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169088" to="Underground/CanvasGroup/Small Water spots/@Area2D@169088" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169089" to="Underground/CanvasGroup/Small Water spots/@Area2D@169089" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169090" to="Underground/CanvasGroup/Small Water spots/@Area2D@169090" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169091" to="Underground/CanvasGroup/Small Water spots/@Area2D@169091" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169092" to="Underground/CanvasGroup/Small Water spots/@Area2D@169092" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169093" to="Underground/CanvasGroup/Small Water spots/@Area2D@169093" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169094" to="Underground/CanvasGroup/Small Water spots/@Area2D@169094" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169095" to="Underground/CanvasGroup/Small Water spots/@Area2D@169095" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169096" to="Underground/CanvasGroup/Small Water spots/@Area2D@169096" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169097" to="Underground/CanvasGroup/Small Water spots/@Area2D@169097" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169098" to="Underground/CanvasGroup/Small Water spots/@Area2D@169098" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169099" to="Underground/CanvasGroup/Small Water spots/@Area2D@169099" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169100" to="Underground/CanvasGroup/Small Water spots/@Area2D@169100" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169101" to="Underground/CanvasGroup/Small Water spots/@Area2D@169101" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169102" to="Underground/CanvasGroup/Small Water spots/@Area2D@169102" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169103" to="Underground/CanvasGroup/Small Water spots/@Area2D@169103" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169104" to="Underground/CanvasGroup/Small Water spots/@Area2D@169104" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169105" to="Underground/CanvasGroup/Small Water spots/@Area2D@169105" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169106" to="Underground/CanvasGroup/Small Water spots/@Area2D@169106" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169107" to="Underground/CanvasGroup/Small Water spots/@Area2D@169107" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169108" to="Underground/CanvasGroup/Small Water spots/@Area2D@169108" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169109" to="Underground/CanvasGroup/Small Water spots/@Area2D@169109" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169110" to="Underground/CanvasGroup/Small Water spots/@Area2D@169110" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169111" to="Underground/CanvasGroup/Small Water spots/@Area2D@169111" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169112" to="Underground/CanvasGroup/Small Water spots/@Area2D@169112" method="_on_body_entered"]
+[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@169113" to="Underground/CanvasGroup/Small Water spots/@Area2D@169113" method="_on_body_entered"]
 
 [editable path="Player"]
