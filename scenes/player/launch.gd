@@ -5,6 +5,7 @@ class_name LaunchAbility
 @export var launch_power: float = 1.0
 @export var launch_aim_distance: float = 200.0
 @export var aim_cursor_scene: PackedScene
+@onready var launch_sfx: AudioStreamPlayer2D = $"../SFX/LaunchSFX"
 
 @export_category("Debug")
 @export var debug_state_changes: bool = false
@@ -98,6 +99,7 @@ func physics(delta):
 func _execute_launch():
 	_change_state(State.FIRING)
 	player.velocity = aim_direction * launch_power
+	launch_sfx.play()
 	if aim_cursor:
 		aim_cursor.queue_free()
 		aim_cursor = null

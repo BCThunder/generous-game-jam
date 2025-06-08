@@ -67,6 +67,7 @@ func _replace() -> void:
 
 			if type_value == replacement.type:
 				var scene_instance = replacement.scene.instantiate()
+				scene_instance.name = "Replacement_%d" % y
 				if not scene_instance:
 					push_error("ReplaceTileWithScene: Failed to instantiate scene from PackedScene.")
 					continue

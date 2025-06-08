@@ -34,6 +34,7 @@ LaunchZones="Zones to enable launch ability"
 Player=""
 spikes=""
 death=""
+SmallWater=""
 
 [input]
 
