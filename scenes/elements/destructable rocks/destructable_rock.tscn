@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://pi02hv31jqsx"]
+
+[ext_resource type="Texture2D" uid="uid://dpkme7wefm2su" path="res://assets/sprites/all/32x32 breakable rock.png" id="2_3w1wp"]
+[ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/stalactites/shard_emitter.gd" id="3_ntfdh"]
+[ext_resource type="AudioStream" uid="uid://oca4fvv0ybwp" path="res://assets/audio/sfx/rocks_falling.wav" id="4_87mif"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6jgsi"]
+size = Vector2(32, 32)
+
+[node name="Destructable Rock" type="StaticBody2D" groups=["breakable"]]
+modulate = Color(0.494855, 0.494855, 0.494853, 1)
+collision_layer = 136
+collision_mask = 136
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_6jgsi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.377919, 0.377919, 0.377918, 1)
+z_index = 50
+texture_filter = 1
+position = Vector2(-16, -16)
+texture = ExtResource("2_3w1wp")
+centered = false
+
+[node name="ShardEmitter" type="Node2D" parent="Sprite2D" node_paths=PackedStringArray("sfx")]
+script = ExtResource("3_ntfdh")
+nbr_of_shards = 10
+min_impulse = 100.0
+max_impulse = 100.0
+lifetime = 1.0
+sfx = NodePath("SFX")
+metadata/_custom_type_script = "uid://cuu1p4vadkx53"
+
+[node name="SFX" type="AudioStreamPlayer2D" parent="Sprite2D/ShardEmitter"]
+stream = ExtResource("4_87mif")
+volume_db = -10.4
+pitch_scale = 0.52
