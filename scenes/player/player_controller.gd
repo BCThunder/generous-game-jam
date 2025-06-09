@@ -165,6 +165,8 @@ class GroundState extends PlayerState:
 		player.can_wall_slide = player.wall_slide_enabled
 		player.wall_slide_timer.stop()
 
+		player.animated_sprite.play("default")
+
 		if player.debug_enabled and player.debug_movement:
 			print("Entered GroundState")
 
@@ -687,7 +689,7 @@ func play_jump_sfx():
 			jump2_sfx.pitch_scale = pitch
 			jump2_sfx.play()
 
-func play_animation(animation_name : String):
+func play_animation(animation_name: String):
 	animation_player.play(animation_name)
 	
 func is_animation_finished():

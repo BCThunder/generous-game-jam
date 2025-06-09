@@ -21,6 +21,9 @@ class_name ShardEmitter extends Node2D
 @export_category("Destroy Parent")
 @export var destroy_parent: bool = true
 
+var sfx: AudioStreamPlayer2D
+
+
 @export_category("Debug")
 @export var debug: bool = false
 
@@ -40,6 +43,7 @@ func _ready() -> void:
 		add_child(delete_timer)
 	delete_timer.one_shot = true
 	delete_timer.timeout.connect(_on_DeleteTimer_timeout)
+
 	
 	if get_parent() is Sprite2D:
 		var _rect = get_parent().get_rect()
