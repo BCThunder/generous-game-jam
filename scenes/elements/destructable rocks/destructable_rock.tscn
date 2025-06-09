@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://pi02hv31jqsx"]
+[gd_scene load_steps=5 format=3 uid="uid://bn4n5o3ix5ehs"]
 
 [ext_resource type="Texture2D" uid="uid://dpkme7wefm2su" path="res://assets/sprites/all/32x32 breakable rock.png" id="2_3w1wp"]
 [ext_resource type="Script" uid="uid://cuu1p4vadkx53" path="res://scenes/elements/stalactites/shard_emitter.gd" id="3_ntfdh"]
