@@ -1,6 +1,8 @@
 extends Node
 
 var can_player_interact := false
+var water_threshold_met := false
+
 var tile_data := []
 var collected_water := 0
 var is_in_the_game := false
@@ -54,16 +56,16 @@ func check_water_threshold():
 	
 	if collected_water > 5:
 		stage_references["OasisStage1"] = true
-		
+		water_threshold_met = true
 	if collected_water > 20:
 		stage_references["OasisStage2"] = true
-		
+		water_threshold_met = true
 	if collected_water > 30:
 		stage_references["OasisStage3"] = true
-		
+		water_threshold_met = true
 	if collected_water > 40:
 		stage_references["OasisStage4"] = true
-
+		water_threshold_met = true
 
 func interact_with_npc():
 	if current_npc:

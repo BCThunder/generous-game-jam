@@ -3,6 +3,7 @@ extends Node
 var config = ConfigFile.new()
 var player
 var save_path := "res://game_save.cfg"
+var top_spawn_point := Vector2(-63.0, -16.0)
 var last_location
 var has_water_been_collected := {}
 
@@ -103,3 +104,7 @@ func spawn_player():
 		player = _find_player()
 		last_location = player.global_position
 		player.global_position = last_location
+
+func teleport_to_top():
+	player = _find_player()
+	player.global_position = top_spawn_point
