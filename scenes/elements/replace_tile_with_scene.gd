@@ -72,6 +72,9 @@ func _replace() -> void:
 					var tf = get_transform_from_tile(cell)
 					scene_instance.rotation = tf.rotation
 					scene_instance.scale = tf.scale
+					
+					# For the small water tiles to work properly
+					scene_instance.name = "ReplacedTile_%s_%s" % [cell.x, cell.y]
 
 					add_child(scene_instance)
 					if debug_enabled and debug_replacement:

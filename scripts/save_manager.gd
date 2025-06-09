@@ -5,7 +5,7 @@ var player
 var save_path := "res://game_save.cfg"
 var top_spawn_point := Vector2(-63.0, -16.0)
 var last_location
-var has_water_been_collected := {}
+var collected_water_tiles := []
 
 
 func _ready():
@@ -15,9 +15,8 @@ func _ready():
 func save_game():
 	config.set_value("Player", "position", last_location)
 	config.set_value("Player", "collected_water", GameManager.collected_water)
-	save_collected_water()
 	config.set_value("Level", "stage_progress", GameManager.stage_progress)
-	config.set_value("Level", "small_water", has_water_been_collected)
+	config.set_value("Level", "small_water", collected_water_tiles)
 	config.save(save_path)
 	
 	var error := config.save(save_path)
@@ -31,7 +30,7 @@ func load_save():
 		last_location = config.get_value("Player", "position")
 		GameManager.collected_water = config.get_value("Player", "collected_water")
 		GameManager.stage_progress = config.get_value("Level", "stage_progress")
-		has_water_been_collected = config.get_value("Level", "small_water")
+		collected_water_tiles = config.get_value("Level", "small_water")
 		
 		print("Player has collected: " + str(GameManager.collected_water) + " water.")
 		
@@ -60,10 +59,14 @@ func has_valid_save() -> bool:
 
 func _on_scene_changed(_node: Node) -> void:
 	if not player and GameManager.is_in_the_game:
-		player = _find_player()
-	
 		# Delay call until all nodes are ready
 		await get_tree().process_frame
+		await get_tree().process_frame
+		
+		player = _find_player()
+		
+		await get_tree().process_frame
+		load_save()
 		load_collected_water()
 		spawn_player()
 
@@ -75,35 +78,39 @@ func _find_player():
 		return null
 	print_debug("Player node found: ", player.name, " type: ", player.get_class())
 	return player
-	
+
+
 # Save collected water spots
-func save_collected_water():
-	var small_water_tiles = get_tree().get_nodes_in_group("SmallWater")
-	for tile in small_water_tiles:
-		has_water_been_collected[tile.name] = tile.monitoring
+func save_collected_water(water_to_save : Area2D):
+	collected_water_tiles.append(water_to_save.name)
+
 
 func load_collected_water():
-	var small_water_tiles = get_tree().get_nodes_in_group("SmallWater")
-	for tile in small_water_tiles:
-		if has_water_been_collected.has(tile.name):
-			tile.set_deferred("monitoring", has_water_been_collected[tile.name])
-		else:
-			tile.set_deferred("monitoring", true) # default
+	for tile in get_tree().get_nodes_in_group("SmallWater"):
+		if tile.name in collected_water_tiles:
+			print("Disabling collected water tile: ", tile.name)
+			tile.set_deferred("monitoring", false)
+			
+			if tile.has_node("CollisionShape2D"):
+				tile.get_node("CollisionShape2D").set_deferred("monitoring", false)
 
-		
+
 func get_collected_water_state(tile_name):
-	return has_water_been_collected.get(tile_name, false)
+	return tile_name in collected_water_tiles
+
 
 # Manage Checkpoints
 func update_checkpoint(location):
 	last_location = location
 	save_game()
 
+
 func spawn_player():
 	if not last_location:
 		player = _find_player()
 		last_location = player.global_position
 		player.global_position = last_location
+
 
 func teleport_to_top():
 	player = _find_player()

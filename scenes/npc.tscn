@@ -80,7 +80,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"clean_walk",
-"speed": 5.0
+"speed": 14.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -133,7 +133,9 @@ texture_filter = 1
 position = Vector2(0, -13.5)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_yf2ql")
-animation = &"dirty_walk"
+animation = &"clean_walk"
+frame = 12
+frame_progress = 0.288316
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -12)
