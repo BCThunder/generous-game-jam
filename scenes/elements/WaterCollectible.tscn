@@ -16,6 +16,7 @@ script = ExtResource("1_alhe5")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_06fbr")
+debug_color = Color(2.88785e-06, 0.493013, 0.576679, 0.42)
 
 [node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_06fbr")
@@ -27,6 +28,5 @@ texture = ExtResource("3_pnswa")
 [node name="Checkpoint" parent="." instance=ExtResource("4_4g1wy")]
 self_modulate = Color(0.42994, 0.131317, 0.36392, 1)
 position = Vector2(0, -18)
-collision_layer = 128
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
