@@ -51,7 +51,6 @@ var has_jumped_off_spikes: bool = false
 # Environment
 @export_category("Environment")
 @export var ground_tilemap_layer_path: NodePath
-@export var dissolve_tilemap_layer_path: NodePath
 
 # Abilities
 @export_category("Launch Ability")
@@ -59,8 +58,8 @@ var has_jumped_off_spikes: bool = false
 @export var launch_ability_enabled: bool = true
 
 @export_category("Slam Ability")
-@export var slam_abiility_scene: PackedScene
 @export var slam_abiility_enabled: bool = true
+@export var slam_speed: float = 400.0 # Speed of the slam move
 @export var slam_move_delay: float = 0.1 # Delay before slam move starts
 
 # --- Destroy Ability ---
@@ -86,6 +85,7 @@ var destroy_ability_timer: Timer
 @export var debug_state_changes: bool = false
 @export var debug_collisions: bool = false
 @export var debug_death: bool = false
+@export var debug_slam_ability: bool = false # Show slam ability in debug mode
 @export var debug_destroy_ability: bool = false
 @export var debug_destroy_ray: bool = false # Draw the destroy ray for debugging
 @export var debug_wall_jump_direction: bool = false # Show wall jump direction in debug mode
@@ -100,7 +100,7 @@ var destroy_ability_timer: Timer
 
 # Animation
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 # Input Tracking
 var input_x_direction: float = 0.0 # -1 for left, 1 for right, 0 for none
@@ -109,6 +109,7 @@ var x_dir_just_pressed: bool = false # True if left/right was just pressed
 
 
 # Context Flags
+var current_state: PlayerState = null
 var is_jump_held: bool = false
 var has_jumped: bool = false
 var can_double_jump: bool = false
@@ -121,7 +122,6 @@ var launch_ability: Node2D = null
 
 # Cached References
 var ground_tilemap_layer: TileMapLayer
-var dissolve_tilemap_layer: TileMapLayer
 
 # Timers for duration-based effects
 var tap_boost_timer: Timer
@@ -138,6 +138,9 @@ class PlayerState:
 	func _init(p_player: PlayerController) -> void:
 		player = p_player
 
+	func get_name() -> String:
+		return "PlayerState"
+
 	func enter() -> void:
 		pass
 
@@ -150,8 +153,10 @@ class PlayerState:
 	func physics(_delta: float) -> void:
 		pass
 
-# --- Ground State ---
+# region --- Ground State ---
 class GroundState extends PlayerState:
+	func get_name() -> String:
+		return "GroundState"
 	func enter() -> void:
 		# Reset jump flags on landing
 		player.can_double_jump = false
@@ -189,8 +194,10 @@ class GroundState extends PlayerState:
 			player.coyote_timer_node.start(player.coyote_time_duration)
 			player._change_state(AirState)
 
-# --- Air State ---
+# region --- Air State ---
 class AirState extends PlayerState:
+	func get_name() -> String:
+		return "AirState"
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
 			print("Entered AirState")
@@ -228,17 +235,20 @@ class AirState extends PlayerState:
 		player._collision_checker()
 		if player.is_on_floor():
 			player._change_state(GroundState)
-		elif player.can_wall_slide and player.is_on_wall() and player.input_x_direction != 0:
+		elif player.can_wall_slide and player.is_on_wall_only() and player.input_x_direction != 0 and player.velocity.y > 0:
 			# If on wall, switch to WallSlideState
 			player._change_state(WallSlideState)
 
+# region --- Wall Slide State ---
 class WallSlideState extends PlayerState:
+	func get_name() -> String:
+		return "WallSlideState"
+
 	var wall_dir = 0.0
 
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
 			print("Entered WallSlideState")
-		player.velocity.y = 0.0 # Stop vertical movement
 		player.is_jump_held = false # Reset jump hold
 		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
 		for i in range(player.get_slide_collision_count()):
@@ -247,8 +257,10 @@ class WallSlideState extends PlayerState:
 				wall_dir = - coll.get_normal().x
 				break
 
-		# Optionally start sliding at a fixed speed
-		player.velocity.y = player.wall_slide_speed
+		player.animated_sprite.play("wall_slide") # Play wall slide animation
+		player.animated_sprite.flip_h = wall_dir > 0 # Flip sprite based on wall direction
+		#player.animated_sprite.position.x = wall_dir * -7.0
+
 
 		if player.wall_slide_timer:
 			if player.wall_slide_timer.is_stopped():
@@ -265,34 +277,42 @@ class WallSlideState extends PlayerState:
 
 	func physics(_delta: float) -> void:
 		player._updated_x_input()
-		if not player.has_jumped:
-			_handle_wall_slide()
+		if player.is_on_floor():
+			player._change_state(AirState)
+			return
+		if not player.is_on_wall_only() or (player.use_wall_jump_time_limit and player.wall_slide_timer.is_stopped()):
+			player._change_state(AirState)
+			return
 
+		_handle_wall_slide()
 
-		player.move_and_slide()
+		if not player.move_and_slide():
+			if player.debug_enabled and player.debug_movement:
+				print("WallSlideState: Player move_and_slide failed.")
+			player._change_state(AirState)
+			return
 		player._collision_checker()
 
 	func _handle_wall_slide():
 		# Handle wall sliding logic
-		if player.use_wall_jump_time_limit and player.wall_slide_timer.is_stopped():
+		if player.velocity.y == 0 or not player.is_on_wall_only() or (player.use_wall_jump_time_limit and player.wall_slide_timer.is_stopped()):
 			# If wall slide timer is stopped, switch to AirState
 			player._change_state(AirState)
 			return
 
-		if player.is_on_wall():
-			# If still on wall, continue sliding
+		# If still on wall, continue sliding
+		# Optionally start sliding at a fixed speed
+		if player.velocity.y >= 0:
 			player.velocity.y = player.wall_slide_speed
-			if not player.input_x_direction:
-				# If no input, continue sliding down
-				player.velocity.x = wall_dir
-			else:
-				# If input is pressed, apply horizontal movement
-				player.velocity.x = player.input_x_direction * player.run_speed * player.slippery_acceleration_multiplier
-				if player.debug_enabled and player.debug_movement:
-					print("Sliding on wall with velocity: ", player.velocity)
+			# if not player.input_x_direction:
+			# 	# If no input, continue sliding down
+			# 	player.velocity.x = wall_dir
 		else:
-			# If no longer on wall, switch to AirState
-			player._change_state(AirState)
+			# If input is pressed, apply horizontal movement
+			player.velocity.x = player.input_x_direction * player.run_speed * player.slippery_acceleration_multiplier
+			if player.debug_enabled and player.debug_movement:
+				print("Sliding on wall with velocity: ", player.velocity)
+
 
 	func _try_wall_jump() -> void:
 		if player.debug_enabled and player.debug_jumps:
@@ -327,8 +347,11 @@ class WallSlideState extends PlayerState:
 		#await player.get_tree().create_timer(1).timeout # Small delay to allow jump effects
 		player._change_state(AirState)
 
-
+# region --- Slam State ---
 class SlamState extends PlayerState:
+	func get_name() -> String:
+		return "SlamState"
+
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
 			print("Entered SlamState")
@@ -336,29 +359,36 @@ class SlamState extends PlayerState:
 		player.is_jump_held = false
 		player.can_double_jump = false
 
-	func physics(delta: float) -> void:
-		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
-		var grav_scale: float = 30.0
-
-		player.velocity.y += gravity * grav_scale * delta
+	func physics(_delta: float) -> void:
+		player.velocity.y = player.slam_speed
 		player.velocity.x = 0.0 # Stop horizontal movement during slam
 
-		var collision = player.move_and_slide()
-		player._collision_checker()
-		if collision:
-			# Check if we hit the ground
-			if player.is_on_floor():
-				# Small delay to allow landing effects
-				await player.get_tree().create_timer(player.slam_move_delay).timeout
-				player._change_state(GroundState)
-			else:
-				# If not on ground, stay in slam state
-				player.velocity.x = 0.0 # Stop horizontal movement during slam
-				player.velocity.y = max(player.velocity.y, 0) # Prevent upward movement
+		# var collision: KinematicCollision2D = player.move_and_collide(player.velocity, false, 0.2, true)
+		# player._collision_checker()
+		# if collision:
+		# 	if player.debug_enabled and player.debug_slam_ability:
+		# 		print("Slam collided with: ", collision.get_collider().name)
+		# 	# Check if we hit the ground
+		# 	player.move_and_slide()
+		# 	if player.is_on_floor():
+		# 		# Small delay to allow landing effects
+		# 		await player.get_tree().create_timer(player.slam_move_delay).timeout
+		# 		player._change_state(GroundState)
+
+		if player.move_and_slide():
+			if player.debug_enabled and player.debug_slam_ability:
+				print("SlamState: Player moved and slid successfully.")
+			player.velocity.y = 0.0 # Stop vertical movement after sliding
+			await player.get_tree().create_timer(player.slam_move_delay).timeout
+			
+			player._change_state(GroundState)
 
 
-# --- Destroy State ---
+# region --- Destroy State ---
 class DestroyState extends PlayerState:
+	func get_name() -> String:
+		return "DestroyState"
+
 	func enter() -> void:
 		if player.debug_enabled and player.debug_state_changes:
 			print("Entered DestroyState")
@@ -375,8 +405,11 @@ class DestroyState extends PlayerState:
 		# No movement during destroy
 		pass
 
-# --- Death State ---
+# region --- Death State ---
 class DeathState extends PlayerState:
+	func get_name() -> String:
+		return "DeathState"
+
 	func enter() -> void:
 		if player.debug_enabled and player.debug_state_changes:
 			print("Entered DeathState")
@@ -407,8 +440,7 @@ class DeathState extends PlayerState:
 		pass
 # endregion
 
-# region PlayerController Lifecycle
-var current_state: PlayerState = null
+# region Ready
 
 func _ready() -> void:
 	_get_tilemap_layers()
@@ -465,7 +497,7 @@ func _ready() -> void:
 # endregion
 
 
-# region Input and Physics
+# region Defult Methods
 func _input(event: InputEvent) -> void:
 	if launch_ability and launch_ability.get("active"):
 		launch_ability.call("input", event)
@@ -496,9 +528,16 @@ func _physics_process(delta: float) -> void:
 
 # region State Transition
 func _change_state(new_state_class) -> void:
+	var prev_state = current_state
 	current_state.exit()
 	current_state = new_state_class.new(self)
 	current_state.enter()
+
+	#animated_sprite.position = Vector2.ZERO # Reset sprite offset on state change
+
+
+	if debug_enabled and debug_state_changes:
+		print_debug("State changed from ", prev_state.get_name(), " to ", current_state.get_name())
 # endregion
 
 # region Gravity & Movement Helpers
@@ -814,19 +853,6 @@ func _collision_checker() -> void:
 				# If we hit a death collider, transition to DeathState
 				_change_state(DeathState)
 
-			if collider.is_in_group("dissolve"):
-				if debug_enabled and debug_collisions:
-					print_debug("Dissolvecolliderhit: ", collider.name)
-					if dissolve_tilemap_layer:
-						if dissolve_tilemap_layer.has_method("dissolve_tile"):
-							var coords = ground_tilemap_layer.local_to_map(collision.get_position())
-							dissolve_tilemap_layer.dissolve_tile(coords)
-							print_debug("Dissolvingtileatcoords: ", coords)
-						else:
-							push_error("Dissolvetilemaplayerdoes not have'dissolve_tile'method.")
-					else:
-						push_error("Dissolvetilemaplayer not set.")
-
 
 func _in_spikes(is_in_spike: bool) -> void:
 	if is_in_spike:
@@ -871,8 +897,3 @@ func _updated_x_input() -> void:
 			previous_input_x_direction = 1.0
 		elif Input.is_action_pressed("move_left") and not Input.is_action_pressed("move_right"):
 			previous_input_x_direction = -1.0
-
-
-	if debug_enabled and debug_input_events:
-		print_debug("Updated input_x_direction: ", input_x_direction, " (Just Pressed: ", x_dir_just_pressed, ")",
-					" Previous: ", previous_input_x_direction)

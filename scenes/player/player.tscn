@@ -1,31 +1,93 @@
-[gd_scene load_steps=26 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=41 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
-[ext_resource type="Texture2D" uid="uid://8brv6ooh7bbo" path="res://assets/sprites/player/32x32 Palis.png" id="2_dqkch"]
 [ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://5ubhvl5dg15g" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water1.png" id="3_cnsyf"]
 [ext_resource type="Script" uid="uid://b5rhliyccijgd" path="res://scenes/player/squash_stretch.gd" id="3_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://bg7v5i57y2m61" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water2.png" id="4_007i1"]
 [ext_resource type="Texture2D" uid="uid://448xxdgvn2uj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis1.png" id="4_je7p5"]
+[ext_resource type="Texture2D" uid="uid://cjxsq71xdrv2g" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water3.png" id="5_6cv16"]
 [ext_resource type="Texture2D" uid="uid://uct62b0qjcqh" path="res://assets/sprites/animations/Palis Jump/32x32 Palis2.png" id="5_fm80t"]
 [ext_resource type="Texture2D" uid="uid://73rtlbv00wn" path="res://assets/sprites/animations/Palis Jump/32x32 Palis3.png" id="6_gx1jg"]
+[ext_resource type="Texture2D" uid="uid://bxe0ubfabdrl1" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water4.png" id="6_j4nxn"]
+[ext_resource type="Texture2D" uid="uid://cqg45qc5pqsx3" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water5.png" id="7_28m0y"]
 [ext_resource type="Texture2D" uid="uid://8pa88kqag2ul" path="res://assets/sprites/animations/Palis Jump/32x32 Palis4.png" id="7_ugbui"]
 [ext_resource type="Texture2D" uid="uid://xntrhohok8nj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis5.png" id="8_fcs02"]
+[ext_resource type="Texture2D" uid="uid://bqbq5ibcls8c0" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water6.png" id="8_uniwh"]
+[ext_resource type="Texture2D" uid="uid://bukhg1mtnnbbp" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water7.png" id="9_iqsei"]
 [ext_resource type="Texture2D" uid="uid://3g55psl6e3kj" path="res://assets/sprites/animations/Palis Jump/32x32 Palis6.png" id="9_myrg7"]
 [ext_resource type="Texture2D" uid="uid://brllbsrvjj2bu" path="res://assets/sprites/animations/Palis Jump/32x32 Palis7.png" id="10_kvlxm"]
+[ext_resource type="Texture2D" uid="uid://b38pvs475ustm" path="res://assets/sprites/animations/Palis idle water/32x32 Palis idle water8.png" id="10_tffgl"]
+[ext_resource type="Texture2D" uid="uid://dpfkv2jl1ookc" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall2.png" id="11_pk8ii"]
+[ext_resource type="Texture2D" uid="uid://gheaqfx5cwbv" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall3.png" id="12_5mf0n"]
 [ext_resource type="AudioStream" uid="uid://de435qxv83p7" path="res://assets/audio/sfx/walking.wav" id="12_fm80t"]
+[ext_resource type="Texture2D" uid="uid://b5xu1sf0hbm7r" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall4.png" id="13_4hvnv"]
 [ext_resource type="AudioStream" uid="uid://cpd8lp2qoq4m4" path="res://assets/audio/sfx/launch.wav" id="13_ugbui"]
+[ext_resource type="Texture2D" uid="uid://dyp1xmrf082na" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall5.png" id="14_bbmj2"]
 [ext_resource type="AudioStream" uid="uid://bcvqx0xyv6xx6" path="res://assets/audio/sfx/jump1.wav" id="14_fcs02"]
 [ext_resource type="AudioStream" uid="uid://0tjynd3i461b" path="res://assets/audio/sfx/slam_new.wav" id="15_fcs02"]
+[ext_resource type="Texture2D" uid="uid://cojadj3gb5cq4" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall6.png" id="15_kxw46"]
 [ext_resource type="AudioStream" uid="uid://cegmj7idt88fo" path="res://assets/audio/sfx/jump2.wav" id="15_myrg7"]
+[ext_resource type="Texture2D" uid="uid://bm7ohdmn3hduu" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall7.png" id="16_8qxvo"]
+[ext_resource type="Texture2D" uid="uid://d3ywifik3cpti" path="res://assets/sprites/animations/Palis Fast Fall-Fall/32x32 Palis fast fall8.png" id="17_5q8fn"]
 [ext_resource type="AudioStream" uid="uid://hxdp2ww5sjff" path="res://assets/audio/sfx/death.wav" id="17_kvlxm"]
+[ext_resource type="Texture2D" uid="uid://cv4udy2n0hruo" path="res://assets/sprites/animations/32x32 Palis wall jump.png" id="25_wva7c"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_74lek"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_dqkch")
+"texture": ExtResource("3_cnsyf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_007i1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_6cv16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j4nxn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_28m0y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_uniwh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_iqsei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tffgl")
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_pk8ii")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_5mf0n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_4hvnv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_bbmj2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_kxw46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_8qxvo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_5q8fn")
+}],
+"loop": true,
+"name": &"fast_fall",
 "speed": 5.0
 }, {
 "frames": [{
@@ -52,7 +114,15 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
-"speed": 30.0
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_wva7c")
+}],
+"loop": true,
+"name": &"wall_slide",
+"speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_j5jx5"]
@@ -136,8 +206,8 @@ destroy_ability_chain_delay = 0.15
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_74lek")
-animation = &"jump"
-frame_progress = 0.75579
+animation = &"wall_slide"
+autoplay = "default"
 script = ExtResource("3_qlg0r")
 squash_apex = Vector2(0.9, 1.1)
 squash_land = Vector2(1.2, 0.8)
@@ -183,28 +253,22 @@ drag_bottom_margin = 0.05
 
 [node name="WalkingSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("12_fm80t")
-bus = &"SFX"
 
 [node name="LaunchSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("13_ugbui")
-bus = &"SFX"
 
 [node name="Jump1SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("14_fcs02")
-bus = &"SFX"
 
 [node name="Jump2SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("15_myrg7")
-bus = &"SFX"
 
 [node name="SlamSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("15_fcs02")
 volume_db = 4.0
-bus = &"SFX"
 
 [node name="DeathSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("17_kvlxm")
-bus = &"SFX"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(1.96423, 1.87376)
