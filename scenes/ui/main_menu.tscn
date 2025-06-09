@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://pphrdpv7qwki"]
+[gd_scene load_steps=15 format=4 uid="uid://pphrdpv7qwki"]
 
 [ext_resource type="Script" uid="uid://h0n8m8gyoxum" path="res://scenes/ui/main_menu.gd" id="1_sl1te"]
 [ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="2_1g8jr"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="4_btxxm"]
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="5_wb0q5"]
 [ext_resource type="Texture2D" uid="uid://druheukqx4cdd" path="res://assets/sprites/oasis/Well.png" id="6_btxxm"]
+[ext_resource type="Texture2D" uid="uid://csuqac14ngt10" path="res://assets/sprites/cinematic/credits page.png" id="8_wb0q5"]
 
 [sub_resource type="Gradient" id="Gradient_kjymn"]
 interpolation_mode = 2
@@ -407,9 +408,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -316.0
-offset_top = -165.0
+offset_top = -213.0
 offset_right = -21.0
-offset_bottom = -29.0
+offset_bottom = -77.0
 grow_horizontal = 0
 grow_vertical = 0
 vertical = true
@@ -432,12 +433,19 @@ layout_mode = 2
 theme = ExtResource("2_1g8jr")
 text = "Settings"
 
+[node name="CreditsButton" type="Button" parent="Buttons"]
+layout_mode = 2
+theme = ExtResource("2_1g8jr")
+text = "Credits
+"
+
 [node name="ExitGameButton" type="Button" parent="Buttons"]
 layout_mode = 2
 theme = ExtResource("2_1g8jr")
 text = "Exit"
 
 [node name="SettingsPanel" type="Panel" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -515,11 +523,48 @@ grow_vertical = 0
 value = 50.0
 rounded = true
 
+[node name="Credits" type="Panel" parent="."]
+visible = false
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Credits"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_wb0q5")
+
+[node name="CloseCreditsButton" type="Button" parent="Credits"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -50.0
+offset_right = -22.0
+offset_bottom = -28.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("2_1g8jr")
+text = "Close"
+
 [connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="Buttons/LoadSaveButton" to="." method="_on_load_save_button_pressed"]
 [connection signal="pressed" from="Buttons/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="Buttons/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="renamed" from="Buttons/ExitGameButton" to="." method="_on_exit_game_button_renamed"]
 [connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="." method="_on_close_settings_button_pressed"]
 [connection signal="value_changed" from="SettingsPanel/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="SettingsPanel/MusicSlider" to="." method="_on_volume_changed"]
 [connection signal="value_changed" from="SettingsPanel/SFXLabel2" to="." method="_on_sfx_label_2_value_changed"]
+[connection signal="pressed" from="Credits/CloseCreditsButton" to="." method="_on_close_credits_button_pressed"]
