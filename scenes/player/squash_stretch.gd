@@ -87,6 +87,7 @@ var last_flip_input_dir: int = 0 # -1 for left, 1 for right, 0 for none
 # Seconds to wait before allowing flip back to momentum
 var flip_back_grace_time: float = 0.5
 func _ready() -> void:
+	set_physics_process(false)
 	flip_cooldown_timer = Timer.new()
 	flip_cooldown_timer.one_shot = true
 	flip_cooldown_timer.wait_time = flip_cooldown_time
