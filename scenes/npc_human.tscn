@@ -1,0 +1,164 @@
+[gd_scene load_steps=28 format=3 uid="uid://dh3c2imijo3qf"]
+
+[ext_resource type="Script" uid="uid://ck72ra4gbjx75" path="res://scripts/npc.gd" id="1_s5ula"]
+[ext_resource type="Texture2D" uid="uid://caln474i566yd" path="res://assets/sprites/npcs/25x18 cleanup refugee.png" id="2_s5ula"]
+[ext_resource type="Texture2D" uid="uid://baekem8tx20ov" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk1.png" id="3_s5ula"]
+[ext_resource type="Texture2D" uid="uid://cuy0hntr3ts74" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk2.png" id="4_by6bi"]
+[ext_resource type="Texture2D" uid="uid://crki2i4dam0a2" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk3.png" id="5_w6uq0"]
+[ext_resource type="Texture2D" uid="uid://b1a6xytxhmgw7" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk4.png" id="6_8fid1"]
+[ext_resource type="Texture2D" uid="uid://btueaqec0lnf8" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk5.png" id="7_n4n1p"]
+[ext_resource type="Texture2D" uid="uid://b8um2k0wxh6o0" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk6.png" id="8_cp85v"]
+[ext_resource type="Texture2D" uid="uid://8pvxdo6coel" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk7.png" id="9_0f6dn"]
+[ext_resource type="Texture2D" uid="uid://bj70l7gyknkm8" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk8.png" id="10_iskbh"]
+[ext_resource type="Texture2D" uid="uid://dx3qh7wwtrl6d" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk9.png" id="11_51mdp"]
+[ext_resource type="Texture2D" uid="uid://kfbgk21ntdr6" path="res://assets/sprites/animations/Human Survivor/25x18 cleanup refugee walk10.png" id="12_umitj"]
+[ext_resource type="Texture2D" uid="uid://c5xhpk13hw2k4" path="res://assets/sprites/npcs/25x18 refugee.png" id="13_by6bi"]
+[ext_resource type="Texture2D" uid="uid://boy1axn6t4xfl" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk1.png" id="14_m5wdq"]
+[ext_resource type="Texture2D" uid="uid://bfbcisvo3rtmm" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk2.png" id="15_2bak5"]
+[ext_resource type="Texture2D" uid="uid://c18h401moxoiq" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk3.png" id="16_ggrxc"]
+[ext_resource type="Texture2D" uid="uid://rgtitxvm7n4" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk4.png" id="17_8g0su"]
+[ext_resource type="Texture2D" uid="uid://3c03cpv5s2w1" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk5.png" id="18_qx5fl"]
+[ext_resource type="Texture2D" uid="uid://bcveftpwe52k4" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk6.png" id="19_jwkre"]
+[ext_resource type="Texture2D" uid="uid://d1pgk7esd0xr8" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk7.png" id="20_sbyri"]
+[ext_resource type="Texture2D" uid="uid://dyoja5dwhfj43" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk8.png" id="21_kh3dj"]
+[ext_resource type="Texture2D" uid="uid://dttgw2b7u161g" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk9.png" id="22_4wkog"]
+[ext_resource type="Texture2D" uid="uid://dyt6a3loyxc08" path="res://assets/sprites/animations/Human Refugee/25x18 refugee walk10.png" id="23_snobq"]
+[ext_resource type="Texture2D" uid="uid://cjkvy7qb2x17u" path="res://assets/sprites/oasis/water droplet.png" id="24_unpxe"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yf2ql"]
+resource_name = "npc_dwarf"
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_s5ula")
+}],
+"loop": true,
+"name": &"clean_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s5ula")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_by6bi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_w6uq0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_8fid1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_n4n1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_cp85v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0f6dn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_iskbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_51mdp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_umitj")
+}],
+"loop": true,
+"name": &"clean_walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_by6bi")
+}],
+"loop": true,
+"name": &"dirty_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_m5wdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2bak5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_ggrxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_8g0su")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_qx5fl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_jwkre")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_sbyri")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_kh3dj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_4wkog")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_snobq")
+}],
+"loop": true,
+"name": &"dirty_walk",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rv78h"]
+radius = 7.0
+height = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7n8xq"]
+radius = 40.0
+
+[node name="NPC" type="CharacterBody2D" groups=["NPC"]]
+z_index = 100
+collision_layer = 0
+script = ExtResource("1_s5ula")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -19)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_yf2ql")
+animation = &"clean_walk"
+frame = 4
+frame_progress = 0.561549
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -12)
+shape = SubResource("CapsuleShape2D_rv78h")
+
+[node name="InteractArea" type="Area2D" parent="."]
+position = Vector2(-1, 8)
+collision_layer = 129
+collision_mask = 129
+
+[node name="InteractCollision" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0.200001, -19.8)
+shape = SubResource("CircleShape2D_7n8xq")
+
+[node name="WaterSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-9, -35)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("24_unpxe")
+
+[node name="WalkTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="timeout" from="WalkTimer" to="." method="_on_walk_timer_timeout"]

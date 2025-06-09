@@ -1,0 +1,183 @@
+[gd_scene load_steps=33 format=3 uid="uid://b8ix8ggulhihm"]
+
+[ext_resource type="Script" uid="uid://ck72ra4gbjx75" path="res://scripts/npc.gd" id="1_cqo27"]
+[ext_resource type="Texture2D" uid="uid://bqxwjs8hamac7" path="res://assets/sprites/npcs/13x29 elf survivor.png" id="2_8cjsb"]
+[ext_resource type="Texture2D" uid="uid://bdxwrjj31lb8y" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor1.png" id="3_8cjsb"]
+[ext_resource type="Texture2D" uid="uid://ds7cijxl3j3mu" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor2.png" id="4_06hm1"]
+[ext_resource type="Texture2D" uid="uid://dsekdsfpdv0b" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor3.png" id="5_rv25w"]
+[ext_resource type="Texture2D" uid="uid://coeqcpsyt3m5q" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor4.png" id="6_44lif"]
+[ext_resource type="Texture2D" uid="uid://bh3i1k2juqsoa" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor5.png" id="7_3p5be"]
+[ext_resource type="Texture2D" uid="uid://tkcpgbaja6ky" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor6.png" id="8_53tkb"]
+[ext_resource type="Texture2D" uid="uid://ciaebkkv21m83" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor7.png" id="9_bbehe"]
+[ext_resource type="Texture2D" uid="uid://ddv41blb027ug" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor8.png" id="10_jn72x"]
+[ext_resource type="Texture2D" uid="uid://c0f5b3htadp8g" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor9.png" id="11_g5rc2"]
+[ext_resource type="Texture2D" uid="uid://dyib4kki76tul" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor10.png" id="12_vc385"]
+[ext_resource type="Texture2D" uid="uid://u7rx88h2ydh4" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor11.png" id="13_u6j7k"]
+[ext_resource type="Texture2D" uid="uid://cooqa8dahroct" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor12.png" id="14_7w3wb"]
+[ext_resource type="Texture2D" uid="uid://g5m2p5bs1mok" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor13.png" id="15_6vr2p"]
+[ext_resource type="Texture2D" uid="uid://dhabwuo5dlawg" path="res://assets/sprites/animations/Elf Survivor/13x29 elf survivor14.png" id="16_pflv8"]
+[ext_resource type="Texture2D" uid="uid://d4ciaw2h6qdp7" path="res://assets/sprites/npcs/11x29 elf refugee.png" id="17_8cjsb"]
+[ext_resource type="Texture2D" uid="uid://bnxb1gg6q4m6j" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk1.png" id="18_3p5be"]
+[ext_resource type="Texture2D" uid="uid://dpuu1aa7wx4pa" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk2.png" id="19_53tkb"]
+[ext_resource type="Texture2D" uid="uid://dpj3dqtebc68j" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk3.png" id="20_bbehe"]
+[ext_resource type="Texture2D" uid="uid://cnfem8taoru1e" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk4.png" id="21_jn72x"]
+[ext_resource type="Texture2D" uid="uid://cm6lwvkjf4f7o" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk5.png" id="22_g5rc2"]
+[ext_resource type="Texture2D" uid="uid://blohqidsyrhy" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk6.png" id="23_vc385"]
+[ext_resource type="Texture2D" uid="uid://cjkvy7qb2x17u" path="res://assets/sprites/oasis/water droplet.png" id="24_ouxi1"]
+[ext_resource type="Texture2D" uid="uid://kxlpljbouaw8" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk7.png" id="24_u6j7k"]
+[ext_resource type="Texture2D" uid="uid://bradi3tcph2w4" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk8.png" id="25_7w3wb"]
+[ext_resource type="Texture2D" uid="uid://cfk8lbpkhv3l6" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk9.png" id="26_6vr2p"]
+[ext_resource type="Texture2D" uid="uid://d3suqxjrr12hs" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk10.png" id="27_pflv8"]
+[ext_resource type="Texture2D" uid="uid://n531xt868t1g" path="res://assets/sprites/animations/Elf Refugee/11x29 elf refugee walk11.png" id="28_mubg6"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yf2ql"]
+resource_name = "npc_dwarf"
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8cjsb")
+}],
+"loop": true,
+"name": &"clean_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_8cjsb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_06hm1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_rv25w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_44lif")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_3p5be")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_53tkb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_bbehe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_jn72x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_g5rc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_vc385")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_u6j7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_7w3wb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_6vr2p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_pflv8")
+}],
+"loop": true,
+"name": &"clean_walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_8cjsb")
+}],
+"loop": true,
+"name": &"dirty_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_3p5be")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_53tkb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_bbehe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_jn72x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_g5rc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_vc385")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_u6j7k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_7w3wb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_6vr2p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_pflv8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_mubg6")
+}],
+"loop": true,
+"name": &"dirty_walk",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rv78h"]
+radius = 7.0
+height = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7n8xq"]
+radius = 40.0
+
+[node name="NPC" type="CharacterBody2D" groups=["NPC"]]
+z_index = 100
+collision_layer = 0
+script = ExtResource("1_cqo27")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -22)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_yf2ql")
+animation = &"clean_walk"
+frame_progress = 0.684146
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -12)
+shape = SubResource("CapsuleShape2D_rv78h")
+
+[node name="InteractArea" type="Area2D" parent="."]
+position = Vector2(-1, 8)
+collision_layer = 129
+collision_mask = 129
+
+[node name="InteractCollision" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0.200001, -19.8)
+shape = SubResource("CircleShape2D_7n8xq")
+
+[node name="WaterSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-13, -45)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("24_ouxi1")
+
+[node name="WalkTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[connection signal="body_entered" from="InteractArea" to="." method="_on_interact_area_body_entered"]
+[connection signal="body_exited" from="InteractArea" to="." method="_on_interact_area_body_exited"]
+[connection signal="timeout" from="WalkTimer" to="." method="_on_walk_timer_timeout"]

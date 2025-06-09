@@ -127,6 +127,7 @@ radius = 40.0
 
 [node name="NPC" type="CharacterBody2D" groups=["NPC"]]
 z_index = 100
+collision_layer = 0
 script = ExtResource("1_abqhh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -134,17 +135,9 @@ texture_filter = 1
 position = Vector2(0, -13.5)
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_yf2ql")
-animation = &"dirty_idle"
-
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
-visible = false
-texture_filter = 1
-position = Vector2(0, -13.5)
-scale = Vector2(1.5, 1.5)
-sprite_frames = SubResource("SpriteFrames_yf2ql")
 animation = &"clean_walk"
-frame = 12
-frame_progress = 0.288316
+frame = 6
+frame_progress = 0.0621589
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1, -12)
@@ -161,8 +154,8 @@ shape = SubResource("CircleShape2D_7n8xq")
 
 [node name="WaterSprite" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(-10, -23)
-scale = Vector2(0.105, 0.105)
+position = Vector2(-11, -25)
+scale = Vector2(0.17, 0.17)
 texture = ExtResource("3_7n8xq")
 
 [node name="WalkTimer" type="Timer" parent="."]

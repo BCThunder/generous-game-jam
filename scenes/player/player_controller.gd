@@ -165,6 +165,8 @@ class GroundState extends PlayerState:
 		player.can_wall_slide = player.wall_slide_enabled
 		player.wall_slide_timer.stop()
 
+		player.animated_sprite.play("default")
+
 		if player.debug_enabled and player.debug_movement:
 			print("Entered GroundState")
 
@@ -230,6 +232,10 @@ class AirState extends PlayerState:
 		if player.coyote_timer_node.is_stopped() or player.has_jumped:
 			# If coyote timer is stopped, we can't jump anymore
 			player._apply_gravity(delta)
+		else:
+			# Reduced gravity during coyote time
+			var gravity_value = ProjectSettings.get_setting("physics/2d/default_gravity")
+			player.velocity.y += gravity_value * player.fall_gravity_scale * 0.5 * delta
 		player._handle_air_moves(delta)
 		player.move_and_slide()
 		player._collision_checker()
@@ -687,7 +693,7 @@ func play_jump_sfx():
 			jump2_sfx.pitch_scale = pitch
 			jump2_sfx.play()
 
-func play_animation(animation_name : String):
+func play_animation(animation_name: String):
 	animation_player.play(animation_name)
 	
 func is_animation_finished():

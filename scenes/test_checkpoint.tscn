@@ -2,10 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="2_3d0ib"]
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="2_y64p5"]
-[ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc.tscn" id="3_w73uy"]
+[ext_resource type="PackedScene" uid="uid://kallldgk8jaw" path="res://scenes/npc_dwarf.tscn" id="3_w73uy"]
 [ext_resource type="PackedScene" uid="uid://bx6c87yf5ae6e" path="res://scenes/kill_zone.tscn" id="5_h5sx5"]
 [ext_resource type="Script" uid="uid://kv4r5j3qlgsu" path="res://scripts/game_manager.gd" id="7_y64p5"]
 [ext_resource type="Script" uid="uid://vgc2corc4o20" path="res://scripts/save_manager.gd" id="9_lavlq"]
+
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_h5sx5"]
 
