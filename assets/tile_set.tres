@@ -327,6 +327,11 @@ texture = SubResource("CanvasTexture_b4n3o")
 25:10/0 = 0
 0:45/size_in_atlas = Vector2i(9, 5)
 0:45/0 = 0
+14:0/0 = 0
+15:1/0 = 0
+14:1/0 = 0
+15:0/0 = 0
+27:10/0 = 0
 
 [resource]
 occlusion_layer_0/light_mask = 1
