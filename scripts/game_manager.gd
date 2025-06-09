@@ -10,7 +10,7 @@ var fresh_game := true
 var is_game_over := false
 
 # Oasis Levels
-var stage_progress := [true, false, false, false]
+var stage_progress := {}
 
 var current_npc = null
 
@@ -21,7 +21,6 @@ func _ready():
 
 func _init_game():
 	is_in_the_game = true
-	fresh_game = false
 	
 	while get_tree().get_current_scene() == null:
 		await get_tree().process_frame
@@ -50,32 +49,26 @@ func check_water_threshold():
 	if collected_water < 5:
 		return
 	
-	if collected_water >= 5 and stage_progress[0] == true:
+	if collected_water >= 5:
 		get_tree().get_current_scene().get_node("OasisStage1").visible = true
 		get_tree().get_current_scene().get_node("NPC_Dwarf").visible = true
-		stage_progress[0] = false
-		stage_progress[1] = true
 		water_threshold_met = true
 		toggle_hud_tooltip(true)
 		print_debug("Stage 1 Met")
-	if collected_water >= 20 and stage_progress[1] == true:
+	if collected_water >= 20:
 		get_tree().get_current_scene().get_node("OasisStage2").visible = true
 		var npc_human := get_tree().get_current_scene().get_node("NPC_Human")
 		npc_human.global_position.x += 150
-		stage_progress[1] = false
-		stage_progress[2] = true
 		get_tree().get_current_scene().get_node("NPC_Elf").visible = true
 		water_threshold_met = true
 		toggle_hud_tooltip(true)
 		print_debug("Stage 2 Met")
-	if collected_water >= 30 and stage_progress[2] == true:
+	if collected_water >= 30:
 		get_tree().get_current_scene().get_node("OasisStage3").visible = true
 		water_threshold_met = true
-		stage_progress[2] = false
-		stage_progress[3] = true
 		toggle_hud_tooltip(true)
 		print_debug("Stage 3 Met")
-	if collected_water >= 40 and stage_progress[3] == true:
+	if collected_water >= 40:
 		get_tree().get_current_scene().get_node("OasisStage4").visible = true
 		water_threshold_met = true
 		toggle_hud_tooltip(true)
