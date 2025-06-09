@@ -35,6 +35,7 @@ func pause_game():
 
 
 func _on_resume_button_pressed() -> void:
+	GameManager.is_in_the_game = true
 	resume()
 
 

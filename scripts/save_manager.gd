@@ -9,14 +9,19 @@ var collected_water_tiles := []
 
 
 func _ready():
-	get_tree().node_added.connect(_on_scene_changed)
+	pass
+	# get_tree().node_added.connect(_on_scene_changed)
 	
 
 func save_game():
+	if GameManager.fresh_game:
+		GameManager.fresh_game = false
+	
 	config.set_value("Player", "position", last_location)
 	config.set_value("Player", "collected_water", GameManager.collected_water)
 	config.set_value("Level", "stage_progress", GameManager.stage_progress)
 	config.set_value("Level", "small_water", collected_water_tiles)
+	config.set_value("Game", "fresh_game", GameManager.fresh_game)
 	config.save(save_path)
 	
 	var error := config.save(save_path)
@@ -30,6 +35,7 @@ func load_save():
 		last_location = config.get_value("Player", "position")
 		GameManager.collected_water = config.get_value("Player", "collected_water")
 		GameManager.stage_progress = config.get_value("Level", "stage_progress")
+		GameManager.fresh_game = config.get_value("Game", "fresh_game")
 		collected_water_tiles = config.get_value("Level", "small_water")
 		
 		print("Player has collected: " + str(GameManager.collected_water) + " water.")
@@ -58,7 +64,7 @@ func has_valid_save() -> bool:
 
 
 func _on_scene_changed(_node: Node) -> void:
-	if not player and GameManager.is_in_the_game:
+	if not player and GameManager.is_in_the_game and !GameManager.fresh_game:
 		# Delay call until all nodes are ready
 		await get_tree().process_frame
 		await get_tree().process_frame
@@ -115,3 +121,14 @@ func spawn_player():
 func teleport_to_top():
 	player = _find_player()
 	player.global_position = top_spawn_point
+	GameManager.toggle_hud_tooltip()
+	
+
+func fast_travel():
+	if last_location:
+		player = _find_player()
+		player.play_animation("fade_out_fade_in")
+		
+		await get_tree().create_timer(0.3)
+
+		player.global_position = last_location

@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://b66dimnpxhg7a" path="res://assets/sprites/animations/Dwarf Survvivorrrrrr/18x13 dwarf survivor walk14.png" id="15_fdkk8"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yf2ql"]
+resource_name = "npc_dwarf"
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -80,7 +81,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"clean_walk",
-"speed": 14.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -129,6 +130,14 @@ z_index = 100
 script = ExtResource("1_abqhh")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -13.5)
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_yf2ql")
+animation = &"dirty_idle"
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="."]
+visible = false
 texture_filter = 1
 position = Vector2(0, -13.5)
 scale = Vector2(1.5, 1.5)

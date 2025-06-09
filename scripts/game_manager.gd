@@ -6,10 +6,10 @@ var water_threshold_met := false
 var tile_data := []
 var collected_water := 0
 var is_in_the_game := false
+var fresh_game := true
 
 # Oasis Levels
 var stage_progress := {}
-var stage_references := {}
 
 var current_npc = null
 
@@ -24,16 +24,8 @@ func _init_game():
 	while get_tree().get_current_scene() == null:
 		await get_tree().process_frame
 	
-	
 	# Initialize The Player's Oasis Progression
 	check_water_threshold()
-	
-	#for i in range(1, 5):
-		#var node_name = "OasisStage" + str(i)
-		#print("Init oasis stage: ", node_name)
-		#var node := get_tree().get_current_scene().get_node(node_name)
-		#stage_references[node_name] = node
-		#stage_progress[node_name] = node.visible
 
 
 func end_game():
@@ -44,9 +36,9 @@ func end_game():
 	# add finish screen
 
 
-func add_water(water_to_save : Area2D):
+func add_water(water_to_save : Area2D, amount : int):
 	print("You collected water!")
-	collected_water += 1
+	collected_water += amount
 	SaveManager.save_collected_water(water_to_save)
 	check_water_threshold()
 
@@ -58,22 +50,33 @@ func check_water_threshold():
 		return
 	
 	if collected_water >= 5:
-		stage_references["OasisStage1"] = true
+		get_tree().get_current_scene().get_node("OasisStage1").visible = true
 		water_threshold_met = true
+		toggle_hud_tooltip()
 		print_debug("Stage 1 Met")
 	if collected_water >= 20:
-		stage_references["OasisStage2"] = true
+		get_tree().get_current_scene().get_node("OasisStage2").visible = true
 		water_threshold_met = true
+		toggle_hud_tooltip()
 		print_debug("Stage 2 Met")
 	if collected_water >= 30:
-		stage_references["OasisStage3"] = true
+		get_tree().get_current_scene().get_node("OasisStage3").visible = true
 		water_threshold_met = true
+		toggle_hud_tooltip()
 		print_debug("Stage 3 Met")
 	if collected_water >= 40:
-		stage_references["OasisStage4"] = true
+		get_tree().get_current_scene().get_node("OasisStage4").visible = true
 		water_threshold_met = true
+		toggle_hud_tooltip()
 		print_debug("Stage 4 Met")
+
+
+func toggle_hud_tooltip():
+	var hud = get_tree().get_current_scene().get_node("HUD")
+	hud.get_child(0).visible = !hud.get_child(0).visible
+
 
 func interact_with_npc():
 	if current_npc:
 		current_npc.emit_signal("player_interact")
+		water_threshold_met = false
