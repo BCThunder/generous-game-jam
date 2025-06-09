@@ -173,9 +173,12 @@ class GroundState extends PlayerState:
 				print("Jump pressed (Ground)")
 			player._try_jump()
 			
-		if GameManager.can_player_interact and event.is_action_pressed("context_interact"):
-			player.interact()
-
+		if event.is_action_pressed("context_interact"):
+			if GameManager.can_player_interact:
+				player.interact()
+			elif GameManager.water_threshold_met:
+				SaveManager.teleport_to_top()
+	
 	func physics(delta: float) -> void:
 		player._apply_gravity(delta)
 		player._handle_ground_moves(delta)
