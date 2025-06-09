@@ -232,6 +232,10 @@ class AirState extends PlayerState:
 		if player.coyote_timer_node.is_stopped() or player.has_jumped:
 			# If coyote timer is stopped, we can't jump anymore
 			player._apply_gravity(delta)
+		else:
+			# Reduced gravity during coyote time
+			var gravity_value = ProjectSettings.get_setting("physics/2d/default_gravity")
+			player.velocity.y += gravity_value * player.fall_gravity_scale * 0.5 * delta
 		player._handle_air_moves(delta)
 		player.move_and_slide()
 		player._collision_checker()

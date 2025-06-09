@@ -65,15 +65,14 @@ func _reset() -> void:
 	# Reset the platform's position and state
 	var tween = create_tween()
 	
-	await tween.tween_property(self, "modulate:a", 1.0, dissolve_duration).finished
-	
+	await tween.tween_property(self, "modulate:a", .5, dissolve_duration * .5).finished
+	_disable_collisions(false)
+	var tween2 = create_tween()
+	await tween2.tween_property(self, "modulate:a", 1.0, dissolve_duration * .5).finished
 	# Stop any active timers
 	collision_timer.stop()
 	respawn_timer.stop()
 	
-
-	_disable_collisions(false)
-
 
 func _disable_collisions(_enabled: bool) -> void:
 	# Enable or disable collision
