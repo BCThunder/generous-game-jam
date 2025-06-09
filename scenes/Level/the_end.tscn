@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://dk46tuehdxh7e"]
+
+[ext_resource type="Script" uid="uid://d2dhd58fhd2uy" path="res://scenes/Level/flip_slides.gd" id="1_v15dh"]
+[ext_resource type="Texture2D" uid="uid://c3nru2sn811oy" path="res://assets/sprites/cinematic/final/final slide 1.png" id="1_xumuw"]
+[ext_resource type="Texture2D" uid="uid://cldqf6va2fnlh" path="res://assets/sprites/cinematic/final/final slide 2.png" id="2_cb63r"]
+[ext_resource type="Texture2D" uid="uid://b13gq0sx4lqt5" path="res://assets/sprites/cinematic/final/final slide 3.png" id="3_anllm"]
+[ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="4_cb63r"]
+
+[node name="TheEnd" type="CanvasLayer"]
+script = ExtResource("1_v15dh")
+
+[node name="Slide1" type="TextureRect" parent="."]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_xumuw")
+
+[node name="Slide2" type="TextureRect" parent="."]
+visible = false
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_cb63r")
+
+[node name="Slide3" type="TextureRect" parent="."]
+visible = false
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_anllm")
+
+[node name="NextSlideButton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -59.0
+offset_top = -56.0
+offset_right = -19.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("4_cb63r")
+text = "->"
+
+[connection signal="pressed" from="NextSlideButton" to="." method="_on_next_slide_button_pressed"]
