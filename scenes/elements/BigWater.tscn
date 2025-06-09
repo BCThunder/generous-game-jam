@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0gqyf84r4hyy"]
+
+[ext_resource type="Script" uid="uid://cmrrp4xkr6tkh" path="res://scenes/elements/big_water.gd" id="1_ahhxy"]
+[ext_resource type="AudioStream" uid="uid://bb2et3sapwukm" path="res://assets/audio/sfx/water_collected.wav" id="2_75yhl"]
+[ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="4_bhtg8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_06fbr"]
+size = Vector2(32, 43)
+
+[node name="BigWater" type="Area2D" groups=["SmallWater"]]
+collision_layer = 0
+collision_mask = 128
+script = ExtResource("1_ahhxy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_06fbr")
+debug_color = Color(2.88785e-06, 0.493013, 0.576679, 0.42)
+
+[node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_75yhl")
+
+[node name="Checkpoint" parent="." instance=ExtResource("4_bhtg8")]
+self_modulate = Color(0.42994, 0.131317, 0.36392, 1)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

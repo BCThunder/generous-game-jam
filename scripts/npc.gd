@@ -112,7 +112,7 @@ func _on_interact_area_body_exited(body: Node2D) -> void:
 
 func _on_player_interact():
 	is_saved = true
-	SPEED *= 1.5
+	SPEED *= 1.3
 	water_sprite.visible = false
 
 

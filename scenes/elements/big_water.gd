@@ -14,6 +14,6 @@ func disable_self():
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Player"):
-		GameManager.add_water(self, 1)
+		GameManager.add_water(self, 10)
 		disable_self()
 		collect_sfx.play()

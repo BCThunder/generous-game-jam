@@ -687,6 +687,11 @@ func play_jump_sfx():
 			jump2_sfx.pitch_scale = pitch
 			jump2_sfx.play()
 
+func play_animation(animation_name : String):
+	animation_player.play(animation_name)
+	
+func is_animation_finished():
+	return animation_player.animation_finished
 
 func interact():
 	GameManager.interact_with_npc()
