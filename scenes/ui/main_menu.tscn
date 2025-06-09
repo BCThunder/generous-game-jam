@@ -438,7 +438,6 @@ theme = ExtResource("2_1g8jr")
 text = "Exit"
 
 [node name="SettingsPanel" type="Panel" parent="."]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -462,7 +461,7 @@ theme = ExtResource("2_1g8jr")
 text = "Close"
 flat = true
 
-[node name="VolumeLabel" type="Label" parent="SettingsPanel"]
+[node name="MusicLabel" type="Label" parent="SettingsPanel"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -473,10 +472,10 @@ offset_right = 95.0
 offset_bottom = -124.0
 grow_vertical = 0
 theme = ExtResource("2_1g8jr")
-text = "Volume"
+text = "Music Volume"
 vertical_alignment = 1
 
-[node name="VolumeSlider" type="HSlider" parent="SettingsPanel"]
+[node name="MusicSlider" type="HSlider" parent="SettingsPanel"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -489,9 +488,38 @@ grow_vertical = 0
 value = 50.0
 rounded = true
 
+[node name="SFXLabel" type="Label" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -87.0
+offset_right = 114.0
+offset_bottom = -64.0
+grow_vertical = 0
+theme = ExtResource("2_1g8jr")
+text = "SFX Volume"
+vertical_alignment = 1
+
+[node name="SFXLabel2" type="HSlider" parent="SettingsPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 36.0
+offset_top = -53.0
+offset_right = 238.43
+offset_bottom = -37.0
+grow_vertical = 0
+value = 50.0
+rounded = true
+
 [connection signal="pressed" from="Buttons/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="Buttons/LoadSaveButton" to="." method="_on_load_save_button_pressed"]
 [connection signal="pressed" from="Buttons/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="renamed" from="Buttons/ExitGameButton" to="." method="_on_exit_game_button_renamed"]
 [connection signal="pressed" from="SettingsPanel/CloseSettingsButton" to="." method="_on_close_settings_button_pressed"]
-[connection signal="value_changed" from="SettingsPanel/VolumeSlider" to="." method="_on_volume_changed"]
+[connection signal="value_changed" from="SettingsPanel/MusicSlider" to="." method="_on_volume_changed"]
+[connection signal="value_changed" from="SettingsPanel/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="SettingsPanel/SFXLabel2" to="." method="_on_sfx_label_2_value_changed"]
