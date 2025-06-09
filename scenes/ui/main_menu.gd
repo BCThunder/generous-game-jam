@@ -39,11 +39,21 @@ func convert_volume_to_db(percentage) -> float:
 	return vol_scale * log(percentage / divisor) / log(10)
 
 
-func _on_volume_changed(value: float) -> void:
+func _on_music_slider_value_changed(value: float) -> void:
 	if value == 0:
-		AudioServer.set_bus_mute(0, true)
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), true)
 	elif value > 0:
-		AudioServer.set_bus_mute(0, false)
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Music"), false)
 	
 	var decibles := convert_volume_to_db(value)
-	AudioServer.set_bus_volume_db(0, decibles)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), decibles)
+
+
+func _on_sfx_label_2_value_changed(value: float) -> void:
+	if value == 0:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("SFX"), true)
+	elif value > 0:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("SFX"), false)
+	
+	var decibles := convert_volume_to_db(value)
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), decibles)

@@ -1,5 +1,6 @@
 [gd_scene load_steps=52 format=4 uid="uid://btdp7paicpsrd"]
 
+
 [ext_resource type="TileSet" uid="uid://trq1pj3s0pg2" path="res://assets/tile_set.tres" id="1_okrmv"]
 [ext_resource type="PackedScene" uid="uid://d17ofdik0q6d8" path="res://scenes/player/player.tscn" id="1_pqhl5"]
 [ext_resource type="Texture2D" uid="uid://druheukqx4cdd" path="res://assets/sprites/oasis/Well.png" id="3_ibm0y"]
@@ -175,6 +176,7 @@ destroy_ability_chain_depth = 3
 debug_enabled = true
 debug_jumps = true
 debug_wall_jump_direction = true
+
 
 [node name="AnimatedSprite2D" parent="Player" index="0"]
 light_mask = 4
@@ -831,6 +833,7 @@ texture = ExtResource("12_dwx4m")
 visible = false
 
 [node name="Launch zone" type="Area2D" parent="." groups=["LaunchZones"]]
+visible = false
 position = Vector2(-68, 359)
 collision_layer = 128
 collision_mask = 128
@@ -973,38 +976,4 @@ position = Vector2(-87, -4)
 position = Vector2(81, -4)
 
 [connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/WaterCollectible" to="Underground/CanvasGroup/Small Water spots/WaterCollectible" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66109" to="Underground/CanvasGroup/Small Water spots/@Area2D@66109" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66110" to="Underground/CanvasGroup/Small Water spots/@Area2D@66110" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66111" to="Underground/CanvasGroup/Small Water spots/@Area2D@66111" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66112" to="Underground/CanvasGroup/Small Water spots/@Area2D@66112" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66113" to="Underground/CanvasGroup/Small Water spots/@Area2D@66113" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66114" to="Underground/CanvasGroup/Small Water spots/@Area2D@66114" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66115" to="Underground/CanvasGroup/Small Water spots/@Area2D@66115" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66116" to="Underground/CanvasGroup/Small Water spots/@Area2D@66116" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66117" to="Underground/CanvasGroup/Small Water spots/@Area2D@66117" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66118" to="Underground/CanvasGroup/Small Water spots/@Area2D@66118" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66119" to="Underground/CanvasGroup/Small Water spots/@Area2D@66119" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66120" to="Underground/CanvasGroup/Small Water spots/@Area2D@66120" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66121" to="Underground/CanvasGroup/Small Water spots/@Area2D@66121" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66122" to="Underground/CanvasGroup/Small Water spots/@Area2D@66122" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66123" to="Underground/CanvasGroup/Small Water spots/@Area2D@66123" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66124" to="Underground/CanvasGroup/Small Water spots/@Area2D@66124" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66125" to="Underground/CanvasGroup/Small Water spots/@Area2D@66125" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66126" to="Underground/CanvasGroup/Small Water spots/@Area2D@66126" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66127" to="Underground/CanvasGroup/Small Water spots/@Area2D@66127" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66128" to="Underground/CanvasGroup/Small Water spots/@Area2D@66128" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66129" to="Underground/CanvasGroup/Small Water spots/@Area2D@66129" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66130" to="Underground/CanvasGroup/Small Water spots/@Area2D@66130" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66131" to="Underground/CanvasGroup/Small Water spots/@Area2D@66131" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66132" to="Underground/CanvasGroup/Small Water spots/@Area2D@66132" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66133" to="Underground/CanvasGroup/Small Water spots/@Area2D@66133" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66134" to="Underground/CanvasGroup/Small Water spots/@Area2D@66134" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66135" to="Underground/CanvasGroup/Small Water spots/@Area2D@66135" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66136" to="Underground/CanvasGroup/Small Water spots/@Area2D@66136" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66137" to="Underground/CanvasGroup/Small Water spots/@Area2D@66137" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66138" to="Underground/CanvasGroup/Small Water spots/@Area2D@66138" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66139" to="Underground/CanvasGroup/Small Water spots/@Area2D@66139" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66140" to="Underground/CanvasGroup/Small Water spots/@Area2D@66140" method="_on_body_entered"]
-[connection signal="body_entered" from="Underground/CanvasGroup/Small Water spots/@Area2D@66141" to="Underground/CanvasGroup/Small Water spots/@Area2D@66141" method="_on_body_entered"]
-
 [editable path="Player"]
