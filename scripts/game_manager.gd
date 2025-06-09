@@ -51,11 +51,13 @@ func check_water_threshold():
 	
 	if collected_water >= 5:
 		get_tree().get_current_scene().get_node("OasisStage1").visible = true
+		get_tree().get_current_scene().get_node("NPC_Dwarf").visible = true
 		water_threshold_met = true
 		toggle_hud_tooltip()
 		print_debug("Stage 1 Met")
 	if collected_water >= 20:
 		get_tree().get_current_scene().get_node("OasisStage2").visible = true
+		get_tree().get_current_scene().get_node("NPC_Elf").visible = true
 		water_threshold_met = true
 		toggle_hud_tooltip()
 		print_debug("Stage 2 Met")
@@ -77,6 +79,6 @@ func toggle_hud_tooltip():
 
 
 func interact_with_npc():
-	if current_npc:
+	if current_npc and water_threshold_met:
 		current_npc.emit_signal("player_interact")
 		water_threshold_met = false

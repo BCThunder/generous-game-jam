@@ -129,6 +129,6 @@ func fast_travel():
 		player = _find_player()
 		player.play_animation("fade_out_fade_in")
 		
-		await get_tree().create_timer(0.3)
+		await get_tree().create_timer(0.5)
 
 		player.global_position = last_location

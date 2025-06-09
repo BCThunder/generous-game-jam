@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://d17ofdik0q6d8"]
+[gd_scene load_steps=42 format=3 uid="uid://d17ofdik0q6d8"]
 
 [ext_resource type="Script" uid="uid://cwjj14fxok8oa" path="res://scenes/player/player_controller.gd" id="1_qhqgy"]
 [ext_resource type="PackedScene" uid="uid://dhhwb60krq4xt" path="res://scenes/player/launch_ability.tscn" id="2_qlg0r"]
@@ -174,11 +174,27 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_pk8ii"]
+resource_name = "fade_out_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.75, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kvlxm"]
 _data = {
 &"RESET": SubResource("Animation_myrg7"),
 &"fade_in": SubResource("Animation_fcs02"),
-&"fade_out": SubResource("Animation_kvlxm")
+&"fade_out": SubResource("Animation_kvlxm"),
+&"fade_out_fade_in": SubResource("Animation_pk8ii")
 }
 
 [sub_resource type="Gradient" id="Gradient_bl13t"]
