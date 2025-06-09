@@ -121,7 +121,7 @@ func spawn_player():
 func teleport_to_top():
 	player = _find_player()
 	player.global_position = top_spawn_point
-	GameManager.toggle_hud_tooltip()
+	GameManager.toggle_hud_tooltip(false)
 	
 
 func fast_travel():

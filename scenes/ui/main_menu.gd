@@ -2,6 +2,7 @@ extends CanvasLayer
 
 @onready var settings_panel: Panel = $SettingsPanel
 @onready var button_container: BoxContainer = $Buttons
+@onready var credits: Panel = $Credits
 
 func _ready() -> void:
 	settings_panel.visible = false
@@ -10,7 +11,10 @@ func _ready() -> void:
 
 
 func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/Level/Blackout scene.tscn")
+	if !GameManager.is_game_over:
+		get_tree().change_scene_to_file("res://scenes/Level/the_beginning.tscn")
+	elif GameManager.is_game_over:
+		get_tree().change_scene_to_file("res://scenes/Level/Blackout scene.tscn")
 	
 	GameManager._init_game()
 
@@ -57,3 +61,12 @@ func _on_sfx_label_2_value_changed(value: float) -> void:
 	
 	var decibles := convert_volume_to_db(value)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), decibles)
+
+
+func _on_close_credits_button_pressed() -> void:
+	print("Credits button pressed")
+	credits.visible = false
+
+
+func _on_credits_button_pressed() -> void:
+	credits.visible = true
