@@ -1,6 +1,8 @@
 extends Node
 
 var can_player_interact := false
+var water_threshold_met := false
+
 var tile_data := []
 var collected_water := 0
 var is_in_the_game := false
@@ -22,6 +24,7 @@ func _init_game():
 	while get_tree().get_current_scene() == null:
 		await get_tree().process_frame
 	
+	
 	# Initialize The Player's Oasis Progression
 	check_water_threshold()
 	
@@ -41,8 +44,10 @@ func end_game():
 	# add finish screen
 
 
-func add_water():
+func add_water(water_to_save : Area2D):
+	print("You collected water!")
 	collected_water += 1
+	SaveManager.save_collected_water(water_to_save)
 	check_water_threshold()
 
 
@@ -52,18 +57,22 @@ func check_water_threshold():
 	if collected_water < 5:
 		return
 	
-	if collected_water > 5:
+	if collected_water >= 5:
 		stage_references["OasisStage1"] = true
-		
-	if collected_water > 20:
+		water_threshold_met = true
+		print_debug("Stage 1 Met")
+	if collected_water >= 20:
 		stage_references["OasisStage2"] = true
-		
-	if collected_water > 30:
+		water_threshold_met = true
+		print_debug("Stage 2 Met")
+	if collected_water >= 30:
 		stage_references["OasisStage3"] = true
-		
-	if collected_water > 40:
+		water_threshold_met = true
+		print_debug("Stage 3 Met")
+	if collected_water >= 40:
 		stage_references["OasisStage4"] = true
-
+		water_threshold_met = true
+		print_debug("Stage 4 Met")
 
 func interact_with_npc():
 	if current_npc:

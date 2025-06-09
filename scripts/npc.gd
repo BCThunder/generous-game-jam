@@ -6,7 +6,7 @@ extends CharacterBody2D
 
 @export var patrol_points: Node
 @export var walk_time := 4
-@export var SPEED := 1500
+@export var SPEED := 1500.0
 @export var GRAVITY := 1000
 
 signal player_interact
@@ -91,6 +91,9 @@ func play_animation(anim_to_play : String):
 
 
 func _on_interact_area_body_entered(body: Node2D) -> void:
+	if is_saved:
+		return
+	
 	if body.is_in_group("Player"):
 		GameManager.can_player_interact = true
 		GameManager.current_npc = self
@@ -98,6 +101,9 @@ func _on_interact_area_body_entered(body: Node2D) -> void:
 
 
 func _on_interact_area_body_exited(body: Node2D) -> void:
+	if is_saved:
+		return
+	
 	if body.is_in_group("Player"):
 		GameManager.can_player_interact = false
 		GameManager.current_npc = null
@@ -106,6 +112,8 @@ func _on_interact_area_body_exited(body: Node2D) -> void:
 
 func _on_player_interact():
 	is_saved = true
+	SPEED *= 1.5
+	water_sprite.visible = false
 
 
 func _on_walk_timer_timeout() -> void:

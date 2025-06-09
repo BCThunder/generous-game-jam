@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bwwe6ab8ltyfa" path="res://scripts/checkpoint.gd" id="1_yyywg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ywqth"]
-size = Vector2(21, 45)
+size = Vector2(32, 45)
 
 [node name="Checkpoint" type="Area2D"]
 collision_layer = 0
@@ -12,6 +12,7 @@ script = ExtResource("1_yyywg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ywqth")
+debug_color = Color(0.853795, 0.368549, 0.033086, 0.42)
 
 [node name="RespawnPoint" type="Marker2D" parent="."]
 position = Vector2(0, -17)
