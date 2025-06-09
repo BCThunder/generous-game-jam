@@ -11,7 +11,7 @@ func _ready() -> void:
 
 
 func _on_start_button_pressed() -> void:
-	if !GameManager.is_game_over:
+	if !GameManager.is_game_over and GameManager.fresh_game:
 		get_tree().change_scene_to_file("res://scenes/Level/the_beginning.tscn")
 	elif GameManager.is_game_over:
 		get_tree().change_scene_to_file("res://scenes/Level/Blackout scene.tscn")
