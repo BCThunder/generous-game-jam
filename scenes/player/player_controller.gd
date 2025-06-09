@@ -247,9 +247,6 @@ class WallSlideState extends PlayerState:
 	var wall_dir = 0.0
 
 	func enter() -> void:
-		player.animated_sprite.play("wall_slide") # Play wall slide animation
-		player.animated_sprite.flip_h = wall_dir < 0 # Flip sprite based on wall direction
-
 		if player.debug_enabled and player.debug_movement:
 			print("Entered WallSlideState")
 		player.is_jump_held = false # Reset jump hold
@@ -259,6 +256,11 @@ class WallSlideState extends PlayerState:
 			if coll and coll.get_normal().x != 0:
 				wall_dir = - coll.get_normal().x
 				break
+
+		player.animated_sprite.play("wall_slide") # Play wall slide animation
+		player.animated_sprite.flip_h = wall_dir > 0 # Flip sprite based on wall direction
+		#player.animated_sprite.position.x = wall_dir * -7.0
+
 
 		if player.wall_slide_timer:
 			if player.wall_slide_timer.is_stopped():
@@ -530,6 +532,8 @@ func _change_state(new_state_class) -> void:
 	current_state.exit()
 	current_state = new_state_class.new(self)
 	current_state.enter()
+
+	#animated_sprite.position = Vector2.ZERO # Reset sprite offset on state change
 
 
 	if debug_enabled and debug_state_changes:
