@@ -61,6 +61,7 @@ var has_jumped_off_spikes: bool = false
 @export_category("Slam Ability")
 @export var slam_abiility_scene: PackedScene
 @export var slam_abiility_enabled: bool = true
+@export var slam_move_delay: float = 0.1 # Delay before slam move starts
 
 # --- Destroy Ability ---
 @export_category("Destroy Ability")
@@ -78,6 +79,7 @@ var destroy_ability_timer: Timer
 # Debug Flags
 @export_category("Debug")
 @export var debug_enabled: bool = false
+@export var debug_dont_use_checkpoints: bool = false # Use checkpoint system for debugging
 @export var debug_movement: bool = false
 @export var debug_input_events: bool = false
 @export var debug_jumps: bool = false
@@ -86,6 +88,7 @@ var destroy_ability_timer: Timer
 @export var debug_death: bool = false
 @export var debug_destroy_ability: bool = false
 @export var debug_destroy_ray: bool = false # Draw the destroy ray for debugging
+@export var debug_wall_jump_direction: bool = false # Show wall jump direction in debug mode
 
 # Sound Effects
 @onready var walking_sfx: AudioStreamPlayer2D = $SFX/WalkingSFX
@@ -155,6 +158,7 @@ class GroundState extends PlayerState:
 		player.is_jump_held = false
 		player.has_jumped = false
 		player.can_wall_slide = player.wall_slide_enabled
+		player.wall_slide_timer.stop()
 
 		if player.debug_enabled and player.debug_movement:
 			print("Entered GroundState")
@@ -190,6 +194,9 @@ class AirState extends PlayerState:
 		player.can_double_jump = player.double_jump_enabled
 		# Start coyote time if not already running
 
+		if not player.wall_slide_timer.is_stopped():
+			player.wall_slide_timer.paused = true
+
 	func input(event: InputEvent) -> void:
 		if event.is_action_pressed("jump"):
 			if player.debug_enabled and player.debug_jumps:
@@ -218,51 +225,106 @@ class AirState extends PlayerState:
 		player._collision_checker()
 		if player.is_on_floor():
 			player._change_state(GroundState)
-		# elif can_wall_slide and player.is_on_wall():
-		# 	# If on wall, switch to WallSlideState
-		# 	player._change_state(WallSlideState)
+		elif player.can_wall_slide and player.is_on_wall() and player.input_x_direction != 0:
+			# If on wall, switch to WallSlideState
+			player._change_state(WallSlideState)
 
-# class WallSlideState extends PlayerState:
-# 	var wall_dir = 0.0
+class WallSlideState extends PlayerState:
+	var wall_dir = 0.0
 
-# 	func enter() -> void:
-# 		if player.debug_enabled and player.debug_movement:
-# 			print("Entered WallSlideState")
-# 		player.velocity.y = 0.0 # Stop vertical movement
-# 		player.is_jump_held = false # Reset jump hold
-# 		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
-# 		for i in range(player.get_slide_collision_count()):
-# 			var coll = player.get_slide_collision(i)
-# 			if coll and coll.normal.x != 0:
-# 				wall_dir = - coll.normal.x
-# 				break
+	func enter() -> void:
+		if player.debug_enabled and player.debug_movement:
+			print("Entered WallSlideState")
+		player.velocity.y = 0.0 # Stop vertical movement
+		player.is_jump_held = false # Reset jump hold
+		# Determine which side the wall is on (-1 = left wall, 1 = right wall)
+		for i in range(player.get_slide_collision_count()):
+			var coll = player.get_slide_collision(i)
+			if coll and coll.get_normal().x != 0:
+				wall_dir = - coll.get_normal().x
+				break
 
-# 		# Optionally start sliding at a fixed speed
-# 		player.velocity.y = player.wall_slide_speed
+		# Optionally start sliding at a fixed speed
+		player.velocity.y = player.wall_slide_speed
 
-# 	func input(event: InputEvent) -> void:
-# 		if event.is_action_pressed("jump"):
-# 			if player.debug_enabled and player.debug_jumps:
-# 				print("Jump pressed (Wall Slide)")
-# 			player._try_wall_jump()
-
-# 	func physics(delta: float) -> void:
-# 		var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
-
-# 		player.velocity.y = wall_slider_speed # Maintain wall slide speed
-# 		player.move_and_slide()
-# 		player._collision_checker()
+		if player.wall_slide_timer:
+			if player.wall_slide_timer.is_stopped():
+				player.wall_slide_timer.start(player.wall_slide_max_duration)
+			elif player.wall_slide_timer.time_left:
+				player.wall_slide_timer.paused = false
 
 
-# func _try_wall_jump()
-# 		if player.debug_enabled and player.debug_jumps:
-# 			print("Wall jump attempt")
-# 		if player.use_wall_jump_time_limit:
-# 			player._change_state(WallJumpState)
-# 		else:
-# 			player._change_state(AirState)
+	func input(event: InputEvent) -> void:
+		if event.is_action_pressed("jump"):
+			if player.debug_enabled and player.debug_jumps:
+				print("Jump pressed (Wall Slide)")
+			_try_wall_jump()
 
-		
+	func physics(_delta: float) -> void:
+		player._updated_x_input()
+		if not player.has_jumped:
+			_handle_wall_slide()
+
+
+		player.move_and_slide()
+		player._collision_checker()
+
+	func _handle_wall_slide():
+		# Handle wall sliding logic
+		if player.use_wall_jump_time_limit and player.wall_slide_timer.is_stopped():
+			# If wall slide timer is stopped, switch to AirState
+			player._change_state(AirState)
+			return
+
+		if player.is_on_wall():
+			# If still on wall, continue sliding
+			player.velocity.y = player.wall_slide_speed
+			if not player.input_x_direction:
+				# If no input, continue sliding down
+				player.velocity.x = wall_dir
+			else:
+				# If input is pressed, apply horizontal movement
+				player.velocity.x = player.input_x_direction * player.run_speed * player.slippery_acceleration_multiplier
+				if player.debug_enabled and player.debug_movement:
+					print("Sliding on wall with velocity: ", player.velocity)
+		else:
+			# If no longer on wall, switch to AirState
+			player._change_state(AirState)
+
+	func _try_wall_jump() -> void:
+		if player.debug_enabled and player.debug_jumps:
+			print("Wall jump attempt - can_double_jump: ", player.can_double_jump, ", wall_slide_timer.is_stopped(): ", player.wall_slide_timer.is_stopped())
+
+		# If wall slide timer is running, allow wall jump
+		player.velocity.y = - player.wall_jump_velocity
+		player.velocity.x = - (wall_dir * player.wall_jump_velocity * cos(deg_to_rad(player.wall_jump_angle)))
+		player.is_jump_held = true
+		player.can_double_jump = player.can_double_jump_after_wall_jump
+		player.has_jumped = true
+		if player.debug_enabled and player.debug_jumps:
+			print("Wall jump performed")
+
+		if player.debug_enabled and player.debug_wall_jump_direction:
+			# Draw debug line for wall jump direction
+			var debug_line := Line2D.new()
+			debug_line.width = 2.0
+			debug_line.default_color = Color.RED
+			# points are local to the player, so subtract global_position
+			debug_line.points = [
+				player.position - player.global_position,
+				player.position + .2 * Vector2(player.velocity.x, player.velocity.y) - player.global_position
+			]
+			player.add_child(debug_line)
+			await player.get_tree().create_timer(0.1).timeout
+			debug_line.queue_free()
+		if player.debug_enabled and player.debug_wall_jump_direction:
+			print_debug("Wall jump performed with velocity: ", player.velocity, " wall_dir: ", wall_dir)
+
+		player.play_jump_sfx()
+		#await player.get_tree().create_timer(1).timeout # Small delay to allow jump effects
+		player._change_state(AirState)
+
+
 class SlamState extends PlayerState:
 	func enter() -> void:
 		if player.debug_enabled and player.debug_movement:
@@ -279,18 +341,18 @@ class SlamState extends PlayerState:
 		player.velocity.x = 0.0 # Stop horizontal movement during slam
 
 		var collision = player.move_and_slide()
+		player._collision_checker()
 		if collision:
 			# Check if we hit the ground
 			if player.is_on_floor():
 				# Small delay to allow landing effects
-				await player.get_tree().create_timer(1.0).timeout
+				await player.get_tree().create_timer(player.slam_move_delay).timeout
 				player._change_state(GroundState)
 			else:
 				# If not on ground, stay in slam state
 				player.velocity.x = 0.0 # Stop horizontal movement during slam
 				player.velocity.y = max(player.velocity.y, 0) # Prevent upward movement
 
-		player._collision_checker()
 
 # --- Destroy State ---
 class DestroyState extends PlayerState:
@@ -349,7 +411,12 @@ func _ready() -> void:
 	_get_tilemap_layers()
 	animation_player.play("fade_in") # fade in to hide "teleporting" to last save spot
 	# Initialize player state
-	position = SaveManager.last_location if SaveManager.last_location else Vector2.ZERO
+	if not (debug_enabled and debug_dont_use_checkpoints):
+		# Use last saved position if available
+		if SaveManager.last_location:
+			position = SaveManager.last_location
+			if debug_enabled:
+				print_debug("Using last saved position: ", position)
 
 	_init_launch_ability()
 
@@ -377,6 +444,12 @@ func _ready() -> void:
 	destroy_ability_timer.one_shot = true
 	destroy_ability_timer.wait_time = destroy_ability_cooldown
 	add_child(destroy_ability_timer)
+
+	# Add and configure wall slide timer
+	wall_slide_timer = Timer.new()
+	wall_slide_timer.one_shot = true
+	wall_slide_timer.wait_time = wall_slide_max_duration
+	add_child(wall_slide_timer)
 
 	current_state = GroundState.new(self)
 	current_state.enter()
