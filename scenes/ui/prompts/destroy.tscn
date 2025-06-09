@@ -1,0 +1,83 @@
+[gd_scene load_steps=10 format=3 uid="uid://y4fkbwq3w3fo"]
+
+[ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="1_3dm3t"]
+[ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="2_uvb4d"]
+[ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="3_pnj43"]
+[ext_resource type="Texture2D" uid="uid://qc5lhrpbhkck" path="res://assets/kenny input sprites/MouseLeft.tres" id="4_t6ydg"]
+[ext_resource type="Texture2D" uid="uid://btdgqynjj2q7i" path="res://assets/kenny input sprites/MouseRight.tres" id="5_pt3ds"]
+
+[sub_resource type="Resource" id="Resource_rc2mg"]
+script = ExtResource("2_uvb4d")
+node_path = NodePath("HSplitContainer/TextureRect")
+action_name = "launch_fire"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_5l4wp"]
+script = ExtResource("2_uvb4d")
+node_path = NodePath("HSplitContainer/TextureRect2")
+action_name = "launch_cancel"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_owrub"]
+script = ExtResource("3_pnj43")
+node_path = NodePath("HSplitContainer/Launch")
+label_text = "Launch"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="Resource" id="Resource_wt6x8"]
+script = ExtResource("3_pnj43")
+node_path = NodePath("HSplitContainer/Cancel")
+label_text = "Cancel"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[node name="Launch Ability Controls" type="Node2D"]
+physics_interpolation_mode = 1
+z_index = 10
+texture_filter = 1
+script = ExtResource("1_3dm3t")
+icon_entries = [SubResource("Resource_rc2mg"), SubResource("Resource_5l4wp")]
+text_entries = [SubResource("Resource_owrub"), SubResource("Resource_wt6x8")]
+
+[node name="HSplitContainer" type="HBoxContainer" parent="."]
+light_mask = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = -11.5
+offset_right = 89.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Launch" type="Label" parent="HSplitContainer"]
+light_mask = 0
+layout_mode = 2
+text = "Launch"
+
+[node name="TextureRect" type="TextureRect" parent="HSplitContainer"]
+light_mask = 0
+layout_mode = 2
+texture = ExtResource("4_t6ydg")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Slash" type="Label" parent="HSplitContainer"]
+light_mask = 0
+layout_mode = 2
+text = "/"
+
+[node name="TextureRect2" type="TextureRect" parent="HSplitContainer"]
+light_mask = 0
+layout_mode = 2
+texture = ExtResource("5_pt3ds")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Cancel" type="Label" parent="HSplitContainer"]
+light_mask = 0
+layout_mode = 2
+text = "Cancel"

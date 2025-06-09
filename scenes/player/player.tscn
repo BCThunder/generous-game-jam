@@ -217,8 +217,10 @@ wall_jump_angle = 0.0
 use_wall_jump_time_limit = false
 ground_tilemap_layer_path = NodePath("../Terrain")
 launch_ability_scene = ExtResource("2_qlg0r")
+destroy_ability_range = 15.0
 destroy_ability_chain_radius = 32.0
 destroy_ability_chain_delay = 0.15
+destroy_ability_chain_depth = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_74lek")

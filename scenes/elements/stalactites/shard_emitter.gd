@@ -21,7 +21,9 @@ class_name ShardEmitter extends Node2D
 @export_category("Destroy Parent")
 @export var destroy_parent: bool = true
 
-var sfx: AudioStreamPlayer2D
+@export_category("Audio")
+@export var use_sfx: bool = true
+@export var sfx: AudioStreamPlayer2D
 
 
 @export_category("Debug")
@@ -106,6 +108,14 @@ func add_shards() -> void:
 
 
 func shatter() -> void:
+	if use_sfx and sfx:
+		sfx.play()
+		if debug:
+			print_debug("ShardEmitter: Playing shatter sound effect")
+	else:
+		if debug:
+			print_debug("ShardEmitter: No sound effect to play")
+
 	if debug:
 		print_debug("ShardEmitter: Shattering shards")
 	randomize()

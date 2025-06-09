@@ -4,13 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="2_q47h1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pt3bi"]
+size = Vector2(18, 18)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8mnea"]
 atlas = ExtResource("2_q47h1")
 region = Rect2(160, 64, 16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ovaqs"]
-size = Vector2(18, 18)
+size = Vector2(16, 16)
 
 [node name="DissolvingPlatform1" type="Area2D" node_paths=PackedStringArray("physical_collider")]
 collision_layer = 0
