@@ -6,15 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://p8pksql07buo" path="res://scenes/checkpoint.tscn" id="4_4g1wy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_06fbr"]
-size = Vector2(32, 34)
+size = Vector2(32, 44)
 
 [node name="WaterCollectible" type="Area2D" groups=["SmallWater"]]
-collision_layer = 128
+collision_layer = 0
 collision_mask = 128
 script = ExtResource("1_alhe5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1)
+position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_06fbr")
 
 [node name="CollectSFX" type="AudioStreamPlayer2D" parent="."]

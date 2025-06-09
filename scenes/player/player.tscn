@@ -181,22 +181,28 @@ drag_bottom_margin = 0.05
 
 [node name="WalkingSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("12_fm80t")
+bus = &"SFX"
 
 [node name="LaunchSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("13_ugbui")
+bus = &"SFX"
 
 [node name="Jump1SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("14_fcs02")
+bus = &"SFX"
 
 [node name="Jump2SFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("15_myrg7")
+bus = &"SFX"
 
 [node name="SlamSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("15_fcs02")
 volume_db = 4.0
+bus = &"SFX"
 
 [node name="DeathSFX" type="AudioStreamPlayer2D" parent="SFX"]
 stream = ExtResource("17_kvlxm")
+bus = &"SFX"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(1.96423, 1.87376)

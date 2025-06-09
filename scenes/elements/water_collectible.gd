@@ -7,11 +7,12 @@ func _ready():
 	if SaveManager.get_collected_water_state(name) == false:
 		disable_self()
 
-func _on_body_entered(_body: Node2D) -> void:
-	print_debug("Water collectible collected by: ", _body.name)
-	GameManager.add_water()
-	disable_self()
-	collect_sfx.play()
+func _on_body_entered(body: Node2D) -> void:
+	print_debug("Water collectible collected by: ", body.name)
+	if body.is_in_group("Player"):
+		GameManager.add_water()
+		disable_self()
+		collect_sfx.play()
 
 func disable_self():
 	self.set_deferred("monitoring", false)
