@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://ffcjkfqj5t8r"]
+[gd_scene load_steps=11 format=3 uid="uid://ffcjkfqj5t8r"]
 
 [ext_resource type="Texture2D" uid="uid://qc5lhrpbhkck" path="res://assets/kenny input sprites/MouseLeft.tres" id="1_fo2r4"]
 [ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="1_rl1p6"]
 [ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="2_7c67d"]
 [ext_resource type="Texture2D" uid="uid://btdgqynjj2q7i" path="res://assets/kenny input sprites/MouseRight.tres" id="2_tddua"]
 [ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="3_2d3td"]
+[ext_resource type="LabelSettings" uid="uid://ba3slcxba0b1a" path="res://scenes/ui/prompts/UI Label Settings.tres" id="4_7c67d"]
 
 [sub_resource type="Resource" id="Resource_rc2mg"]
 script = ExtResource("2_7c67d")
@@ -30,16 +31,19 @@ node_path = NodePath("HSplitContainer/Cancel")
 label_text = "Cancel"
 metadata/_custom_type_script = "uid://cdqflkyugtfaj"
 
-[node name="Launch Ability Controls" type="Node2D"]
+[node name="Launch Ability Controls" type="Control"]
 physics_interpolation_mode = 1
 z_index = 10
 texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_rl1p6")
 icon_entries = [SubResource("Resource_rc2mg"), SubResource("Resource_5l4wp")]
 text_entries = [SubResource("Resource_owrub"), SubResource("Resource_wt6x8")]
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
 light_mask = 0
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -57,6 +61,7 @@ alignment = 1
 light_mask = 0
 layout_mode = 2
 text = "Launch"
+label_settings = ExtResource("4_7c67d")
 
 [node name="TextureRect" type="TextureRect" parent="HSplitContainer"]
 light_mask = 0
@@ -81,3 +86,4 @@ stretch_mode = 5
 light_mask = 0
 layout_mode = 2
 text = "Cancel"
+label_settings = ExtResource("4_7c67d")

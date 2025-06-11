@@ -22,6 +22,7 @@ debug_color = Color(2.88785e-06, 0.493013, 0.576679, 0.42)
 stream = ExtResource("2_06fbr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1.5, 1.5, 1.5, 1)
 texture_filter = 1
 texture = ExtResource("3_pnswa")
 

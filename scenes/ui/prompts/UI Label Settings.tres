@@ -1,0 +1,6 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://ba3slcxba0b1a"]
+
+[ext_resource type="FontFile" uid="uid://cy1y5nhpgt2ss" path="res://assets/fonts/RasterForge.ttf" id="1_4bkdd"]
+
+[resource]
+font = ExtResource("1_4bkdd")

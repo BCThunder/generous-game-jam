@@ -1,36 +1,36 @@
-[gd_scene load_steps=9 format=3 uid="uid://bjjrcb3gdc16j"]
+[gd_scene load_steps=9 format=3 uid="uid://m0hlb83txnbe"]
 
-[ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="1_3dm3t"]
-[ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="2_uvb4d"]
-[ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="3_pnj43"]
-[ext_resource type="LabelSettings" uid="uid://ba3slcxba0b1a" path="res://scenes/ui/prompts/UI Label Settings.tres" id="4_3dm3t"]
-[ext_resource type="Texture2D" uid="uid://nyarogf4illo" path="res://assets/kenny input sprites/E.tres" id="4_xxfc3"]
+[ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="1_rxjc1"]
+[ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="2_rlkpi"]
+[ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="3_8dhns"]
+[ext_resource type="LabelSettings" uid="uid://ba3slcxba0b1a" path="res://scenes/ui/prompts/UI Label Settings.tres" id="4_0tgjf"]
+[ext_resource type="Texture2D" uid="uid://nyarogf4illo" path="res://assets/kenny input sprites/E.tres" id="5_fhvwi"]
 
 [sub_resource type="Resource" id="Resource_34kor"]
-script = ExtResource("2_uvb4d")
+script = ExtResource("2_rlkpi")
 node_path = NodePath("HSplitContainer/Prompt Icon")
-action_name = "destroy_ability"
+action_name = "slam_ability"
 metadata/_custom_type_script = "uid://rmbka3jxe0l0"
 
 [sub_resource type="Resource" id="Resource_n2jn2"]
-script = ExtResource("3_pnj43")
+script = ExtResource("3_8dhns")
 node_path = NodePath("HSplitContainer/Prompt Text")
 label_text = "Press"
 metadata/_custom_type_script = "uid://cdqflkyugtfaj"
 
 [sub_resource type="Resource" id="Resource_jaqq5"]
-script = ExtResource("3_pnj43")
+script = ExtResource("3_8dhns")
 node_path = NodePath("HSplitContainer/Prompt Text2")
-label_text = "to Destroy Rocks"
+label_text = "to Slam"
 metadata/_custom_type_script = "uid://cdqflkyugtfaj"
 
-[node name="Destroy Control Prompt" type="Control"]
+[node name="Slam Control Prompt" type="Control"]
 physics_interpolation_mode = 1
 light_mask = 0
 texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
-script = ExtResource("1_3dm3t")
+script = ExtResource("1_rxjc1")
 icon_entries = [SubResource("Resource_34kor")]
 text_entries = [SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")]
 
@@ -55,17 +55,17 @@ light_mask = 0
 texture_filter = 1
 layout_mode = 2
 text = "Press"
-label_settings = ExtResource("4_3dm3t")
+label_settings = ExtResource("4_0tgjf")
 
 [node name="Prompt Icon" type="TextureRect" parent="HSplitContainer"]
 light_mask = 0
 layout_mode = 2
-texture = ExtResource("4_xxfc3")
+texture = ExtResource("5_fhvwi")
 expand_mode = 3
 stretch_mode = 3
 
 [node name="Prompt Text2" type="Label" parent="HSplitContainer"]
 light_mask = 0
 layout_mode = 2
-text = "to Destroy Rocks"
-label_settings = ExtResource("4_3dm3t")
+text = "to Slam"
+label_settings = ExtResource("4_0tgjf")

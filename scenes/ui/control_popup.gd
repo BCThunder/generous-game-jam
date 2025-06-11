@@ -1,8 +1,8 @@
-extends Node2D
+extends Control
 
 # Exported Arrays (untyped) so Godot won't enforce GDScript-only elements
-@export var icon_entries: Array = [] # Populate with IconEntry resources in Inspector
-@export var text_entries: Array = [] # Populate with TextEntry resources in Inspector
+@export var icon_entries: Array[IconEntry] = [] # Populate with IconEntry resources in Inspector
+@export var text_entries: Array[TextEntry] = [] # Populate with TextEntry resources in Inspector
 
 # Exported boolean to toggle following the parent target or not
 @export var follow_parent: bool = true
@@ -12,6 +12,7 @@ extends Node2D
 @export var vertical_offset: float = -40.0
 
 # Bobbing parameters
+@export var bobbing_enabled: bool = true
 @export var bob_amplitude: float = 10.0
 @export var bob_speed: float = 2.0
 
@@ -41,7 +42,8 @@ func update_popup() -> void:
 func _physics_process(delta: float) -> void:
 	if follow_target_path:
 		_follow_owner(delta)
-	_apply_bobbing(delta)
+	if bobbing_enabled:
+		_apply_bobbing(delta)
 
 func _follow_owner(_delta: float) -> void:
 	if follow_target_path:
