@@ -1,23 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://e0qmlcfa0pe4"]
+[gd_scene load_steps=6 format=3 uid="uid://e0qmlcfa0pe4"]
 
 [ext_resource type="Texture2D" uid="uid://bl8fwffjg4dlq" path="res://assets/sprites/tile sheet master.png" id="1_tcoie"]
+[ext_resource type="Script" uid="uid://bujftepn50q8e" path="res://scenes/elements/launch_zone.gd" id="1_wf1pp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wf1pp"]
 atlas = ExtResource("1_tcoie")
 region = Rect2(256, 128, 32, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_32uop"]
+atlas = ExtResource("1_tcoie")
+region = Rect2(288, 128, 32, 16)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_32uop"]
-radius = 4.0
+radius = 8.0
 height = 32.0
 
 [node name="Area2D" type="Area2D" groups=["LaunchZones"]]
 collision_layer = 128
 collision_mask = 128
+input_pickable = false
+priority = 1
+script = ExtResource("1_wf1pp")
+intervals_per_second = 0.5
+debug_state_changes = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(0, 8)
 texture = SubResource("AtlasTexture_wf1pp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 1
+position = Vector2(0, 8)
+texture = SubResource("AtlasTexture_32uop")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708

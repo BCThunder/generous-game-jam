@@ -7,7 +7,7 @@
 extends Node
 
 # Toggle this to enable/disable debug prints
-@export var debug_mode: bool = false
+@export var debug_mode: bool = true
 
 # (1) The folder where all of your .tres AtlasTexture files live.
 #     NOTE: Make sure this matches *exactly* what you see in the FileSystem dock,

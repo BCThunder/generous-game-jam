@@ -26,7 +26,7 @@ func _init_game():
 		await get_tree().process_frame
 	
 	# Initialize The Player's Oasis Progression
-	check_water_threshold()
+	call_deferred("check_water_threshold")
 	
 	if is_game_over:
 		SaveManager.teleport_to_top()
@@ -34,9 +34,11 @@ func _init_game():
 
 func end_game():
 	is_game_over = true
+	if SaveManager._find_player():
+		await SaveManager._find_player().play_animation("fade_out").finished
 	toggle_hud_tooltip(false)
 
-func add_water(water_to_save : Area2D, amount : int):
+func add_water(water_to_save: Area2D, amount: int):
 	print("You collected water!")
 	collected_water += amount
 	SaveManager.save_collected_water(water_to_save)
@@ -49,8 +51,12 @@ func check_water_threshold():
 	if collected_water < 5:
 		return
 	
+	while get_tree().get_current_scene() == null:
+		await get_tree().process_frame
+		
+
 	if collected_water >= 5:
-		get_tree().get_current_scene().get_node("OasisStage1").visible = true
+		get_tree().get_node("OasisStage1").visible = true
 		get_tree().get_current_scene().get_node("NPC_Dwarf").visible = true
 		water_threshold_met = true
 		toggle_hud_tooltip(true)
@@ -75,7 +81,7 @@ func check_water_threshold():
 		print_debug("Stage 4 Met")
 
 
-func toggle_hud_tooltip(toggle : bool):
+func toggle_hud_tooltip(toggle: bool):
 	var hud = get_tree().get_current_scene().get_node("HUD")
 	hud.get_child(0).visible = toggle
 

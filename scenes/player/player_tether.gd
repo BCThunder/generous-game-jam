@@ -61,7 +61,7 @@ func _is_segment_obstructed(global_from: Vector2, global_to: Vector2, space_stat
 	var result = space_state.intersect_ray(query)
 	return not result.is_empty()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not player:
 		return
 	

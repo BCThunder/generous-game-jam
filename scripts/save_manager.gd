@@ -87,7 +87,7 @@ func _find_player():
 
 
 # Save collected water spots
-func save_collected_water(water_to_save : Area2D):
+func save_collected_water(water_to_save: Area2D):
 	collected_water_tiles.append(water_to_save.name)
 
 
@@ -129,6 +129,6 @@ func fast_travel():
 		player = _find_player()
 		player.play_animation("fade_out_fade_in")
 		
-		await get_tree().create_timer(0.5)
+		await get_tree().create_timer(0.5).timeout
 
 		player.global_position = last_location

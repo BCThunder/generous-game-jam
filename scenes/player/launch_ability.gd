@@ -25,8 +25,8 @@ var aim_cursor: Node2D
 var aim_direction: Vector2 = Vector2.RIGHT
 var active: bool = false
 var guide_line: Line2D
-var controls_instance: Node2D
-var prompt_instance: Node2D
+var controls_instance: Control
+var prompt_instance: Control
 
 # Internal states
 enum State {IDLE, AIMING, FIRING}
@@ -34,6 +34,11 @@ var state: State = State.IDLE
 
 # State name map
 var state_names = {State.IDLE: "IDLE", State.AIMING: "AIMING", State.FIRING: "FIRING"}
+
+class LaunchAbilityState extends PlayerController.PlayerState:
+	# This class can be used to define specific behaviors for the LaunchAbility state
+	pass
+
 
 func _ready():
 	player = get_parent() as CharacterBody2D
@@ -147,7 +152,7 @@ func _show_prompt():
 
 	show_prompt = true
 	if not prompt_instance:
-		prompt_instance = launch_prompt_scene.instantiate() as Node2D
+		prompt_instance = launch_prompt_scene.instantiate()
 		add_child(prompt_instance)
 		prompt_instance.set_follow_target(player)
 
@@ -168,6 +173,6 @@ func _show_controls():
 
 	if controls_instance:
 		controls_instance.queue_free()
-	controls_instance = launch_control_scene.instantiate() as Node2D
+	controls_instance = launch_control_scene.instantiate()
 	add_child(controls_instance)
 	controls_instance.set_follow_target(player)

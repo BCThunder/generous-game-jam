@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhhwb60krq4xt"]
 
-[ext_resource type="Script" uid="uid://p07heku6o6fv" path="res://scenes/player/launch.gd" id="1_d4q4m"]
+[ext_resource type="Script" uid="uid://p07heku6o6fv" path="res://scenes/player/launch_ability.gd" id="1_d4q4m"]
 [ext_resource type="PackedScene" uid="uid://cviottmmbvt48" path="res://scenes/player/Launch Aim Scene.tscn" id="2_768h4"]
 
 [node name="LaunchAbility" type="Node2D"]
@@ -8,5 +8,4 @@ script = ExtResource("1_d4q4m")
 launch_power = 600.0
 launch_aim_distance = 25.0
 aim_cursor_scene = ExtResource("2_768h4")
-debug_state_changes = true
-debug_input_events = true
+use_physics_launch = true

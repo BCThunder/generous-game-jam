@@ -484,6 +484,8 @@ text = "Music Volume"
 vertical_alignment = 1
 
 [node name="MusicSlider" type="HSlider" parent="SettingsPanel"]
+texture_filter = 1
+texture_repeat = 3
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -493,7 +495,8 @@ offset_top = -113.0
 offset_right = 238.43
 offset_bottom = -97.0
 grow_vertical = 0
-value = 50.0
+step = 0.5
+value = 48.0
 rounded = true
 
 [node name="SFXLabel" type="Label" parent="SettingsPanel"]

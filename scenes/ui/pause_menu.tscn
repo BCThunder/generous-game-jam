@@ -1,9 +1,83 @@
-[gd_scene load_steps=5 format=3 uid="uid://dul2tqvletkou"]
+[gd_scene load_steps=24 format=3 uid="uid://dul2tqvletkou"]
 
 [ext_resource type="Script" uid="uid://2a1qsxmmavlp" path="res://scenes/ui/pause_menu.gd" id="1_0lmf7"]
 [ext_resource type="Theme" uid="uid://ctgifkumq7ux2" path="res://assets/menu_theme.tres" id="2_f6eus"]
 [ext_resource type="Texture2D" uid="uid://cjkvy7qb2x17u" path="res://assets/sprites/oasis/water droplet.png" id="3_8uki6"]
 [ext_resource type="Texture2D" uid="uid://0u1alwi60yul" path="res://assets/sprites/npcs/18x13 dwarf refugee.png" id="4_0bnpd"]
+[ext_resource type="Script" uid="uid://bdbg8hsmeq0gh" path="res://scenes/ui/control_popup.gd" id="5_2jkta"]
+[ext_resource type="Script" uid="uid://rmbka3jxe0l0" path="res://scenes/ui/IconEntry.gd" id="6_ht4ye"]
+[ext_resource type="Script" uid="uid://cdqflkyugtfaj" path="res://scenes/ui/TextEntry.gd" id="7_7yca1"]
+[ext_resource type="Texture2D" uid="uid://nyarogf4illo" path="res://assets/kenny input sprites/E.tres" id="8_lrbnh"]
+[ext_resource type="Texture2D" uid="uid://qc5lhrpbhkck" path="res://assets/kenny input sprites/MouseLeft.tres" id="9_6qnem"]
+[ext_resource type="FontFile" uid="uid://cy1y5nhpgt2ss" path="res://assets/fonts/RasterForge.ttf" id="9_ht4ye"]
+[ext_resource type="Texture2D" uid="uid://btdgqynjj2q7i" path="res://assets/kenny input sprites/MouseRight.tres" id="10_ynwdf"]
+
+[sub_resource type="Resource" id="Resource_2jkta"]
+script = ExtResource("6_ht4ye")
+node_path = NodePath("Prompt Icon")
+action_name = "context_interact"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_ht4ye"]
+script = ExtResource("7_7yca1")
+node_path = NodePath("Prompt Text2")
+label_text = "Interact"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="LabelSettings" id="LabelSettings_7yca1"]
+font = ExtResource("9_ht4ye")
+
+[sub_resource type="Resource" id="Resource_7yca1"]
+script = ExtResource("6_ht4ye")
+node_path = NodePath("Prompt Icon")
+action_name = "destroy_ability"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_lrbnh"]
+script = ExtResource("7_7yca1")
+node_path = NodePath("Prompt Text2")
+label_text = "Destroy"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="Resource" id="Resource_6qnem"]
+script = ExtResource("6_ht4ye")
+node_path = NodePath("Prompt Icon")
+action_name = "slam_ability"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_ynwdf"]
+script = ExtResource("7_7yca1")
+node_path = NodePath("Prompt Text2")
+label_text = "Slam"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="Resource" id="Resource_p4b6u"]
+script = ExtResource("6_ht4ye")
+node_path = NodePath("TextureRect")
+action_name = "launch_fire"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_3fvc3"]
+script = ExtResource("6_ht4ye")
+node_path = NodePath("TextureRect2")
+action_name = "launch_cancel"
+metadata/_custom_type_script = "uid://rmbka3jxe0l0"
+
+[sub_resource type="Resource" id="Resource_kk5q1"]
+script = ExtResource("7_7yca1")
+node_path = NodePath("Launch")
+label_text = "Launch"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="Resource" id="Resource_ukr1j"]
+script = ExtResource("7_7yca1")
+node_path = NodePath("Cancel")
+label_text = "Cancel"
+metadata/_custom_type_script = "uid://cdqflkyugtfaj"
+
+[sub_resource type="LabelSettings" id="LabelSettings_lrbnh"]
+font = ExtResource("9_ht4ye")
+font_size = 26
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
@@ -100,6 +174,186 @@ layout_mode = 2
 theme = ExtResource("2_f6eus")
 text = "x0"
 metadata/_edit_use_anchors_ = true
+
+[node name="Controls" type="VBoxContainer" parent="Panel"]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -112.0
+offset_right = 314.68
+offset_bottom = -8.0
+grow_vertical = 0
+
+[node name="Interact" type="Control" parent="Panel/Controls"]
+physics_interpolation_mode = 1
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(0, 23.505)
+layout_mode = 2
+script = ExtResource("5_2jkta")
+icon_entries = Array[ExtResource("6_ht4ye")]([SubResource("Resource_2jkta")])
+text_entries = [SubResource("Resource_ht4ye")]
+follow_parent = false
+vertical_offset = 0.0
+bobbing_enabled = false
+bob_amplitude = 0.0
+bob_speed = 0.0
+
+[node name="Prompt Icon" type="TextureRect" parent="Panel/Controls/Interact"]
+light_mask = 0
+layout_mode = 2
+offset_right = 23.0
+offset_bottom = 23.0
+texture = ExtResource("8_lrbnh")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Prompt Text2" type="Label" parent="Panel/Controls/Interact"]
+light_mask = 0
+layout_mode = 2
+offset_left = 27.0
+offset_right = 88.0
+offset_bottom = 23.0
+text = "Interact"
+label_settings = SubResource("LabelSettings_7yca1")
+vertical_alignment = 1
+
+[node name="Destroy Control" type="Control" parent="Panel/Controls"]
+physics_interpolation_mode = 1
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(0, 23.505)
+layout_mode = 2
+script = ExtResource("5_2jkta")
+icon_entries = Array[ExtResource("6_ht4ye")]([SubResource("Resource_7yca1")])
+text_entries = Array[ExtResource("7_7yca1")]([SubResource("Resource_lrbnh")])
+follow_parent = false
+vertical_offset = 0.0
+bobbing_enabled = false
+bob_amplitude = 0.0
+bob_speed = 0.0
+
+[node name="Prompt Icon" type="TextureRect" parent="Panel/Controls/Destroy Control"]
+light_mask = 0
+layout_mode = 2
+offset_right = 23.0
+offset_bottom = 23.0
+texture = ExtResource("8_lrbnh")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Prompt Text2" type="Label" parent="Panel/Controls/Destroy Control"]
+light_mask = 0
+layout_mode = 2
+offset_left = 27.0
+offset_right = 88.0
+offset_bottom = 23.0
+text = "Destroy"
+label_settings = SubResource("LabelSettings_7yca1")
+vertical_alignment = 1
+
+[node name="Slam Prompt" type="Control" parent="Panel/Controls"]
+physics_interpolation_mode = 1
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(0, 23.505)
+layout_mode = 2
+script = ExtResource("5_2jkta")
+icon_entries = Array[ExtResource("6_ht4ye")]([SubResource("Resource_6qnem")])
+text_entries = Array[ExtResource("7_7yca1")]([SubResource("Resource_ynwdf")])
+follow_parent = false
+vertical_offset = 0.0
+bobbing_enabled = false
+bob_amplitude = 0.0
+bob_speed = 0.0
+
+[node name="Prompt Icon" type="TextureRect" parent="Panel/Controls/Slam Prompt"]
+light_mask = 0
+layout_mode = 2
+offset_right = 23.0
+offset_bottom = 23.0
+texture = ExtResource("8_lrbnh")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Prompt Text2" type="Label" parent="Panel/Controls/Slam Prompt"]
+light_mask = 0
+layout_mode = 2
+offset_left = 27.0
+offset_right = 65.0
+offset_bottom = 23.0
+text = "Slam"
+label_settings = SubResource("LabelSettings_7yca1")
+vertical_alignment = 1
+
+[node name="Launch Ability Controls" type="Control" parent="Panel/Controls"]
+physics_interpolation_mode = 1
+z_index = 10
+texture_filter = 1
+custom_minimum_size = Vector2(0, 23.505)
+layout_mode = 2
+script = ExtResource("5_2jkta")
+icon_entries = Array[ExtResource("6_ht4ye")]([SubResource("Resource_p4b6u"), SubResource("Resource_3fvc3")])
+text_entries = Array[ExtResource("7_7yca1")]([SubResource("Resource_kk5q1"), SubResource("Resource_ukr1j")])
+follow_parent = false
+vertical_offset = 0.0
+bobbing_enabled = false
+bob_amplitude = 0.0
+bob_speed = 0.0
+
+[node name="TextureRect" type="TextureRect" parent="Panel/Controls/Launch Ability Controls"]
+light_mask = 0
+layout_mode = 2
+offset_right = 23.0
+offset_bottom = 23.0
+texture = ExtResource("9_6qnem")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Launch" type="Label" parent="Panel/Controls/Launch Ability Controls"]
+light_mask = 0
+layout_mode = 2
+offset_left = 27.0
+offset_right = 84.0
+offset_bottom = 23.0
+text = "Launch"
+label_settings = SubResource("LabelSettings_7yca1")
+vertical_alignment = 1
+
+[node name="Slash" type="Label" parent="Panel/Controls/Launch Ability Controls"]
+light_mask = 0
+layout_mode = 2
+offset_left = 104.0
+offset_top = -1.0
+offset_right = 114.0
+offset_bottom = 22.0
+label_settings = SubResource("LabelSettings_lrbnh")
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/Controls/Launch Ability Controls"]
+light_mask = 0
+layout_mode = 2
+offset_left = 115.0
+offset_top = -1.0
+offset_right = 138.0
+offset_bottom = 22.0
+texture = ExtResource("10_ynwdf")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Cancel" type="Label" parent="Panel/Controls/Launch Ability Controls"]
+light_mask = 0
+layout_mode = 2
+offset_left = 142.0
+offset_top = -1.0
+offset_right = 216.0
+offset_bottom = 22.0
+text = "Cancel"
+label_settings = SubResource("LabelSettings_7yca1")
+vertical_alignment = 1
 
 [connection signal="pressed" from="Panel/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
