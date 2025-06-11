@@ -31,8 +31,8 @@ texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_3dm3t")
-icon_entries = [SubResource("Resource_34kor")]
-text_entries = [SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")]
+icon_entries = Array[ExtResource("2_uvb4d")]([SubResource("Resource_34kor")])
+text_entries = Array[ExtResource("3_pnj43")]([SubResource("Resource_n2jn2"), SubResource("Resource_jaqq5")])
 
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
 light_mask = 0

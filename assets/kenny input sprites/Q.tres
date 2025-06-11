@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://c257prytu35a4"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hsqdi"]
+load_path = "res://.godot/imported/tilemap_packed.png-c9492ebcdcab224ecece066531266c72.ctex"
+
+[resource]
+atlas = SubResource("CompressedTexture2D_hsqdi")
+region = Rect2(272, 32, 15, 16)
